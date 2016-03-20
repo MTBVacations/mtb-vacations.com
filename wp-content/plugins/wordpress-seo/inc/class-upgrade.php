@@ -20,7 +20,7 @@ class WPSEO_Upgrade {
 	 * Class constructor
 	 */
 	public function __construct() {
-		$this->options = WPSEO_Options::get_all();
+		$this->options = WPSEO_Options::get_option( 'wpseo' );
 
 		WPSEO_Options::maybe_set_multisite_defaults( false );
 
@@ -46,8 +46,14 @@ class WPSEO_Upgrade {
 			$this->upgrade_23();
 		}
 
+		if ( version_compare( $this->options['version'], '3.0', '<' ) ) {
+			$this->upgrade_30();
+		}
+
 		/**
 		 * Filter: 'wpseo_run_upgrade' - Runs the upgrade hook which are dependent on Yoast SEO
+		 *
+		 * @deprecated Since 3.1
 		 *
 		 * @api string - The current version of Yoast SEO
 		 */
@@ -72,7 +78,7 @@ class WPSEO_Upgrade {
 	/**
 	 * Run the Yoast SEO 1.5 upgrade routine
 	 *
-	 * @param string $version
+	 * @param string $version Current plugin version.
 	 */
 	private function upgrade_15( $version ) {
 		// Clean up options and meta.
@@ -131,9 +137,17 @@ class WPSEO_Upgrade {
 	}
 
 	/**
-	 * Performs upgrade function to Yoast SEO 2.3
+	 * Schedules upgrade function to Yoast SEO 2.3
 	 */
 	private function upgrade_23() {
+		add_action( 'wp', array( $this, 'upgrade_23_query' ), 90 );
+		add_action( 'admin_head', array( $this, 'upgrade_23_query' ), 90 );
+	}
+
+	/**
+	 * Performs upgrade query to Yoast SEO 2.3
+	 */
+	public function upgrade_23_query() {
 		$wp_query = new WP_Query( 'post_type=any&meta_key=_yoast_wpseo_sitemap-include&meta_value=never&order=ASC' );
 
 		if ( ! empty( $wp_query->posts ) ) {
@@ -159,6 +173,14 @@ class WPSEO_Upgrade {
 
 		// Remove the meta fields.
 		delete_post_meta_by_key( '_yoast_wpseo_sitemap-include' );
+	}
+
+	/**
+	 * Performs upgrade functions to Yoast SEO 3.0
+	 */
+	private function upgrade_30() {
+		// Remove the meta fields for sitemap prio.
+		delete_post_meta_by_key( '_yoast_wpseo_sitemap-prio' );
 	}
 
 	/**
@@ -196,7 +218,7 @@ class WPSEO_Upgrade {
 	 * Runs the needed cleanup after an update, setting the DB version to latest version, flushing caches etc.
 	 */
 	private function finish_up() {
-		$this->options = get_option( 'wpseo' );                             // Re-get to make sure we have the latest version.
+		$this->options = WPSEO_Options::get_option( 'wpseo' );              // Re-get to make sure we have the latest version.
 		update_option( 'wpseo', $this->options );                           // This also ensures the DB version is equal to WPSEO_VERSION.
 
 		add_action( 'shutdown', 'flush_rewrite_rules' );                    // Just flush rewrites, always, to at least make them work after an upgrade.
@@ -204,5 +226,4 @@ class WPSEO_Upgrade {
 
 		WPSEO_Options::ensure_options_exist();                              // Make sure all our options always exist - issue #1245.
 	}
-
 }

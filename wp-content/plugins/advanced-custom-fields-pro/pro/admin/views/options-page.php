@@ -2,11 +2,7 @@
 
 // extract
 extract($args);
-
-
-// page
-$page = acf_get_options_page( $slug );
-			
+		
 ?>
 <div class="wrap acf-settings-wrap">
 	
@@ -33,12 +29,8 @@ $page = acf_get_options_page( $slug );
 				<!-- Main -->
 				<div id="post-body-content">
 					
-					<div id="normal-sortables" class="meta-box-sortables ui-sortable">
-						
-						<?php do_meta_boxes('acf_options_page', 'normal', null); ?>
+					<?php do_meta_boxes('acf_options_page', 'normal', null); ?>
 					
-					</div>
-				
 				</div>
 				
 				<!-- Sidebar -->

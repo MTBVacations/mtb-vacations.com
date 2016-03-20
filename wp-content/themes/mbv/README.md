@@ -20,6 +20,12 @@ For more information on the company that maintains Zemplate, see the Zenman webs
 Version 3.0 for WP3.8,      updated 01.07.2014
 Version 2.1 for WP3.4.1     updated 12.8.2012
 
+#### 2016-03 
+Advanced Custom Fields Pro  		5.2.6 => 5.3.6.1
+Akismet 							3.1.3 => 3.1.8
+MailChimp for WordPress Lite 		2.3.7 => 3.1.4
+Reveal IDs 							1.4.6 => 1.4.6.1
+Yoast SEO 							2.3 => 3.1.1
 -----
 
 Enjoy!
