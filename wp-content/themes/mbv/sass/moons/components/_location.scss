@@ -1,0 +1,106 @@
+/*------------------------------------*\
+    ::  Destination location
+\*------------------------------------*/
+.featured__location {
+	background: #ffffff;
+	display: flex;
+	justify-content: space-around;
+	padding: .25em;
+	float: left;
+	width: 100%;
+
+	.location__item {
+		width: 50%;
+	}
+	.location__image {
+		background-size: cover;
+		background-repeat: no-repeat;
+		background-position: center;
+		float: left;
+		min-height: 200px;
+	}
+	.location__content {
+		padding: 2em;
+		float: left;
+	}
+	.location__review {
+		width: 220px;
+		padding-bottom: 1em;
+	}
+
+	@include bp($planetary){
+		display: block;
+		.location__item {
+			width: 100%;
+		}
+		.location__image {
+			height: 300px;
+		}
+	}
+}
+
+.location__list {
+	float: left;
+	.location__image {
+		background-size: cover;
+		height: 200px;
+		background-repeat: no-repeat;
+		@include bp($max:650px){
+			height: 300px;
+		}
+	}
+	.location__content {
+		position: relative;
+		min-height: 440px;
+		padding: 1em 1.5em;
+		.location__review {
+			position: absolute;
+			bottom: 1em; left: 1.5em; right: 1.5em;
+			border-top: 1px solid #dee2e7;
+			padding-top: 1em;
+			img {
+				width: 220px;
+			}
+			@include bp($max:650px){
+				position: relative;
+				margin-top: 1em;
+				left:0;
+				right: 0;
+				bottom: 0;
+			}
+		}
+
+		@include bp($max:650px){
+			min-height: 0;
+		}
+	}
+}
+
+.location__error {
+	background: rgba(#ffffff, .5);
+	padding: .5em;
+}
+
+.location__ad {
+	display: block;
+	float: left;
+	width: 100%;
+	a {
+		display: block;
+		width: 100%;
+	}
+	img {
+		width: 100%;
+	}
+}
+
+.location__website {
+	a {
+		color: $color-1-dark;
+		font-weight: bold;
+		&:hover {
+			color: $color-1;
+			text-decoration: underline;
+		}
+	}
+}

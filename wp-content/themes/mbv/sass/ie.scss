@@ -1,0 +1,85 @@
+/*------------------------------------*\
+    ::IE
+\*------------------------------------*/
+body{
+	.home__slider{
+		.slides {
+			li {
+				.hero__content-wrapper {
+					&:before {
+						content: "";
+						display: inline-block;
+						vertical-align: middle;
+						height: 100%;
+					}
+				}
+				.hero-content {
+					display: inline-block;
+					vertical-align: middle;
+					width: 99%;
+					text-align: center;
+					padding-top: 8%;
+					.content__sub-title {
+						width: 75%;
+					}
+					.content__link {
+						width: 50%;
+						margin: 0 auto;
+						padding-top: 0;
+					}
+				}
+			}
+		}
+	}
+
+	.mc4wp-form {
+		#mc4wp_email {
+			&:focus {
+				& + label {
+					opacity: 1;
+				}
+			}
+		}
+	}
+
+	.main-head {
+		height: 100%;
+		.hero__content-wrapper {
+			&:before {
+				content: "";
+				display: inline-block;
+				vertical-align: middle;
+				height: 100%;
+			}
+		}
+		.hero-content {
+			display: inline-block;
+			vertical-align: middle;
+			width: 99%;
+			text-align: center;
+			padding-top: 8%;
+			.content__sub-title {
+				width: 75%;
+			}
+			.content__link {
+				width: 50%;
+				margin: 0 auto;
+				padding-top: 0;
+			}
+		}
+		.hero__search {
+			width: 50%;
+			margin: 0 auto;
+		}
+	}
+
+	.page__destination {
+		.destination__facts {
+			.destination__fact {
+				.fact__text {
+					height:80px;
+				}
+			}
+		}
+	}
+}

@@ -1,0 +1,53 @@
+/*------------------------------------*\
+    ::Flexslider
+\*------------------------------------*/
+.flexslider {
+	border: none !important;
+	box-shadow: none !important;
+	border-radius: none !important;
+	height: 100%;
+}
+
+.slides,
+.flex-viewport {
+	height: 100%;
+	li {
+		height: 100%;
+		width: 100%;
+	}
+}
+
+.flex-direction-nav {
+	.flex-prev,
+	.flex-next {
+		opacity: 1!important;
+		&.flex-disabled {
+			opacity: 0 !important;
+		}
+	}
+	.flex-prev {
+		left: 50px !important;
+		&:before {
+			content: url('images/global/larrow.png');
+		}
+	}
+	.flex-next {
+		right: 50px !important;
+		&:before {
+			content: url('images/global/rarrow.png') !important;
+		}
+	}
+	a {
+		height: 25px !important;
+		width: 25px !important;
+	}
+
+	@include bp($max:675px){
+		.flex-prev {
+			left: 5px !important;
+		}
+		.flex-next {
+			right: 5px !important;
+		}
+	}
+}

@@ -1,0 +1,221 @@
+/*------------------------------------*\
+    ::Nav in the Header
+\*------------------------------------*/
+body { // so it's full height
+    &:after {
+        content: "Close";
+        cursor: pointer;
+        position: absolute;
+        right: 10em;
+        top: -2em;
+        font-size: 1.5em;
+        color: #676c6f;
+        opacity: 0;
+        transition: top 0ms 300ms, opacity 300ms 0ms;
+        z-index: 20;
+        @include bp($max: 700px){
+            right: 4em;
+        }
+    }
+    &.nav-active {
+        &:after {
+            top: 1.5em;
+            opacity: 1;
+            transition: top 0ms 0ms, opacity 300ms 100ms;
+        }
+    }
+}
+.main-head{
+    position: relative;
+}
+.logo{
+    position: absolute;
+    left: 10em;
+    top: 1.7em;
+    width: 247px;
+    height: 32px;
+    z-index: 22;
+    @include bp(700px){
+        left: 1em;
+    }
+}
+.main-head__nav {
+    ul, li {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+    .head-nav{
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        right: 0;
+        padding-top: 7em;
+        padding-bottom: 1em;
+        background-color: rgba(#1a1e23, .8);
+        z-index: 20;
+        width: 0;
+        overflow-x: hidden;
+        overflow-y: scroll;
+        .nav-active & {
+            width: 40em;
+            @include bp($max: 700px){
+                width: 100%;
+            }
+        }
+        li {
+            width: 40em;
+            padding: 0 10em 0 3em;
+            li{
+                a{
+                    font-size: 1.2em;
+                }
+            }
+            @include bp($max: 700px){
+                width: 100%;
+                padding: 0 3em;
+            }
+        }
+        a {
+            border-bottom: 1px solid #fff;
+            font-size: 2em;
+            font-family: $fam-nav;
+            padding: 1.2em .5em .5em .5em;
+            color: #fff;
+            content: 'viewport-units-buggyfill; font-size:4vh;';
+            &:after{
+                display: none;
+            }
+            &:link,
+            &:visited {
+                overflow: hidden;
+                display: block;
+                position: relative;
+                z-index: 10;
+                color: #fff;
+                text-decoration: none;
+                padding: 1em 15% 1em 1em;
+                width: 100%;
+                font-family: $fam-nav;
+                font-style: normal;
+                &:after {
+                    content: "";
+                    position: absolute;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    border-bottom: 1px solid #fff;
+                }
+                @include bp(700px){
+                    width: 80%;
+                }
+            }
+            &:hover,
+            &:active {
+                &:before {
+                    top: -1em;
+                    left: -1em;
+                    right: -1em;
+                    bottom: -1em;
+                }
+            }
+            &:before {
+                content: "";
+                position: absolute;
+                top: 120%;
+                left: 0;
+                right: 0;
+                bottom: -10%;
+                z-index: -1;
+                background-color: rgba(#fff, .1);
+                transform: rotate(-5deg);
+                transition: all 300ms ease-out;
+            }
+        }
+    }
+    .menu-container {
+        & > a { // home
+            overflow: hidden;
+            position: absolute;
+            left: 10em;
+            top: 1.7em;
+            width: 247px; // actual image dimensions
+            height: 32px; // actual image dimensions
+            background-image: url("images/general-png/logo.png");
+            background-repeat: no-repeat;
+            line-height: 10;
+            transition: background-color 300ms;
+            @include bp($max: 700px){
+                left: 1em;
+            }
+            @include bp($max: 500px){
+                width: 50%;
+                background-size: contain;
+                background-position: center;
+            }
+            &:hover {
+                background-color: rgba(#000, .2);
+            }
+        }
+    }
+}
+
+
+/*------------------------------------*\
+    ::Toggle
+\*------------------------------------*/
+.nav-toggle {
+    cursor: pointer;
+    overflow: hidden;
+    display: block;
+    position: absolute;
+    z-index: 50;
+    top: 1em;
+    right: 10em;
+    width: 4.4em;
+    height: 4.4em;
+    background: #215d6e;
+    line-height: 10em;
+    background: transparent;
+    @include bp($max: 700px){
+        right: 1em;
+    }
+    span {
+        &, &:before, &:after {
+            position: absolute;
+            display: block;
+            height: .5em;
+            top: 2em;
+            left: .2em;
+            right: .2em;
+            border-radius: .5em;
+            background-color: #fff;
+            transition: transform 300ms, background-color 100ms;
+        }
+        &:before, &:after {
+            content: "";
+            left: 0;
+            right: 0;
+            transition: 400ms;
+            transform-origin: .5em;
+        }
+        &:before {
+            top: -1.1em;
+        }
+        &:after {
+            top: 1.1em;
+        }
+        .nav-active & {
+            transform: rotate(90deg) translate(.2em, 0);
+            background-color: transparent;
+            &:before {
+                transform: rotate(45deg);
+                background-color: #676c6f;
+            }
+            &:after {
+                transform: rotate(-45deg);
+                background-color: #676c6f;
+            }
+        }
+    }
+}

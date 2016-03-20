@@ -1,0 +1,47 @@
+/*------------------------------------*\
+    ::Column Module
+    ----------------------------------*
+        ::Three or Less
+        ::Four or More
+\*------------------------------------*/
+
+/*------------------------------------*\
+    ::Three or More
+\*------------------------------------*/
+.column__inside {
+    .column__group {
+        &:before {
+            background: rgba(#282828,0);
+        }
+
+        .column__overlay {
+            color: $txt-color-3;
+        }
+
+        @include bp($min:$solarsystem){
+            &:hover {
+                h2, h3 {
+                    color: $color-1;
+                    a {
+                        color: $color-1;
+                    }
+                }
+                .txt--box-shadow {
+                    &:before {
+                        background: none;
+                    }
+                }
+                &:before {
+                    background: rgba(#282828,.8);
+                    transition: background 400ms;
+                }
+                .column__overlay {
+                    p {
+                        transform: translateY(0);
+                    }
+                }
+            }
+        }
+    }
+}
+

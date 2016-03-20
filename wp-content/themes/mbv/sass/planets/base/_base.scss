@@ -1,0 +1,71 @@
+/*------------------------------------*\
+    ::Base
+    ------------------------------------*
+    ::Normalize.css v3.0.0 | MIT License | git.io/normalize
+\*------------------------------------*/
+html {
+	font-family: sans-serif;
+	-ms-text-size-adjust: 100%;
+	-webkit-text-size-adjust: 100%;
+	height: 99.99999%;
+}
+img {
+	max-width: 100%;
+	height: auto;
+}
+body {
+	margin: 0;
+    background-color: #e1e1e1;
+    height: 99.99999%;
+}
+*, *:before, *:after {
+    box-sizing: border-box;
+}
+
+.page-home {
+	.wrap-all-the-things,
+	.main-head {
+		height: 100%;
+		display: block;
+
+		@include bp($solarsystem){
+			height: 800px;
+		}
+
+		@include bp($max:600px){
+			height: 500px;
+		}
+	}
+	.main-torso,
+	.main-foot {
+		display: block;
+		height: auto;
+		float: left;
+		width: 100%;
+	}
+}
+
+.wrap-all-the-things {
+	height: 100%;
+	display: block;
+}
+.main-head {
+	height: 100%;
+	display: block;
+	&.main-head--short {
+		height: 50%;
+	}
+}
+.error404,
+.single-destination {
+	.main-head {
+		height: 100%;
+	}
+}
+.main-torso,
+.main-foot {
+	display: block;
+	height: auto;
+	float: left;
+	width: 100%;
+}

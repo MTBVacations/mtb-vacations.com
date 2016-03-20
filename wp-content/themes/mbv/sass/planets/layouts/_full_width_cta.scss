@@ -1,0 +1,43 @@
+/*------------------------------------*\
+    ::Full Width CTA
+\*------------------------------------*/
+.full-cta {
+	width: 100%;
+	float: left;
+	.full-cta__wrap {
+		width: 100%;
+		padding: 3em $pad 2.75em $pad;
+		margin-top: 1em;
+		background-size: cover;
+		background-position: center;
+		background-repeat: no-repeat;
+		position: relative;
+		&:after {
+			content: "";
+			position: absolute;
+			top: 0; bottom:0; left:0; right:0;
+			z-index: 0;
+		}
+	}
+	.full-cta__text {
+		display: inline-block;
+		vertical-align: middle;
+		padding-right: 2em;
+		position: relative;
+		z-index: 5
+	}
+	.btn {
+		display: inline-block;
+		vertical-align: middle;
+	}
+
+	@include bp($max:750px){
+		.full-cta__text,
+		.btn {
+			display: block;
+		}
+		.full-cta__text {
+			padding: 0 0 1em 0;
+		}
+	}
+}

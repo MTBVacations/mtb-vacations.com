@@ -1,0 +1,143 @@
+/*------------------------------------*\
+    ::Columns
+    ----------------------------------*
+        :: Global
+        :: Three or Less
+\*------------------------------------*/
+
+/*------------------------------------*\
+    :: Global
+\*------------------------------------*/
+.column__inside {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+
+    .column__group {
+    	float: left;
+    	position: relative;
+    	background-size: 0;
+    	backface-visibility: visible;
+
+    	img {
+    	    display: block;
+    	    width: 100%;
+    	}
+
+    	&:after {
+    	    @extend %abs-background;
+    	    top: 0;
+    	    bottom: 0;
+    	    left: 1em;
+    	    right: 0;
+    	}
+
+    	&:before {
+    	    content: "";
+    	    position: absolute;
+    	    top: 0; right:0; bottom:0;left:1em;
+    	    z-index: 5;
+    	    transition: background 400ms;
+    	}
+
+    	&.advertisement {
+    	    .column__group-content{
+                margin: 0 0 0 1em;
+                padding: 0;
+            }
+        }
+
+        &:first-of-type {
+            &:before,
+            &:after {
+                left: 0;
+            }
+            .column__group-content{
+                margin-left: 1em;
+            }
+            &.advertisement {
+                .column__group-content{
+    	           margin: 0 0 1em 0;
+    	        }
+    	    }
+    	}
+
+    	&:last-of-type {
+    	    &.advertisement {
+    	        .column__group-content{
+    	            margin-right: 0;
+    	        }
+    	    }
+    	}
+
+    	.column__group-content {
+    	    position: relative;
+    	    margin: 1em 2em;
+    	    padding: 5px;
+    	    z-index: 15;
+    	}
+
+		.column__overlay {
+		    display: block;
+		    position: relative;
+		    z-index: 5;
+		    margin: 0 auto;
+		    width: 85%;
+		    overflow: hidden;
+		    a {
+		        display: block;
+		        margin-top: 1.5em;
+		    }
+		    p {
+		        transform: translateY(-120%);
+		        transition: transform 400ms;
+		    }
+
+			@include bp($solarsystem){
+		        display: none;
+		    }
+		}
+
+        @include bp($max:900px){
+            &.advertisement {
+                .column__group-content {
+                    margin: 0 0 1em 0;
+                }
+                &:last-of-type {
+                    .column__group-content {
+                        margin-bottom: 0;
+                    }
+                }
+            }
+        }
+
+		@include bp($max:725px){
+		    width: 100%;
+		    &.advertisement {
+		        width: 100%;
+		        .column__group-content {
+		            height: auto;
+		        }
+		    }
+		    &:first-of-type {
+		        &.advertisement {
+		            margin-bottom: 1em;
+		        }
+		    }
+		    &:after {
+		        left: 0;
+		        bottom: 1em;
+		    }
+		    .column__group-content {
+		        height: 250px;
+		        margin: 0 1em;
+		        padding-top: 1em;
+		    }
+	    }
+
+    }
+
+    @include bp($max:725px){
+    	display: block;
+    }
+}

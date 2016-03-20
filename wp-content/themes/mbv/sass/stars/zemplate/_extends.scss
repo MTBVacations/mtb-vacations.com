@@ -1,0 +1,13 @@
+/*------------------------------------*\
+    ::Extends
+    ----------------------------------*
+    ::
+\*------------------------------------*/
+%abs-background {
+    content: "";
+    position: absolute;
+    z-index: 0;
+    background-image: inherit;
+    background-size: cover;
+    background-position: center;
+}

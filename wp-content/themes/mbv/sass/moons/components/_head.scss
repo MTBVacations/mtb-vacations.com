@@ -1,0 +1,96 @@
+/*------------------------------------*\
+    ::Header
+\*------------------------------------*/
+.hero {
+	display: block;
+	position: relative;
+	height: 100%;
+
+	&.hero__destination {
+		height: 100%;
+		opacity: .9;
+
+		.hero__image {
+			background-position: center;
+		}
+
+		@include bp($solarsystem){
+			height: 500px;
+		}
+
+		@include bp($planetary){
+			height: 300px;
+		}
+	}
+
+	.hero__image {
+		background-repeat: no-repeat;
+		background-size: cover;
+		background-position: center;
+		height: 100%;
+		.hero-content__wrapper {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			height: 100%;
+			&:before {
+				content: "";
+				height: 100%;
+				width: 1px;
+				display: inline-block;
+				vertical-align: middle;
+			}
+		}
+		.hero-content {
+			color: #fff;
+			.content__sub-title {
+				font: {
+					family: $fam-other;
+					size: rem-calc(70px);
+				}
+			}
+			.content__title {
+				font: {
+					family: $fam-heading;
+					weight: bold;
+					size: rem-calc(150px);
+				}
+				line-height: 125px;
+				padding-top: .22em;
+				text-transform: uppercase;
+				&.title--primary {
+					color: $color-2-light;
+				}
+				&.title--white {
+					color: #fff;
+				}
+			}
+			.content__link {
+				text-align: center;
+				padding-top: 10%;
+			}
+
+			@include bp($max:850px){
+				.content__sub-title {
+					font-size: rem-calc(38px);
+				}
+				.content__title {
+					font-size: rem-calc(90px);
+					line-height: rem-calc(80px);
+				}
+			}
+			@include bp($max:550px){
+				width: 85%;
+				margin: 0 auto;
+				text-align: center;
+				.content__sub-title {
+					font-size: rem-calc(30px);
+				}
+				.content__title {
+					font-size: rem-calc(60px);
+					line-height: rem-calc(50px);
+				}
+			}
+		}
+	}
+}

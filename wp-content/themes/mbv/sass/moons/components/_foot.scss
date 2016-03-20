@@ -1,0 +1,196 @@
+/*------------------------------------*\
+    ::Footer
+\*------------------------------------*/
+// @include sticky-footer(
+//     $wrap: '.wrap-all-the-things',
+//     $row:  '.main-head, .main-torso, .main-foot',
+//     $flex: '.main-torso'
+// );
+
+.main-foot {
+	background: url('images/global/footer.jpg') no-repeat;
+	background-size: cover;
+	background-position: center;
+	font: {
+		family: $fam-body;
+		size: rem-calc(15px);
+		weight: 100;
+	}
+	.main-foot__inner {
+		padding: 80px 0 50px 0;
+	}
+	h5 {
+		color: $txt-color-3;
+		margin-bottom: 8px;
+	}
+	.main-foot__logo {
+		display: block;
+		width: 247px;
+		height: 32px;
+		background: url('images/general-png/logo.png') no-repeat;
+		@include bp($solarsystem){
+			margin: 0 auto 1em auto;
+		}
+	}
+	.main-foot__destinations {
+		@include col(5);
+		ul {
+			opacity: .5;
+			margin: 0;
+			padding: 0;
+			list-style: none;
+			li {
+				display: block;
+				width: 50%;
+				float: left;
+				opacity: .5;
+				&:hover,
+				&.current-menu-item {
+					a {
+						color: $color-1;
+					}
+				}
+				a {
+					display: block;
+					color: $txt-color-3;
+					text-decoration: none;
+					font-style: normal;
+					padding: 5px 0;
+				}
+			}
+		}
+		@include bp($solarsystem){
+			@include col(12);
+			ul {
+				display: none;	
+			}
+		}
+	}
+	.main-foot__center {
+		@include col(2.75);
+		padding-right: 0;
+		.main-foot__social {
+			h5 {
+				margin-top: 0;
+				margin-bottom: 25px;
+			}
+			a {
+				display: inline-block;
+				padding: .5em;
+				line-height: 0;
+				margin-right: 2em;
+				&:last-of-type {
+					margin-right: 0;
+				}
+				svg {
+					height: 18px;
+					width: 18px;
+					fill: $txt-color-3;
+				}
+				&.instagram {
+					background: #40719a;
+				}
+				&.pinterest {
+					background: #c62325;
+				}
+				&.twitter {
+					background: #25a7df;
+				}
+				&.facebook {
+					background: #4d67a3;
+				}
+			}
+		}
+		.main-foot__subscribe {
+			.subscribe-note {
+				opacity: .5;
+				color: $txt-color-3;
+			}
+		}
+		@include bp($solarsystem){
+			@include col(12);
+			.main-foot__subscribe,
+			.main-foot__social {
+				@include col(12,$collapse:true);
+				text-align: center;
+			}
+			.main-foot__social {
+				a {
+					// width: 50px;
+				}
+			}
+			.main-foot__subscribe {
+				h5 {
+					margin-top: 2em;
+				}
+			}
+		}
+	}
+	.main-foot__sponsors {
+		@include col(4,$push:.25);
+		img {
+			margin-bottom: 1em;
+			max-width: 100%;
+		}
+		@include bp($solarsystem){
+			@include col(12, $push:0);
+			text-align: center;
+			img:first-of-type {
+				margin-right: 1em;
+			}
+		}
+		@include bp($planetary){
+			img {
+				display: block;
+				margin: 0 auto 1em auto;
+				&:first-of-type {
+					margin-right: auto;
+				}
+			}
+		}
+	}
+	.main-foot__copyright {
+		@include col(12);
+		padding-top: 2em;
+		div, a {
+			color: $txt-color-3;
+			font-size: rem-calc(13px);
+			opacity: .5;
+		}
+		a {
+			text-decoration: none;
+			font-style: normal;
+			opacity: 1;
+			&:hover {
+				color: $color-1;
+			}
+		}
+		.copyright {
+			display: inline-block;
+			vertical-align: bottom;
+			width: 49%;
+		}
+		.site-design {
+			display: inline-block;
+			vertical-align: bottom;
+			width: 49%;
+			text-align: right;
+		}
+
+		@include bp($planetary){
+			text-align: center;
+			.copyright,
+			.site-design {
+				display: block;
+				text-align: center;
+				width: 100%;
+			}
+		}
+	}
+
+	@include bp($solarsystem){
+		.main-foot__inner {
+			padding-top: 25px;
+		}
+	}
+}

@@ -1,0 +1,39 @@
+/*------------------------------------*\
+    ::Tips & Gear
+\*------------------------------------*/
+
+.single-post {
+	p {
+		margin-top: 5px;
+	}
+	.single-torso__content {
+		h2 {
+			padding: 0;
+		}
+		h3 {
+			padding-top: .75em;
+			margin-bottom: 0;
+			line-height: rem-calc(32px);
+		}
+	}
+}
+
+[class*="torso__content"]{
+	h3 {
+		a {
+			color: $color-2;
+			&:hover {
+				color: $color-1;
+			}
+		}
+	}
+}
+
+.single-torso__post {
+	background-color: #ffffff;
+}
+
+.post__comments {
+	border-top: 1px solid $color-1;
+	margin-top: 2em;
+}

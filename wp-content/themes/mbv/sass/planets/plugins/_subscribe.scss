@@ -1,0 +1,33 @@
+/*------------------------------------*\
+    ::Subscribe
+\*------------------------------------*/
+.mc4wp-form {
+	opacity: 1;
+	position: relative;
+	#mc4wp_email{
+		display: inline-block !important;
+		width: 185px !important;
+		padding: 8px 0 8px 10px;
+		margin-right: 5px;
+		border-radius: 5px;
+		border: none;
+		background: #4d4944;
+		color: $txt-color-3;
+	}
+	input[type="submit"] {
+		padding: 8px 13px;
+		border-radius: 5px;
+		border: none;
+		background: #24aa98;
+		color: $txt-color-3;
+	}
+	label {
+		color: $txt-color-3;
+		position: absolute;
+		top: 25%;
+		left: -50px;
+		opacity: 0;
+		width: 0;
+		transition: transform 300ms , opacity 300ms;
+	}
+}

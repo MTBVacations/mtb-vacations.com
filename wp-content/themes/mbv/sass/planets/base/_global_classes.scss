@@ -1,0 +1,43 @@
+/*------------------------------------*\
+    ::Global Classes
+\*------------------------------------*/
+.hide {
+	position: absolute;
+	text-indent: -9999px;
+}
+
+/*------------------------------------*\
+    ::Text Level
+\*------------------------------------*/
+.txt--white {
+	color: $txt-color-3;
+}
+
+.txt--primary {
+	color: $color-1;
+}
+
+.txt--secondary {
+	color: $txt-color-1;
+}
+
+.background--white {
+	background: #ffffff;
+}
+
+.background--primary {
+	background: $color-1;
+}
+
+.txt--box-shadow {
+	display: inline-block;
+	position: relative;
+	z-index: 1;
+	&:before {
+		content: "";
+		position: absolute;
+		top: -6px; left: -5px; right: -5px; bottom: 5px;
+		background: rgba(#ffffff,.6);
+		z-index: -1;
+	}
+}

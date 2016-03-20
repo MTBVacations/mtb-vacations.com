@@ -1,0 +1,103 @@
+/*------------------------------------*\
+    ::Featured Review
+\*------------------------------------*/
+.review	{
+	padding: 1em 0;
+	background: $color-2;
+	float: left;
+	width: 100%;
+
+	@include bp($planetary){
+		float: left;
+
+	}
+}
+.review__inside {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	@include bp($planetary){
+		display: block;
+	}
+}
+
+.review__group {
+	&.review__group--1 {
+		width: 70%;
+		display: flex;
+		background-size: 0;
+		.review__image,
+		.review__content {
+			width: 49.25%;
+			float: left;
+		}
+		.review__image {
+			position: relative;
+			min-height: 250px;
+			&:after {
+			    @extend %abs-background;
+			    top: 0;
+			    bottom: 0;
+			    left: 0;
+			    right: 0;
+			}
+		}
+		.review__content {
+			background-color: $color-2-light;
+			color: #b4bbc2;
+			padding: 2em;
+			font: {
+				size: rem-calc(13px);
+				weight: 100;
+			}
+			h3 {
+				color:$txt-color-3;
+			}
+			.review__stars {
+				width: 100%;
+				padding-top: 1.5em;
+				margin-top: 2em;
+				border-top: 1px solid $txt-color-3;
+				img {
+					max-width: 70%;
+				}
+			}
+		}
+	}
+	&.review__group--2 {
+		width: 30%;
+		float: left;
+		img {
+		    display: block;
+		    width: 100%;
+		}
+	}
+
+	@include bp($solarsystem){
+		&.review__group--1,
+		&.review__group--2 {
+			width: 49.5%;
+		}
+		&.review__group--1 {
+			.review__image {
+				display: none;
+			}
+			.review__content {
+				width: 100%;
+			}
+		}
+	}
+	@include bp($planetary){
+		&.review__group--1,
+		&.review__group--2 {
+			width: 100%;
+			display: block;
+			.review__content {
+				width: 100%;
+			}
+		}
+		&.review__group--2 {
+			margin: 1em 0 0 0;
+		}
+	}
+}

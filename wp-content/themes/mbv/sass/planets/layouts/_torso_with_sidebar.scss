@@ -1,0 +1,22 @@
+/*------------------------------------*\
+    ::Torso With Sidebar
+\*------------------------------------*/
+[class*="torso--sidebar"] {
+	padding: 2em 0;
+    [class*="torso__content"]{
+		@include grid-column(8);
+		[class*="torso__content"]{
+			@include grid-column(12,$collapse:true);
+		}
+    }
+    [class*="torso__sidebar"]{
+        @include grid-column(4);
+    }
+
+    @include bp($solarsystem){
+    	[class*="torso__content"],
+    	[class*="torso__sidebar"]{
+    	    @include grid-column(12);
+    	}
+    }
+}

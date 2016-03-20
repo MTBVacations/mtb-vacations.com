@@ -1,0 +1,89 @@
+/*------------------------------------*\
+    ::Social Styling
+\*------------------------------------*/
+.social {
+	@include col(12,$collapse:true);
+	padding: 15px 0;
+}
+.social__buttons{
+	@include col(12, $collapse: true);
+	padding: 10px 0;
+	ul {
+		list-style: none;
+		padding: {left:0;}
+		margin: 0;
+	}
+	li{
+		@include col(4, $collapse: true);
+		float: left;
+		position:relative;
+	}
+	a{
+		display: block;
+		width: 100%;
+		padding: {right:10px;left:25px;top:10px;bottom:10px;}
+		color: $color-3;
+		text:{
+			align: center;
+			decoration: none;
+		}
+		transition: box-shadow 400ms;
+		svg{
+			display: block;
+			height: 100%;
+			width: 25px;
+			left: 10px;
+			position: absolute;
+			top: 0px;
+		}
+	}
+	.facebook{
+		background: #4d67a3;
+		a{
+			color: $txt-color-3;
+			svg {
+				fill: $txt-color-3;
+			}
+			&:hover {
+				text-decoration: underline;
+			}
+		}
+	}
+	.twitter {
+		background: #25a7df;
+		a{
+			color: $txt-color-3;
+			svg {
+				fill: $txt-color-3;
+			}
+			&:hover {
+				text-decoration: underline;
+			}
+		}
+	}
+	.pinterest{
+		background: #c62325;
+		a{
+			color: $txt-color-3;
+			svg{
+				fill: $txt-color-3;
+			}
+			&:hover {
+				text-decoration: underline;
+			}
+		}
+	}
+	@include bp($max:600px) {
+		li {
+			// @include col(2);
+			text-align: center;
+		}
+	    a {
+    		text-indent: -999em;
+    		svg{
+    			left: 50%;
+    			margin-left: -12px;
+    		}
+    	}
+	}
+}

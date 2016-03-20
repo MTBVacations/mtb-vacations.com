@@ -1,0 +1,82 @@
+/*------------------------------------*\
+    ::Links
+    ------------------------------------*
+    ::Normalize.css v3.0.0 | MIT License | git.io/normalize
+\*------------------------------------*/
+a {
+	background: transparent;
+	color: $color-1;
+	font: {
+		family: $fam-body;
+		size: rem-calc(14px);
+		style: italic;
+	}
+	&.link--title {
+		color: inherit;
+		font: {
+			family: inherit;
+			size: inherit;
+			style: inherit;
+		}
+		text-decoration: none;
+		&:hover {
+			color: $color-1;
+		}
+	}
+	&.link--background {
+		background-color: rgba($color-2, .6);
+		color: $txt-color-3;
+		display: block;
+		font: {
+			size: rem-calc(18px);
+		}
+		margin: 0 auto;
+		padding: 15px;
+		width: 50%;
+		&:hover {
+			color: $color-1;
+		}
+		@include bp($max:850px){
+			font-size: rem-calc(15px);
+			width: 250px;
+		}
+	}
+	&.link--btn {
+		background: transparent;
+		border-radius: 5px;
+		border: 3px solid $txt-color-3;
+		color: $txt-color-3;
+		font: {
+			family: $fam-body;
+			size: rem-calc(15px);
+			style: normal;
+		}
+		text-decoration: none;
+		padding: 10px 15px;
+		position: relative;
+		z-index: 5;
+		transition: color 400ms, border 400ms;
+		&:hover {
+			color: $color-1;
+			border: 3px solid $color-1;
+		}
+	}
+	&.link--read-more {
+		display: block;
+		color: $color-1;
+		font: {
+			family: $fam-heading;
+			size: rem-calc(22px);
+			style: normal;
+		}
+		padding-top: 1em;
+		&:hover {
+			color: $color-2;
+		}
+	}
+}
+a:active,
+a:hover {
+	outline: 0;
+	color: $txt-color-3;
+}

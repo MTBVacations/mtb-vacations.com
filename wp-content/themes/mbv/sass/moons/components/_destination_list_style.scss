@@ -1,0 +1,45 @@
+/*------------------------------------*\
+    ::Destination List Style
+\*------------------------------------*/
+.destination-list {
+    .destination__wrapper {
+        .column__group {
+            width: 25%;
+            h3 {
+            	a {
+            		color: $color-2;
+            	}
+            }
+            
+    		&:hover {
+    			h3 {
+    				a {
+    					color: $color-1;
+    				}
+    			}
+    		}
+         
+
+            @include bp($solarsystem){
+            	width: 49.25%;
+            	&:after,
+            	&:before {
+            		left: 0;
+            		bottom: 1em;
+            	}
+            	.column__group-content {
+            	    height: 250px;
+            	    padding-top: 2em;
+            	}
+            }
+
+            @include bp($max:725px){
+            	width: 100%;
+            }
+    	}
+        
+    	@include bp($solarsystem){
+    		padding-bottom: 0;
+    	}
+    }
+}

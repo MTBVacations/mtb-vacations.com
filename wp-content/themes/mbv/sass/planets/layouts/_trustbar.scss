@@ -1,0 +1,27 @@
+/*------------------------------------*\
+    ::Trustbar
+\*------------------------------------*/
+.trustbar {
+	float: left;
+	width: 100%;
+	padding: 2em 0;
+}
+.trustbar__inside {
+	display: flex;
+	justify-content: center;
+	flex-wrap: wrap;
+}
+
+.trustbar__icon {
+	width: 16%;
+	float: left;
+	text-align: center;
+	img {
+		max-height: 50px;
+	}
+
+	@include bp($planetary){
+		width: 33%;
+		margin-top: 1em;
+	}
+}

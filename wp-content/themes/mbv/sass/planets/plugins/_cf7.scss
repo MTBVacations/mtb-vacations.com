@@ -1,0 +1,44 @@
+/*------------------------------------*\
+    ::Default CF7 Styling
+\*------------------------------------*/
+.wpcf7{
+	input,
+	textarea {
+		width: 100%;
+		padding: .5em;
+		margin: 0;
+		border: 1px solid $color-2;
+
+	}
+	input[type="submit"]{
+		background: $color-1;
+		color: $txt-color-3;
+		border: none;
+		padding: .5em;
+		font:{
+			family: $fam-heading;
+			size: rem-calc(22px);
+		}
+	}
+	p {
+		&:last-of-type {
+			margin-bottom: 0;
+		}
+	}
+	span.wpcf7-not-valid-tip{
+		padding: 5px;
+		color: #fff;
+		background: $color-bad;
+	}
+	div.wpcf7-response-output{
+		text-align: center;
+		border:none;
+		width: 100%;
+		&.wpcf7-validation-errors{
+			background: $color-meh;
+		}
+		&.wpcf7-mail-sent-ok{
+			background: $color-good;
+		}
+	}
+}

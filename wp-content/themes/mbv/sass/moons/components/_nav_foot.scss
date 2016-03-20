@@ -1,0 +1,49 @@
+/*------------------------------------*\
+    ::Nav in the Footer
+\*------------------------------------*/
+.foot-nav {
+	@include nav();
+	ul {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		li {
+			display: block;
+			width: 100%;
+			opacity: .5;
+			&:hover,
+			&.current-menu-item {
+				a {
+					color: $color-1;
+				}
+			}
+			a {
+				color: $txt-color-3;
+				text-decoration: none;
+				font-style: normal;
+				padding: 5px 0;
+			}
+		}
+		@include bp($solarsystem){
+			text-align: center;
+			li {
+				display: inline-block;
+				width: 100px;
+				float: none;
+				&:last-of-type {
+					width: 75px;
+				}
+			}
+		}
+	}
+}
+
+@include bp($solarsystem){
+	.main-foot__nav {
+		@include col(12,$collapse:true);
+		padding-bottom: 25px;
+		h5 {
+			text-align: center;
+		}
+	}
+}

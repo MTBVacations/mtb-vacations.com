@@ -1,0 +1,70 @@
+/*------------------------------------*\
+    ::Tips & Gear
+\*------------------------------------*/
+[class*="torso__sidebar"]{
+    ul {
+    	padding: 0;
+    	margin: 1.25em 0 0 0;
+    	list-style: none;
+    	li {
+    		margin-bottom: 1em;
+    	}
+    	ul {
+    		margin: 0;
+    	}
+    }
+
+    @include bp($solarsystem){
+    	ul {
+    		> li {
+    			width: 75%;
+    			float: none;
+    			margin: 0 auto 1em auto;
+    			text-align: center;
+    		}
+    	}
+    }
+
+    @include bp($max:870px){
+    	ul {
+    		> li {
+    			width: 100%;
+    			margin: 0 0 1em 0;
+    		}
+    	}
+    }
+}
+
+[class*="torso__content"]{
+	img {
+		max-width: 100%;
+	}
+}
+
+.single-torso__post {
+	display: flex;
+	float: left;
+	justify-content: space-around;
+	margin-bottom: 1em;
+	.single-torso__image {
+		width: 45%;
+		float: left;
+		background-size: cover;
+		background-repeat: no-repeat;
+		background-position: center;
+		min-height: 200px;
+	}
+	.single-torso__wrapper {
+		width: 55%;
+		float: left;
+		padding: 1em 1em .5em 1em;
+	}
+	@include bp($planetary){
+		.single-torso__image {
+			display: none;
+		}
+		.single-torso__wrapper {
+			width: 100%;
+		}
+	}
+}

@@ -1,0 +1,34 @@
+/*------------------------------------*\
+    ::Destination Slider
+\*------------------------------------*/
+.hero__destination{
+    .flexslider{
+        background-color: black;
+    }
+}
+.slider {
+    margin-top: 1em;
+    margin-bottom: 1em;
+    position: relative;
+
+    .flex-direction-nav {
+        .flex-prev {
+            left: -20px !important;
+        }
+        .flex-next {
+            right: -20px !important;
+        }
+    }
+}
+
+.slider__item {
+    .slider__content {
+        padding: 5px;
+        margin-left: 1em;
+    }
+    &:first-of-type {
+        .slider__content {
+            margin-left: 0;
+        }
+    }
+}

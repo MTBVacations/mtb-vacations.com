@@ -1,0 +1,31 @@
+/*------------------------------------*\
+    ::Featured Destinations List
+\*------------------------------------*/
+.featured-destinations {
+    padding: 1em 0;
+    .column__group {
+        width: 33.25%;
+        @include bp($solarsystem) {
+        	min-height: 250px;
+        	h2 {
+        		font-size: rem-calc(39px);
+        		line-height: rem-calc(39px);
+        	}
+        }
+	    @include bp($max:900px){
+	    	width: 100%;
+	    	&:after {
+	    	    left: 0;
+	    	    bottom: 1em;
+	    	}
+	    	&:last-of-type {
+	    		&:after {
+	    			bottom: 0;
+	    		}
+	    	}
+	    	.column__group-content {
+	    		margin-left: 1em;
+	    	}
+	    }
+    }
+}

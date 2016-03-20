@@ -1,0 +1,27 @@
+/*------------------------------------*\
+    ::Content Block
+\*------------------------------------*/
+.content-block {
+	float: left;
+	width: 100%;
+	padding: 4em 0 2em 0;
+	@include bp($planetary){
+	}
+}
+.content-block__inside {
+	text-align: center;
+
+	div {
+		width: 55%;
+		margin: 0 auto;
+
+		@include bp($solarsystem){
+			width: 75%;
+		}
+
+		@include bp($max:800px){
+			width: 100%;
+			padding: 0 $pad;
+		}
+	}
+}

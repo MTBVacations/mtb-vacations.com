@@ -1,0 +1,65 @@
+/*------------------------------------*\
+    ::Search
+\*------------------------------------*/
+.search {
+	float: left;
+	width: 100%;
+	border-top: 4px solid $color-1;
+	padding: 3em $pad;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	.search__inside {
+		width: 50%;
+		@include bp($planetary){
+			width: 100%;
+		}
+	}
+
+	@include bp($planetary){
+		float: left;
+		width: 100%;
+		display: block;
+		padding: {left:$pad;right: $pad;}
+	}
+
+}
+#search-select__submit {
+	display: inline-block;
+	vertical-align: middle;
+	background: $color-1;
+	border-radius: 5px;
+	color: $txt-color-3;
+	font: {
+		size: rem-calc(13px);
+		style: normal;
+		weight: 100;
+	}
+	letter-spacing: 1px;
+	text-decoration: none;
+	padding: 10px 0;
+	margin-left: 1em;
+	width: 25%;
+	text-align: center;
+	@include bp($max:480px){
+		display: block;
+		width: 100%;
+		float: left;
+		margin:{top:1em;left: 0;}
+	}
+}
+
+#search-select {
+	background: #abaaaa;
+	color: $txt-color-3;
+	width: 70%;
+	height: 38px;
+	border: none;
+	vertical-align: middle;
+
+	@include bp($max:480px){
+		display: block;
+		width: 100%;	
+	}
+}

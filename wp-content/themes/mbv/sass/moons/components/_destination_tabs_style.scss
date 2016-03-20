@@ -1,0 +1,56 @@
+/*------------------------------------*\
+    ::Social Bar Styles
+\*------------------------------------*/
+.transformer-tabs--block{
+	svg{
+		fill: $txt-color-3;
+	}
+	h6 {
+		margin: 0;
+		font-size: rem-calc(22px);
+	}
+	li{
+		list-style: none;
+		background-repeat: no-repeat;
+		background-size: cover;
+		background-position: center;
+		&.active,
+		&:hover {
+			&:after {
+				background: rgba(#061b23, .8);
+			}
+			a {
+				color: $color-1;
+				svg {
+					fill: $color-1;
+				}
+			}
+		}
+	}
+	a{
+		color: $txt-color-3;
+		font: {
+			family: $fam-heading;
+			style: normal;
+		}
+		text-align: center;
+		text-decoration: none;
+	}
+}
+.content__inside{
+	.tabs{
+		> div{
+			opacity: 0;
+			visibility: hidden;
+			transition: opacity 400ms;
+		}
+		> .active{
+			opacity: 1;
+			visibility: visible;
+			transition-delay: 400ms;
+		}
+		.tab-content__inside {
+			padding: 3em 0 1em 0;
+		}
+	}
+}

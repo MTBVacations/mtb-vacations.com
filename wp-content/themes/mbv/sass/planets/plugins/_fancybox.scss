@@ -1,0 +1,24 @@
+/*------------------------------------*\
+    :: Fancybox
+\*------------------------------------*/
+.lightbox {
+	display: none;
+}
+
+.fancybox-wrap {
+	width: 50% !important;
+
+	@include bp($max:950px){
+		width: 90% !important;
+	}
+}
+
+.fancybox-inner {
+	width: 100% !important;
+}
+
+.open-lightbox {
+	&:hover {
+		color: $color-3;
+	}
+}

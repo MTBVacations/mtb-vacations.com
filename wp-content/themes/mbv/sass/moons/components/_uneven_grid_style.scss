@@ -1,0 +1,64 @@
+/*------------------------------------*\
+    ::Uneven Grid
+\*------------------------------------*/
+.uneven-grid {
+    background-color: $color-2;
+    color: $color-2;
+	em {
+		color: $txt-color-2;
+		font: {
+			size: rem-calc(13px);
+			style: normal;
+		}
+	}
+}
+
+.uneven-grid__left {
+	&:before {
+		background: rgba(#282828,0);
+	    transition: background 400ms;
+	}
+	.uneven-grid__overlay {
+		color: #fff;
+		overflow: hidden;
+		p {
+			transform: translateY(-120%);
+			transition: transform 400ms;
+		}
+	}
+	@include bp($min:$solarsystem){
+		&:hover {
+			&:before {
+				background: rgba(#282828,.8);
+	    		transition: background 400ms;
+			}
+			.txt--box-shadow {
+			    &:before {
+			        background: none;
+			    }
+			}
+			h2 {
+				color: $color-1;
+				text-shadow: none;
+			}
+			.uneven-grid__overlay {
+				p {
+					transform: translateY(0%);
+				}
+			}
+		}
+	}
+}
+
+.uneven-grid__right-top {
+    .uneven-grid__text {
+    	background-color: #fff;
+    }
+}
+
+.uneven-grid__right-top {
+	.uneven-grid__overlay {
+		background: rgba(#282828, .8);
+		text-align: center;
+	}
+}

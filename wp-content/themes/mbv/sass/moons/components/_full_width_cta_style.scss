@@ -1,0 +1,20 @@
+/*------------------------------------*\
+    ::Full Width CTA
+\*------------------------------------*/
+.full-cta {
+	text-align: center;
+	background: $color-2;
+	.full-cta__wrap {
+		&:after {
+			background: rgba(#375c6b, .85);
+		}
+	}
+	.full-cta__text {
+		color: $txt-color-3;
+		font: {
+			family: $fam-heading;
+			size: rem-calc(35px);
+		}
+		line-height:rem-calc(35px);
+	}
+}

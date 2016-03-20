@@ -1,0 +1,135 @@
+/*------------------------------------*\
+    ::  Destination Map
+\*------------------------------------*/
+.page__destination {
+
+	strong {
+		color: $color-1-dark;
+	}
+
+	.destination__details {
+		background-color: #111111;
+		color: $txt-color-3;
+		text-align: center;
+		position: relative;
+		padding: 3.5em 0;
+		max-height: 100%;
+		&:before { 
+			content: "";
+			background-image: linear-gradient(to top, rgba(17,17,17,1) 0%,rgba(17,17,17,0.69) 50%,rgba(0,0,0,0) 100%);
+			position: absolute;
+			bottom: 100%; left: 0; right: 0; top: -35%;
+		}
+
+		@include bp($planetary){
+			padding: 0em;
+			&:before {
+				top: -5%;
+			}
+		}
+	}
+
+	.destination__desc {
+		color: #898989;
+		width: 75%;
+		margin: 0 auto;
+		line-height: 24px;
+		padding: 0 $pad 1em $pad;
+
+		@include bp($planetary){
+			width: 100%;
+		}
+	}
+
+	.destination__facts {
+		color: #4187c4;
+		display: flex;
+		justify-content: center;
+		flex-direction: row;
+		flex-wrap: wrap;
+		.destination__fact {
+			float: left;
+			width: 18%;
+			position: relative;
+			&:after {
+				content: "";
+				position: absolute;
+				top: 53%; 
+				right: 0;
+				height: 45%;
+				border-right: 1px solid #4187c4;
+			}
+			.fact__icon {
+				svg {
+					max-width: 35px;
+					max-height: 35px;
+					fill:#4187c4;
+				}
+				margin: 1em 0 2em 0;
+			}
+			.fact__text {
+				padding: 5px;
+				display: block;
+			}
+			&:first-of-type {
+				&:before {
+					content: "";
+					position: absolute;
+					top: 53%; 
+					left: 0;
+					height: 45%;
+					border-left: 1px solid #4187c4;
+				}
+			}
+
+			@include bp($max:875px){
+				width: 20%;
+			}
+			@include bp($planetary){
+				width: 100%;
+				&:first-of-type {
+					&:before {
+						border-left: none;
+					}
+				}
+				&:after {
+					border-right: none;
+				}
+				.fact__icon {
+					display: inline-block;
+					vertical-align: middle;
+					width: 40px;
+					padding-right: 1em;
+					margin: 1em 0;
+				}
+				.fact__text {
+					display: inline-block;
+					vertical-align: middle;
+					width: 75%;
+					text-align: left;
+				}
+			}
+		}
+		@include bp($planetary){
+			padding-bottom: 2em;
+		}
+	}
+
+	.destination__content {
+		background-size: cover;
+		background-position: center;
+		background-repeat: no-repeat;
+
+		@include bp($planetary) {
+			background-color: $color-2;
+		}
+	}
+
+	.destination-location {
+		min-height: 650px;
+	}
+
+	@include bp($solarsystem) {
+		height: auto;
+	}
+}
