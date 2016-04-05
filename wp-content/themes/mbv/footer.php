@@ -72,7 +72,7 @@
                 <?php if(have_rows('sponsors', 2)): ?>
                     <?php while(have_rows('sponsors', 2)) : the_row(); ?>
                         <?php if(get_sub_field('is_affiliate')): ?>
-                            <a target="_blank" href="<?php get_sub_field('affiliate_link'); ?>">
+                            <a target="_blank" href="<?php the_sub_field('affiliate_link'); ?>">
                                 <img src="<?php the_sub_field('sponsor'); ?>" alt="" />
                             </a>
                         <?php else: ?>
