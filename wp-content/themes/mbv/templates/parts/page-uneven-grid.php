@@ -65,7 +65,7 @@
                         $date = $small_section->post_date;
                         $date = date('M d, Y', strtotime($date));
                     ?>
-                    <em>By: <?php echo the_author_meta( 'user_nicename' , $author_id ); ?> / <?php echo $date; ?></em>
+                    <em>By: <?php echo the_author_meta( 'display_name' , $author_id ); ?> / <?php echo $date; ?></em>
                     <p><?php echo $small_grid_desc; ?></p>
                 </div>
                 <div class="uneven-grid__overlay">
