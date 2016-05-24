@@ -33,9 +33,12 @@ body { // so it's full height
   top: 0;
   left: 0;
   right: 0;
-  background: rgba(#1a1e23, .8);
   height: 90px;
+	transition: background 600ms;
   z-index: 11;
+	&--scroll {
+		background: rgba(#1a1e23, .8);
+	}
   .logo {
     position: fixed;
   }
@@ -58,9 +61,6 @@ body { // so it's full height
     z-index: 22;
     @include bp(700px){
         left: 1em;
-        width: 53%;
-        top: 1.9em;
-        height: auto;
     }
 }
 .main-head__nav {

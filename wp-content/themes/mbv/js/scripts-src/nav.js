@@ -1,7 +1,7 @@
 $(function(){
-	// activate nav on click
-	var navToggle = function(){
-		// cache things
+  // activate nav on click
+  var navToggle = function(){
+    // cache things
         $body = $('body');
 
         // activate the nav on click of the toggle
@@ -23,6 +23,16 @@ $(function(){
             $(this).toggleClass('hey_sub-nav');
         });
 
-	};
-	navToggle();
+  };
+  var navOverlay = function(){
+    window.onscroll = function() {
+      if(document.body.scrollTop !== 0) {
+        $('.main-head__wrap').addClass('main-head__wrap--scroll');
+      } else if(document.body.scrollTop === 0) {
+        $('.main-head__wrap').removeClass('main-head__wrap--scroll');
+      }
+    }
+  };
+  navToggle();
+  navOverlay();
 });

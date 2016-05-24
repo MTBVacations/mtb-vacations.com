@@ -14,6 +14,7 @@ af.sql
 *.swp
 Thumbs.db
 wp-content/plugins/wordfence/tmp/*
+node_modules
 
 # wordpress specific
 wp-config.php
