@@ -31,7 +31,6 @@
 
 
 <div class="wrap-all-the-things adf">
-	<div class="main-head__wrap">
     <header class="main-head">
             <a href="<?php echo site_url('/'); ?>" class="logo">
                 <img src="<?php bloginfo('template_url'); ?>/images/general-png/logo.png" alt="Home page link: MBV logo">
@@ -48,7 +47,6 @@
                 wp_nav_menu($attr);
             ?>
         </div> <!-- //__inner -->
-			</div>
         <div class="hero">
             <?php 
                 $pageId = '532';
