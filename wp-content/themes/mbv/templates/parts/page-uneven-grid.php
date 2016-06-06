@@ -78,12 +78,25 @@
                 $adUrl = $ad['url'];
             ?>
             <div class="uneven-grid__group--small uneven-grid__ad">
-                <?php if(get_sub_field('is_affiliate_link')): ?>
-                    <a target="_blank" href="<?php the_sub_field('affiliate_link'); ?>">
-                        <img src="<?php echo $adUrl; ?>" alt="" />
-                    </a>
+                <?php  if(get_the_ID() == 2): ?>
+                    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+                    <!-- Homepage - first after scroll -->
+                    <ins class="adsbygoogle"
+                         style="display:block"
+                         data-ad-client="ca-pub-9928579909487332"
+                         data-ad-slot="9619454601"
+                         data-ad-format="auto"></ins>
+                    <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
                 <?php else: ?>
-                    <img src="<?php echo $adUrl; ?>" alt="" />
+                    <?php if(get_sub_field('is_affiliate_link')): ?>
+                        <a target="_blank" href="<?php the_sub_field('affiliate_link'); ?>">
+                            <img src="<?php echo $adUrl; ?>" alt="" />
+                        </a>
+                    <?php else: ?>
+                        <img src="<?php echo $adUrl; ?>" alt="" />
+                    <?php endif; ?>
                 <?php endif; ?>
             </div>
         </div>

@@ -15,6 +15,7 @@ af.sql
 Thumbs.db
 wp-content/plugins/wordfence/tmp/*
 node_modules
+zen-config.*
 
 # wordpress specific
 wp-config.php
