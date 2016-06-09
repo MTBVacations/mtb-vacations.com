@@ -42,22 +42,24 @@
         //     $addClass = ' main-head--short';
         // }
     ?>
-    <header class="main-head<?php echo $addClass; ?>">  
-            <a href="<?php echo site_url('/'); ?>" class="logo">
-                <img src="<?php bloginfo('template_url'); ?>/images/general-png/logo.png" alt="Home page link: MBV logo">
-            </a>
-        <div class="main-head__nav">
-            <span id="nav-toggle" class="nav-toggle"><span><em>Menu</em></span></span>
-            <?php
-                $attr = array(
-                    'theme_location'  => 'head-menu',
-                    'container'       => 'nav',
-                    'container_class' => 'head-nav',
-                    'menu_class'      => 'menu'
-                );
-                wp_nav_menu($attr);
-            ?>
-        </div> <!-- //__inner -->
+    <header class="main-head<?php echo $addClass; ?>">
+      <div class="main-head__wrap">
+          <a href="<?php echo site_url('/'); ?>" class="logo">
+              <img src="<?php bloginfo('template_url'); ?>/images/general-png/logo.png" alt="Home page link: MBV logo">
+          </a>
+          <div class="main-head__nav">
+              <span id="nav-toggle" class="nav-toggle"><span><em>Menu</em></span></span>
+              <?php
+                  $attr = array(
+                      'theme_location'  => 'head-menu',
+                      'container'       => 'nav',
+                      'container_class' => 'head-nav',
+                      'menu_class'      => 'menu'
+                  );
+                  wp_nav_menu($attr);
+              ?>
+          </div> <!-- //__inner -->
+        </div>
         <?php if(is_page('2')): if(have_rows('hero_slides')): ?>
             <div class="hero home__slider">
                 <div class="flexslider">
