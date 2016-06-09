@@ -33,9 +33,12 @@ body { // so it's full height
   top: 0;
   left: 0;
   right: 0;
-  background: rgba(#1a1e23, .8);
   height: 90px;
+  transition: background 600ms;
   z-index: 11;
+    &--scroll {
+        background: rgba(#1a1e23, .8);
+    }
   .logo {
     position: fixed;
   }
@@ -58,9 +61,15 @@ body { // so it's full height
     z-index: 22;
     @include bp(700px){
         left: 1em;
-        width: 53%;
-        top: 1.9em;
-        height: auto;
+    }
+}
+.nav-active {
+    .column__inside {
+        .column__group {
+            &-content {
+                z-index: 0;
+            }
+        }
     }
 }
 .main-head__nav {
@@ -71,16 +80,20 @@ body { // so it's full height
     }
     .head-nav{
         position: absolute;
-        top: 90px;
+        top: 0;
         bottom: 0;
         right: 0;
-        padding-top: 0;
+        padding-top: 90px;
         padding-bottom: 1em;
         background-color: rgba(#1a1e23, .9);
         z-index: 20;
         width: 0;
         overflow-x: hidden;
-        overflow-y: scroll;
+        overflow-y: auto;
+        &--scroll {
+            top: 90px;
+            padding-top: 0;
+        }
         .nav-active & {
             width: 40em;
             @include bp($max: 700px){
