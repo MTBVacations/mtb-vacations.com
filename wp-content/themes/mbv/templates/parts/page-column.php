@@ -17,6 +17,7 @@
 ?>
 <article class="page__group column<?php echo $classes; ?> destination-list featured-destinations">
     <div class="column__inside">
+        <?php $columnCnt = 1; ?>
         <?php while(has_sub_field('column_content')) : ?>
             <?php
                 $addClass   = '';
@@ -67,15 +68,81 @@
                 $backImg = wp_get_attachment_image_src( get_post_thumbnail_id( $columnId ), 'large' );
                 $backImg = $backImg[0];
             ?>
-            <div class="column__group<?php echo $addClass; ?>" style="background-image:url('<?php echo $backImg; ?>');">
+            <div class="column__group<?php echo $addClass; ?>" <?php if($links_to != 'ad'): ?>style="background-image:url('<?php echo $backImg; ?>');"<?php endif; ?>>
                 <div class="column__group-content">
                     <?php if($links_to == 'ad'): ?>
-                        <?php if(get_sub_field('is_affiliate_link')): ?>
-                            <a target="_blank" href="<?php the_sub_field('affiliate_link'); ?>">
+                        <?php if($fullImg != ''): ?>
+                            <?php if(get_sub_field('is_affiliate_link')): ?>
+                                <a target="_blank" href="<?php the_sub_field('affiliate_link'); ?>">
+                                    <?php echo $fullImg; ?>
+                                </a>
+                            <?php else: ?>
                                 <?php echo $fullImg; ?>
-                            </a>
+                            <?php endif; ?>
                         <?php else: ?>
-                            <?php echo $fullImg; ?>
+                            <?php switch (get_the_ID()) {
+                                case 536:
+                                    # is about page
+                                    switch ($columnCnt) {
+                                        case 2:
+                                            echo 'second';
+                                            break;
+                                        case 3:
+                                            echo 'third';
+                                            break;
+                                        default:
+                                            echo 'first';
+                                            break;
+                                    }
+                                    break;
+                                default:
+                                    # is home page
+                                    switch ($columnCnt) {
+                                        case 2:
+                                            ?>
+                                            <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+                                            <!-- Homepage - Second Column -->
+                                            <ins class="adsbygoogle"
+                                                 style="display:block"
+                                                 data-ad-client="ca-pub-9928579909487332"
+                                                 data-ad-slot="8974725804"
+                                                 data-ad-format="auto"></ins>
+                                            <script>
+                                            (adsbygoogle = window.adsbygoogle || []).push({});
+                                            </script>
+                                            <?php
+                                            break;
+                                        case 3:
+                                            ?>
+                                            <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+                                            <!-- Homepage - Third column -->
+                                            <ins class="adsbygoogle"
+                                                 style="display:block"
+                                                 data-ad-client="ca-pub-9928579909487332"
+                                                 data-ad-slot="2928192205"
+                                                 data-ad-format="auto"></ins>
+                                            <script>
+                                            (adsbygoogle = window.adsbygoogle || []).push({});
+                                            </script>
+                                            <?php
+                                            break;
+                                        default:
+                                            ?>
+                                            <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+                                            <!-- Homepage - First Column -->
+                                            <ins class="adsbygoogle"
+                                                 style="display:block"
+                                                 data-ad-client="ca-pub-9928579909487332"
+                                                 data-ad-slot="4544526202"
+                                                 data-ad-format="auto"></ins>
+                                            <script>
+                                            (adsbygoogle = window.adsbygoogle || []).push({});
+                                            </script>
+                                            <?php
+                                            break;
+                                    }
+                                    break;
+                            } ?>
                         <?php endif; ?>
                     <?php else: ?>
                         <div class="column__group-text">
@@ -94,6 +161,7 @@
                     <?php endif; ?>
                 </div>
             </div>
+            <?php $columnCnt++; ?>
         <?php endwhile; ?>
     </div>
 </article>
