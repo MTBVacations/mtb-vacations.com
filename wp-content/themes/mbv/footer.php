@@ -72,27 +72,43 @@
                 <?php $cnt = 1; ?>
                 <?php if(have_rows('sponsors', 2)): ?>
                     <?php while(have_rows('sponsors', 2)) : the_row(); ?>
-                        <?php if($cnt == 1): ?>
+                        <?php $adUrl = get_sub_field('sponsor'); ?>
+                        <?php if($adUrl != ''): ?>
                             <?php if(get_sub_field('is_affiliate')): ?>
                                 <a target="_blank" href="<?php the_sub_field('affiliate_link'); ?>">
-                                    <img src="<?php the_sub_field('sponsor'); ?>" alt="" />
+                                    <img src="<?php echo $adUrl; ?>" alt="" />
                                 </a>
                             <?php else: ?>
-                                <img src="<?php the_sub_field('sponsor'); ?>" alt="" />
+                                <img src="<?php echo $adUrl; ?>" alt="" />
                             <?php endif; ?>
                         <?php else: ?>
-                            <div>
-                                <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-                                <!-- Footer Advertisement 2 -->
-                                <ins class="adsbygoogle"
-                                     style="display:block"
-                                     data-ad-client="ca-pub-9928579909487332"
-                                     data-ad-slot="4547003004"
-                                     data-ad-format="auto"></ins>
-                                <script>
-                                (adsbygoogle = window.adsbygoogle || []).push({});
-                                </script>
-                            </div>
+                            <?php if($cnt == 1): ?>
+                                <div>
+                                    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+                                    <!-- Footer Advertisement 1 -->
+                                    <ins class="adsbygoogle"
+                                         style="display:block"
+                                         data-ad-client="ca-pub-9928579909487332"
+                                         data-ad-slot="8835125003"
+                                         data-ad-format="auto"></ins>
+                                    <script>
+                                    (adsbygoogle = window.adsbygoogle || []).push({});
+                                    </script>
+                                </div>
+                            <?php else: ?>
+                                <div>
+                                    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+                                    <!-- Footer Advertisement 2 -->
+                                    <ins class="adsbygoogle"
+                                         style="display:block"
+                                         data-ad-client="ca-pub-9928579909487332"
+                                         data-ad-slot="4547003004"
+                                         data-ad-format="auto"></ins>
+                                    <script>
+                                    (adsbygoogle = window.adsbygoogle || []).push({});
+                                    </script>
+                                </div>
+                            <?php endif; ?>
                         <?php endif; ?>
                         <?php $cnt++; ?>
                     <?php endwhile; ?>
