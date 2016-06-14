@@ -85,13 +85,46 @@
                                     # is about page
                                     switch ($columnCnt) {
                                         case 2:
-                                            echo 'second';
+                                            ?>
+                                            <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+                                            <!-- About - Second Column -->
+                                            <ins class="adsbygoogle"
+                                                 style="display:block"
+                                                 data-ad-client="ca-pub-9928579909487332"
+                                                 data-ad-slot="2788591408"
+                                                 data-ad-format="auto"></ins>
+                                            <script>
+                                            (adsbygoogle = window.adsbygoogle || []).push({});
+                                            </script>
+                                            <?php
                                             break;
                                         case 3:
-                                            echo 'third';
+                                            ?>
+                                            <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+                                            <!-- About - Third Column -->
+                                            <ins class="adsbygoogle"
+                                                 style="display:block"
+                                                 data-ad-client="ca-pub-9928579909487332"
+                                                 data-ad-slot="4265324601"
+                                                 data-ad-format="auto"></ins>
+                                            <script>
+                                            (adsbygoogle = window.adsbygoogle || []).push({});
+                                            </script>
+                                            <?php
                                             break;
                                         default:
-                                            echo 'first';
+                                            ?>
+                                            <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+                                            <!-- About - First Column -->
+                                            <ins class="adsbygoogle"
+                                                 style="display:block"
+                                                 data-ad-client="ca-pub-9928579909487332"
+                                                 data-ad-slot="1311858206"
+                                                 data-ad-format="auto"></ins>
+                                            <script>
+                                            (adsbygoogle = window.adsbygoogle || []).push({});
+                                            </script>
+                                            <?php
                                             break;
                                     }
                                     break;
