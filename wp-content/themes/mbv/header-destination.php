@@ -32,6 +32,7 @@
 
 <div class="wrap-all-the-things page__destination">
     <header class="main-head">
+        <div class="main-head__wrap">
             <a href="<?php echo site_url('/'); ?>" class="logo">
                 <img src="<?php bloginfo('template_url'); ?>/images/general-png/logo.png" alt="Home page link: MBV logo">
             </a>
@@ -47,6 +48,7 @@
                 wp_nav_menu($attr);
             ?>
         </div> <!-- //__inner -->
+      </div>
         <?php if(have_rows('image_slider')): ?>
             <div class="hero hero__destination">
                 <div class="flexslider">

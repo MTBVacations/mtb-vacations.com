@@ -32,10 +32,11 @@
 
 <div class="wrap-all-the-things adf">
     <header class="main-head">
+        <div class="main-head__wrap">
             <a href="<?php echo site_url('/'); ?>" class="logo">
                 <img src="<?php bloginfo('template_url'); ?>/images/general-png/logo.png" alt="Home page link: MBV logo">
             </a>
-        <div class="main-head__nav">
+          <div class="main-head__nav">
             <span id="nav-toggle" class="nav-toggle"><span><em>Menu</em></span></span>
             <?php
                 $attr = array(
@@ -46,7 +47,8 @@
                 );
                 wp_nav_menu($attr);
             ?>
-        </div> <!-- //__inner -->
+          </div> <!-- //__inner -->
+        </div>
         <div class="hero">
             <?php 
                 $pageId = '532';
