@@ -36,9 +36,9 @@ body { // so it's full height
   height: 90px;
   transition: background 600ms;
   z-index: 11;
-	&--scroll {
-		background: rgba(#1a1e23, .8);
-	}
+    &--scroll {
+        background: rgba(#1a1e23, .8);
+    }
   .logo {
     position: fixed;
   }

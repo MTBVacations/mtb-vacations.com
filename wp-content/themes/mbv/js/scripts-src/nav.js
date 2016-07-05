@@ -33,7 +33,7 @@ $(function(){
         $('.main-head__wrap').removeClass('main-head__wrap--scroll');
         $('.head-nav').removeClass('head-nav--scroll');
       }
-    }
+    };
   };
   navToggle();
   navOverlay();

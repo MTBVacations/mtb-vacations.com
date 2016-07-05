@@ -17,6 +17,7 @@
 ?>
 <article class="page__group column<?php echo $classes; ?> destination-list featured-destinations">
     <div class="column__inside">
+        <?php $columnCnt = 1; ?>
         <?php while(has_sub_field('column_content')) : ?>
             <?php
                 $addClass   = '';
@@ -67,15 +68,102 @@
                 $backImg = wp_get_attachment_image_src( get_post_thumbnail_id( $columnId ), 'large' );
                 $backImg = $backImg[0];
             ?>
-            <div class="column__group<?php echo $addClass; ?>" style="background-image:url('<?php echo $backImg; ?>');">
+            <div class="column__group<?php echo $addClass; ?>" <?php if($links_to != 'ad'): ?>style="background-image:url('<?php echo $backImg; ?>');"<?php endif; ?>>
                 <div class="column__group-content">
                     <?php if($links_to == 'ad'): ?>
-                        <?php if(get_sub_field('is_affiliate_link')): ?>
-                            <a target="_blank" href="<?php the_sub_field('affiliate_link'); ?>">
+                        <?php if(get_sub_field("advertisement") != ''): ?>
+                            <?php if(get_sub_field('is_affiliate_link')): ?>
+                                <a target="_blank" href="<?php the_sub_field('affiliate_link'); ?>">
+                                    <?php echo $fullImg; ?>
+                                </a>
+                            <?php else: ?>
                                 <?php echo $fullImg; ?>
-                            </a>
+                            <?php endif; ?>
                         <?php else: ?>
-                            <?php echo $fullImg; ?>
+                            <?php switch (get_the_ID()) {
+                                case 536:
+                                    # is about page
+                                    switch ($columnCnt) {
+                                        case 2:
+                                            ?>
+                                            <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+                                            <!-- About - Second Column -->
+                                            <ins class="adsbygoogle"
+                                                 style="display:block"
+                                                 data-ad-client="ca-pub-9928579909487332"
+                                                 data-ad-slot="2788591408"
+                                                 data-ad-format="auto"></ins>
+                                            <script>
+                                            (adsbygoogle = window.adsbygoogle || []).push({});
+                                            </script>
+                                            <?php
+                                            break;
+                                        case 3:
+                                            ?>
+                                            <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+                                            <!-- About - Third Column -->
+                                            <ins class="adsbygoogle"
+                                                 style="display:block"
+                                                 data-ad-client="ca-pub-9928579909487332"
+                                                 data-ad-slot="4265324601"
+                                                 data-ad-format="auto"></ins>
+                                            <script>
+                                            (adsbygoogle = window.adsbygoogle || []).push({});
+                                            </script>
+                                            <?php
+                                            break;
+                                        default:
+                                            ?>
+                                            <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+                                            <!-- About - First Column -->
+                                            <ins class="adsbygoogle"
+                                                 style="display:block"
+                                                 data-ad-client="ca-pub-9928579909487332"
+                                                 data-ad-slot="1311858206"
+                                                 data-ad-format="auto"></ins>
+                                            <script>
+                                            (adsbygoogle = window.adsbygoogle || []).push({});
+                                            </script>
+                                            <?php
+                                            break;
+                                    }
+                                    break;
+                                default:
+                                    # is home page
+                                    switch ($columnCnt) {
+                                        case 2:
+                                            ?>
+                                            <!-- /49735501/homepage-second-column -->
+                                            <div id='div-gpt-ad-1467756880025-2'>
+                                            <script type='text/javascript'>
+                                            googletag.cmd.push(function() { googletag.display('div-gpt-ad-1467756880025-2'); });
+                                            </script>
+                                            </div>
+                                            <?php
+                                            break;
+                                        case 3:
+                                            ?>
+                                            <!-- /49735501/homepage-third-column -->
+                                            <div id='div-gpt-ad-1467756880025-3'>
+                                            <script type='text/javascript'>
+                                            googletag.cmd.push(function() { googletag.display('div-gpt-ad-1467756880025-3'); });
+                                            </script>
+                                            </div>
+                                            <?php
+                                            break;
+                                        default:
+                                            ?>
+                                            <!-- /49735501/homepage-first-column -->
+                                            <div id='div-gpt-ad-1467756880025-1'>
+                                            <script type='text/javascript'>
+                                            googletag.cmd.push(function() { googletag.display('div-gpt-ad-1467756880025-1'); });
+                                            </script>
+                                            </div>
+                                            <?php
+                                            break;
+                                    }
+                                    break;
+                            } ?>
                         <?php endif; ?>
                     <?php else: ?>
                         <div class="column__group-text">
@@ -94,6 +182,7 @@
                     <?php endif; ?>
                 </div>
             </div>
+            <?php $columnCnt++; ?>
         <?php endwhile; ?>
     </div>
 </article>
