@@ -87,16 +87,12 @@
                         <img src="<?php echo $adUrl; ?>" alt="" />
                     <?php endif; ?>
                 <?php else: ?>
-                    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-                    <!-- Homepage - first after scroll -->
-                    <ins class="adsbygoogle"
-                         style="display:block"
-                         data-ad-client="ca-pub-9928579909487332"
-                         data-ad-slot="9619454601"
-                         data-ad-format="auto"></ins>
-                    <script>
-                    (adsbygoogle = window.adsbygoogle || []).push({});
+                    <!-- /49735501/homepage-after-scroll -->
+                    <div id='div-gpt-ad-1467756880025-0'>
+                    <script type='text/javascript'>
+                    googletag.cmd.push(function() { googletag.display('div-gpt-ad-1467756880025-0'); });
                     </script>
+                    </div>
                 <?php endif; ?>
             </div>
         </div>
