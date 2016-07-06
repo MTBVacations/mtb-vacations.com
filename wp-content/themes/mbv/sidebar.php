@@ -34,46 +34,55 @@
                         case 2:
                             # Second Ad
                             ?>
-                            <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-                            <!-- Tips & Gear - Second Space -->
-                            <ins class="adsbygoogle"
-                                 style="display:block"
-                                 data-ad-client="ca-pub-9928579909487332"
-                                 data-ad-slot="2648990604"
-                                 data-ad-format="auto"></ins>
-                            <script>
-                            (adsbygoogle = window.adsbygoogle || []).push({});
+                            <script type='text/javascript'>
+                              googletag.cmd.push(function() {
+                                googletag.defineSlot('/49735501/tips-gear-second-ad', [[300, 250], [320, 480], [250, 250], [336, 280], [240, 400]], 'div-gpt-ad-1467775224674-1').addService(googletag.pubads());
+                                googletag.pubads().enableSingleRequest();
+                                googletag.enableServices();
+                              });
                             </script>
+                            <!-- /49735501/tips-gear-second-ad -->
+                            <div id='div-gpt-ad-1467775224674-1'>
+                            <script type='text/javascript'>
+                            googletag.cmd.push(function() { googletag.display('div-gpt-ad-1467775224674-1'); });
+                            </script>
+                            </div>
                             <?php
                             break;
                         case 3: 
                             # Third Ad
                             ?>
-                            <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-                            <!-- Tips & Gear - Third Space -->
-                            <ins class="adsbygoogle"
-                                 style="display:block"
-                                 data-ad-client="ca-pub-9928579909487332"
-                                 data-ad-slot="5602457007"
-                                 data-ad-format="auto"></ins>
-                            <script>
-                            (adsbygoogle = window.adsbygoogle || []).push({});
+                            <script type='text/javascript'>
+                              googletag.cmd.push(function() {
+                                googletag.defineSlot('/49735501/tips-gear-third-ad', [[300, 250], [320, 480], [250, 250], [336, 280], [240, 400]], 'div-gpt-ad-1467775224674-2').addService(googletag.pubads());
+                                googletag.pubads().enableSingleRequest();
+                                googletag.enableServices();
+                              });
                             </script>
+                            <!-- /49735501/tips-gear-third-ad -->
+                            <div id='div-gpt-ad-1467775224674-2'>
+                            <script type='text/javascript'>
+                            googletag.cmd.push(function() { googletag.display('div-gpt-ad-1467775224674-2'); });
+                            </script>
+                            </div>
                             <?php
                             break;
                         default:
                             # First Ad
                             ?>
-                            <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-                            <!-- Tips & Gear - First Space -->
-                            <ins class="adsbygoogle"
-                                 style="display:block"
-                                 data-ad-client="ca-pub-9928579909487332"
-                                 data-ad-slot="1172257405"
-                                 data-ad-format="auto"></ins>
-                            <script>
-                            (adsbygoogle = window.adsbygoogle || []).push({});
+                            <script type='text/javascript'>
+                                googletag.cmd.push(function() {
+                                    googletag.defineSlot('/49735501/tips-gear-first-ad', [[300, 250], [320, 480], [250, 250], [336, 280], [240, 400]], 'div-gpt-ad-1467775224674-0').addService(googletag.pubads());
+                                    googletag.pubads().enableSingleRequest();
+                                    googletag.enableServices();
+                                });
                             </script>
+                            <!-- /49735501/tips-gear-first-ad -->
+                            <div id='div-gpt-ad-1467775224674-0'>
+                            <script type='text/javascript'>
+                            googletag.cmd.push(function() { googletag.display('div-gpt-ad-1467775224674-0'); });
+                            </script>
+                            </div>
                             <?php
                             break;
                     } ?>
