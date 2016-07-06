@@ -84,29 +84,35 @@
                         <?php else: ?>
                             <?php if($cnt == 1): ?>
                                 <div>
-                                    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-                                    <!-- Footer Advertisement 1 -->
-                                    <ins class="adsbygoogle"
-                                         style="display:block"
-                                         data-ad-client="ca-pub-9928579909487332"
-                                         data-ad-slot="8835125003"
-                                         data-ad-format="auto"></ins>
-                                    <script>
-                                    (adsbygoogle = window.adsbygoogle || []).push({});
+                                    <script type='text/javascript'>
+                                      googletag.cmd.push(function() {
+                                        googletag.defineSlot('/49735501/footer-first-ad', [[336, 280], [250, 250]], 'div-gpt-ad-1467774291900-0').addService(googletag.pubads());
+                                        googletag.pubads().enableSingleRequest();
+                                        googletag.enableServices();
+                                      });
                                     </script>
+                                    <!-- /49735501/footer-first-ad -->
+                                    <div id='div-gpt-ad-1467774291900-0'>
+                                    <script type='text/javascript'>
+                                    googletag.cmd.push(function() { googletag.display('div-gpt-ad-1467774291900-0'); });
+                                    </script>
+                                    </div>
                                 </div>
                             <?php else: ?>
                                 <div>
-                                    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-                                    <!-- Footer Advertisement 2 -->
-                                    <ins class="adsbygoogle"
-                                         style="display:block"
-                                         data-ad-client="ca-pub-9928579909487332"
-                                         data-ad-slot="4547003004"
-                                         data-ad-format="auto"></ins>
-                                    <script>
-                                    (adsbygoogle = window.adsbygoogle || []).push({});
+                                    <script type='text/javascript'>
+                                        googletag.cmd.push(function() {
+                                            googletag.defineSlot('/49735501/footer-second-ad', [[336, 280], [250, 250]], 'div-gpt-ad-1467774291900-1').addService(googletag.pubads());
+                                            googletag.pubads().enableSingleRequest();
+                                            googletag.enableServices();
+                                        });
                                     </script>
+                                    <!-- /49735501/footer-second-ad -->
+                                    <div id='div-gpt-ad-1467774291900-1'>
+                                    <script type='text/javascript'>
+                                    googletag.cmd.push(function() { googletag.display('div-gpt-ad-1467774291900-1'); });
+                                    </script>
+                                    </div>
                                 </div>
                             <?php endif; ?>
                         <?php endif; ?>

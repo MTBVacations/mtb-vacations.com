@@ -87,10 +87,17 @@
                         <img src="<?php echo $adUrl; ?>" alt="" />
                     <?php endif; ?>
                 <?php else: ?>
-                    <!-- /49735501/homepage-after-scroll -->
-                    <div id='div-gpt-ad-1467756880025-0'>
                     <script type='text/javascript'>
-                    googletag.cmd.push(function() { googletag.display('div-gpt-ad-1467756880025-0'); });
+                        googletag.cmd.push(function() {
+                          googletag.defineSlot('/49735501/homepage-after-scroll', [[468, 60], [728, 90], [300, 100], [120, 20]], 'div-gpt-ad-1467774053399-0').addService(googletag.pubads());
+                          googletag.pubads().enableSingleRequest();
+                          googletag.enableServices();
+                        });
+                    </script>
+                    <!-- /49735501/homepage-after-scroll -->
+                    <div id='div-gpt-ad-1467774053399-0'>
+                    <script type='text/javascript'>
+                    googletag.cmd.push(function() { googletag.display('div-gpt-ad-1467774053399-0'); });
                     </script>
                     </div>
                 <?php endif; ?>
