@@ -32,3 +32,9 @@ require_once('functions/custom-functions.php');
  */
 
 require_once('functions/zemplate-functions.php');
+
+
+//* ACF Google Maps Field API Key
+add_filter('acf/settings/google_api_key', function () {
+    return 'AIzaSyAkexjpqjbFbW8lrZm7SPH4m8DsPTQk6Mo';
+});

@@ -69,9 +69,14 @@ class MC4WP_Form {
 	public $settings = array();
 
 	/**
-	 * @var array Array of messages
+	 * @var array Array of message codes that will show when this form renders
 	 */
 	public $messages = array();
+
+	/**
+	 * @var array
+	 */
+	private $message_objects = array();
 
 	/**
 	 * @var WP_Post The internal post object that represents this form.
@@ -81,10 +86,10 @@ class MC4WP_Form {
 	/**
 	 * @var array Raw array or post_meta values.
 	 */
-	public $post_meta = array();
+	protected $post_meta = array();
 
 	/**
-	 * @var array Array of error code's
+	 * @var array Array of error codes
 	 */
 	public $errors = array();
 
@@ -98,7 +103,7 @@ class MC4WP_Form {
 	 *
 	 * Keys in this array are uppercased and keys starting with _ are stripped.
 	 */
-	public $data = array();
+	private $data = array();
 
 	/**
 	 * @var array Array of the raw form data that was submitted.
@@ -132,57 +137,44 @@ class MC4WP_Form {
 		$this->name = $post->post_title;
 		$this->content = $post->post_content;
 		$this->settings = $this->load_settings();
-		$this->messages = $this->load_messages();
 
 		// update config from settings
 		$this->config['lists'] = $this->settings['lists'];
 	}
 
+	/**
+	 * @param string $name
+	 *
+	 * @return mixed
+	 */
+	public function __get( $name ) {
+		$method_name = sprintf( "get_%s", $name );
+		if( method_exists( $this, $method_name ) ) {
+			return $this->$method_name();
+		}
+	}
+
 
 	/**
 	 * Gets the form response string
-	 * // TODO: Move to `Form_Element`
 	 *
-	 * @param bool $submitted
+	 * This does not take the submitted form element into account.
+	 *
+	 * @see MC4WP_Form_Element::get_response_html()
+	 *
 	 * @return string
 	 */
-	public function get_response_html( $submitted = null ) {
+	public function get_response_html() {
+		return $this->get_element()->get_response_html( true );
+	}
 
-		if( is_null( $submitted ) ) {
-			$submitted = $this->is_submitted;
-		}
-
-		$html = '';
-		$form = $this;
-
-		if( $submitted ) {
-			if( $this->has_errors() ) {
-
-				// create html string of all errors
-				foreach( $this->errors as $key ) {
-					$html .= $this->get_message_html( $key );
-				}
-
-			} else {
-				$html = $this->get_message_html( $this->get_action() . 'd' );
-			}
-		}
-
-		/**
-		 * Filter the form response HTML
-		 *
-		 * Use this to add your own HTML to the form response. The form instance is passed to the callback function.
-		 *
-		 * @since 3.0
-		 *
-		 * @param string $html The complete HTML string of the response, excluding the wrapper element.
-		 * @param MC4WP_Form $form The form object
-		 */
-		$html = (string) apply_filters( 'mc4wp_form_response_html', $html, $form );
-
-		// wrap entire response in div, regardless of a form was submitted
-		$html = '<div class="mc4wp-response">' . $html . '</div>';
-		return $html;
+	/**
+	 * @param string $element_id
+	 * @param array $config
+	 * @return MC4WP_Form_element
+	 */
+	public function get_element( $element_id = 'mc4wp-form', $config = array() ) {
+		return new MC4WP_Form_Element( $this, $element_id, $config );
 	}
 
 	/**
@@ -196,7 +188,7 @@ class MC4WP_Form {
 	 * @return string
 	 */
 	public function get_html( $element_id = 'mc4wp-form', array $config = array() ) {
-		$element = new MC4WP_Form_Element( $this, $element_id, $config );
+		$element = $this->get_element( $element_id, $config );
 		$html = $element->generate_html();
 		return $html;
 	}
@@ -278,6 +270,7 @@ class MC4WP_Form {
 			$type = ! empty( $message['type'] ) ? $message['type'] : '';
 			$text = isset( $message['text'] ) ? $message['text'] : $message;
 
+			// overwrite default text with text in form meta.
 			if( isset( $this->post_meta[ 'text_' . $key ][0] ) ) {
 				$text = $this->post_meta[ 'text_' . $key ][0];
 			}
@@ -285,7 +278,7 @@ class MC4WP_Form {
 			$message = new MC4WP_Form_Message( $text, $type );
 			$messages[ $key ] = $message;
 		}
-
+		
 		return $messages;
 	}
 
@@ -308,23 +301,14 @@ class MC4WP_Form {
 	public function get_field_types() {
 		preg_match_all( '/type=\"(\w+)?\"/', strtolower( $this->content ), $result );
 		$field_types = $result[1];
-
 		return $field_types;
 	}
 
 	/**
-	 * Get HTML string for a message, including wrapper element.
-	 *
-	 * @param string $key
-	 *
-	 * @return string
+	 * @param $key
 	 */
-	public function get_message_html( $key ) {
-		$message = $this->get_message( $key );
-
-		$html = sprintf( '<div class="mc4wp-alert mc4wp-%s"><p>%s</p></div>', esc_attr( $message->type ), $message->text );
-
-		return $html;
+	public function add_message( $key ) {
+		$this->messages[] = $key;
 	}
 
 	/**
@@ -336,11 +320,17 @@ class MC4WP_Form {
 	 */
 	public function get_message( $key ) {
 
-		if( isset( $this->messages[ $key ] ) ) {
-			return $this->messages[ $key ];
+		// load messages once
+		if( empty( $this->message_objects ) ) {
+			$this->message_objects = $this->load_messages();
 		}
 
-		return $this->messages['error'];
+		if( isset( $this->message_objects[ $key ] ) ) {
+			return $this->message_objects[ $key ];
+		}
+
+		// default to general error message
+		return $this->message_objects['error'];
 	}
 
 	/**
@@ -427,7 +417,7 @@ class MC4WP_Form {
 		 * @param array $errors
 		 * @param MC4WP_Form $form
 		 */
-		$this->errors = (array) apply_filters( 'mc4wp_form_errors', $errors, $form );
+		$errors = (array) apply_filters( 'mc4wp_form_errors', $errors, $form );
 
 		/**
 		 * @ignore
@@ -435,9 +425,13 @@ class MC4WP_Form {
 		 */
 		$form_validity = apply_filters( 'mc4wp_valid_form_request', true, $this->data );
 		if( is_string( $form_validity ) ) {
-			$this->errors[] = $form_validity;
+			$errors[] = $form_validity;
 		}
 
+		// add each error to this form
+		array_map( array( $this, 'add_error' ), $errors );
+
+        // return whether we have errors
 		return ! $this->has_errors();
 	}
 
@@ -508,20 +502,7 @@ class MC4WP_Form {
 		$data = array_diff_key( $data, array_flip( $ignored_field_names ) );
 
 		// uppercase all field keys
-		// @todo do this deep / recursive?
 		$data = array_change_key_case( $data, CASE_UPPER );
-
-		/**
-		 * Filters received data from a submitted form before it is processed.
-		 *
-		 * Keys are uppercased and internal fields have been stripped at this point.
-		 *
-		 * @since 3.0
-		 *
-		 * @param array $data Array containing all data in key-value pairs.
-		 * @param MC4WP_Form $form Instance of the submitted form.
-		 */
-		$data = (array) apply_filters( 'mc4wp_form_data', $data, $form );
 
 		return $data;
 	}
@@ -599,10 +580,10 @@ class MC4WP_Form {
 	 * @param string $error_code
 	 */
 	public function add_error( $error_code ) {
-
 		// only add each error once
 		if( ! in_array( $error_code, $this->errors ) ) {
 			$this->errors[] = $error_code;
+			$this->add_message( $error_code );
 		}
 	}
 
@@ -615,6 +596,24 @@ class MC4WP_Form {
 	 */
 	public function get_action() {
 		return $this->config['action'];
+	}
+
+	/**
+	 * @return array
+	 */
+	public function get_data() {
+		$data = $this->data;
+		$form = $this;
+
+		/**
+		 * Filters the form data.
+		 *
+		 * @param array $data
+		 * @param MC4WP_Form $form
+		 */
+		$data = apply_filters( 'mc4wp_form_data', $data, $form );
+
+		return $data;
 	}
 
 	/**
@@ -694,4 +693,19 @@ class MC4WP_Form {
 
 		return $stylesheet;
 	}
+
+	/**
+	 * Get HTML string for a message, including wrapper element.
+	 *
+	 * @deprecated 3.1
+	 *
+	 * @param string $key
+	 *
+	 * @return string
+	 */
+	public function get_message_html( $key ) {
+		_deprecated_function( __METHOD__, '3.2' );
+		return '';
+	}
+
 }
