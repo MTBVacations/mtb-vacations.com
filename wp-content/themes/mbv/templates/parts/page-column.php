@@ -86,44 +86,53 @@
                                     switch ($columnCnt) {
                                         case 2:
                                             ?>
-                                            <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-                                            <!-- About - Second Column -->
-                                            <ins class="adsbygoogle"
-                                                 style="display:block"
-                                                 data-ad-client="ca-pub-9928579909487332"
-                                                 data-ad-slot="2788591408"
-                                                 data-ad-format="auto"></ins>
-                                            <script>
-                                            (adsbygoogle = window.adsbygoogle || []).push({});
+                                            <script type='text/javascript'>
+                                                googletag.cmd.push(function() {
+                                                    googletag.defineSlot('/49735501/about-second-column', [[480, 320], [250, 250]], 'div-gpt-ad-1467774162651-1').addService(googletag.pubads());
+                                                    googletag.pubads().enableSingleRequest();
+                                                    googletag.enableServices();
+                                                });
                                             </script>
+                                            <!-- /49735501/about-second-column -->
+                                            <div id='div-gpt-ad-1467774162651-1'>
+                                            <script type='text/javascript'>
+                                            googletag.cmd.push(function() { googletag.display('div-gpt-ad-1467774162651-1'); });
+                                            </script>
+                                            </div>
                                             <?php
                                             break;
                                         case 3:
                                             ?>
-                                            <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-                                            <!-- About - Third Column -->
-                                            <ins class="adsbygoogle"
-                                                 style="display:block"
-                                                 data-ad-client="ca-pub-9928579909487332"
-                                                 data-ad-slot="4265324601"
-                                                 data-ad-format="auto"></ins>
-                                            <script>
-                                            (adsbygoogle = window.adsbygoogle || []).push({});
+                                            <script type='text/javascript'>
+                                                googletag.cmd.push(function() {
+                                                  googletag.defineSlot('/49735501/about-third-column', [[480, 320], [250, 250]], 'div-gpt-ad-1467774162651-2').addService(googletag.pubads());
+                                                  googletag.pubads().enableSingleRequest();
+                                                  googletag.enableServices();
+                                                });
                                             </script>
+                                            <!-- /49735501/about-third-column -->
+                                            <div id='div-gpt-ad-1467774162651-2'>
+                                            <script type='text/javascript'>
+                                            googletag.cmd.push(function() { googletag.display('div-gpt-ad-1467774162651-2'); });
+                                            </script>
+                                            </div>
                                             <?php
                                             break;
                                         default:
                                             ?>
-                                            <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-                                            <!-- About - First Column -->
-                                            <ins class="adsbygoogle"
-                                                 style="display:block"
-                                                 data-ad-client="ca-pub-9928579909487332"
-                                                 data-ad-slot="1311858206"
-                                                 data-ad-format="auto"></ins>
-                                            <script>
-                                            (adsbygoogle = window.adsbygoogle || []).push({});
+                                            <script type='text/javascript'>
+                                                googletag.cmd.push(function() {
+                                                  googletag.defineSlot('/49735501/about-first-column', [[480, 320], [250, 250]], 'div-gpt-ad-1467774162651-0').addService(googletag.pubads());
+                                                  googletag.pubads().enableSingleRequest();
+                                                  googletag.enableServices();
+                                                });
                                             </script>
+                                            <!-- /49735501/about-first-column -->
+                                            <div id='div-gpt-ad-1467774162651-0'>
+                                            <script type='text/javascript'>
+                                            googletag.cmd.push(function() { googletag.display('div-gpt-ad-1467774162651-0'); });
+                                            </script>
+                                            </div>
                                             <?php
                                             break;
                                     }
@@ -133,30 +142,51 @@
                                     switch ($columnCnt) {
                                         case 2:
                                             ?>
-                                            <!-- /49735501/homepage-second-column -->
-                                            <div id='div-gpt-ad-1467756880025-2'>
                                             <script type='text/javascript'>
-                                            googletag.cmd.push(function() { googletag.display('div-gpt-ad-1467756880025-2'); });
+                                                googletag.cmd.push(function() {
+                                                  googletag.defineSlot('/49735501/homepage-second-column', [[250, 250], [480, 320]], 'div-gpt-ad-1467774053399-2').addService(googletag.pubads());
+                                                  googletag.pubads().enableSingleRequest();
+                                                  googletag.enableServices();
+                                                });
+                                            </script>
+                                            <!-- /49735501/homepage-second-column -->
+                                            <div id='div-gpt-ad-1467774053399-2'>
+                                            <script type='text/javascript'>
+                                            googletag.cmd.push(function() { googletag.display('div-gpt-ad-1467774053399-2'); });
                                             </script>
                                             </div>
                                             <?php
                                             break;
                                         case 3:
                                             ?>
-                                            <!-- /49735501/homepage-third-column -->
-                                            <div id='div-gpt-ad-1467756880025-3'>
                                             <script type='text/javascript'>
-                                            googletag.cmd.push(function() { googletag.display('div-gpt-ad-1467756880025-3'); });
+                                                googletag.cmd.push(function() {
+                                                  googletag.defineSlot('/49735501/homepage-third-column', [[250, 250], [480, 320]], 'div-gpt-ad-1467774053399-3').addService(googletag.pubads());
+                                                  googletag.pubads().enableSingleRequest();
+                                                  googletag.enableServices();
+                                                });
+                                            </script>
+                                            <!-- /49735501/homepage-third-column -->
+                                            <div id='div-gpt-ad-1467774053399-3'>
+                                            <script type='text/javascript'>
+                                            googletag.cmd.push(function() { googletag.display('div-gpt-ad-1467774053399-3'); });
                                             </script>
                                             </div>
                                             <?php
                                             break;
                                         default:
                                             ?>
-                                            <!-- /49735501/homepage-first-column -->
-                                            <div id='div-gpt-ad-1467756880025-1'>
                                             <script type='text/javascript'>
-                                            googletag.cmd.push(function() { googletag.display('div-gpt-ad-1467756880025-1'); });
+                                                googletag.cmd.push(function() {
+                                                  googletag.defineSlot('/49735501/homepage-first-column', [[250, 250], [480, 320]], 'div-gpt-ad-1467774053399-1').addService(googletag.pubads());
+                                                  googletag.pubads().enableSingleRequest();
+                                                  googletag.enableServices();
+                                                });
+                                            </script>
+                                            <!-- /49735501/homepage-first-column -->
+                                            <div id='div-gpt-ad-1467774053399-1'>
+                                            <script type='text/javascript'>
+                                            googletag.cmd.push(function() { googletag.display('div-gpt-ad-1467774053399-1'); });
                                             </script>
                                             </div>
                                             <?php
