@@ -32,3 +32,13 @@ require_once('functions/custom-functions.php');
  */
 
 require_once('functions/zemplate-functions.php');
+
+//* hot fix to turn off opacify filter on hero images, added directly to functions file on production
+add_action('wp_head','mtbv_style_hotfix');
+function mtbv_style_hotfix() {
+?>
+<style>
+.hero.hero__destination { opacity: 1 !important; }
+</style>
+<?php
+}
