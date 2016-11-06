@@ -25,13 +25,24 @@ class MC4WP_WooCommerce_Integration extends MC4WP_Integration {
 	public function add_hooks() {
 
 		if( ! $this->options['implicit'] ) {
-
-			// TODO: Allow more positions
-			add_action( 'woocommerce_checkout_billing', array( $this, 'output_checkbox' ), 20 );
+			// create hook name based on position setting
+			$hook = sprintf( 'woocommerce_%s', $this->options['position'] );
+			add_action( $hook, array( $this, 'output_checkbox' ), 20 );
 			add_action( 'woocommerce_checkout_update_order_meta', array( $this, 'save_woocommerce_checkout_checkbox_value' ) );
 		}
 
 		add_action( 'woocommerce_checkout_order_processed', array( $this, 'subscribe_from_woocommerce_checkout' ) );
+	}
+
+	/**
+	 * Add default value for "position" setting
+	 *
+	 * @return array
+	 */
+	protected function get_default_options() {
+		$defaults = parent::get_default_options();
+		$defaults['position'] = 'billing';
+		return $defaults;
 	}
 
 
@@ -73,17 +84,18 @@ class MC4WP_WooCommerce_Integration extends MC4WP_Integration {
 			return false;
 		}
 
-		$order = new WC_Order( $order_id );
-		$email = $order->billing_email;
-		$merge_vars = array(
+		$order = wc_get_order( $order_id );
+
+		$data = array(
+			'EMAIL' => $order->billing_email,
 			'NAME' => "{$order->billing_first_name} {$order->billing_last_name}",
 			'FNAME' => $order->billing_first_name,
 			'LNAME' => $order->billing_last_name,
 		);
 
-		// @todo add billing address fields, maybe by finding MailChimp field of type "address"?
+		// TODO: add billing address fields, maybe by finding MailChimp field of type "address"?
 
-		return $this->subscribe( $email, $merge_vars, $order_id );
+		return $this->subscribe( $data, $order_id );
 	}
 
 	/**
