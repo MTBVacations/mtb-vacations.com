@@ -39,7 +39,7 @@
             $addClass = ' main-head--short';
         }
 
-        if(get_field('youtube_video_id') != '') {
+        if(is_single() && get_field('youtube_video_id') != '') {
             $addClass = ' main-head--tips-gear';
         }
 
