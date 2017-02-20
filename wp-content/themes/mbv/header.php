@@ -129,7 +129,7 @@
             ?>
 
             <?php if(is_single() && get_field('youtube_video_id') != ''): ?>
-                <div class="hero">
+                <div class="hero hero--youtube">
                     <iframe src="http://www.youtube.com/embed/<?php echo get_field('youtube_video_id'); ?>?rel=0&hd=1&modestbranding=1&showinfo=0" frameborder="0" allowfullscreen style="position: absolute; top: 0; left: 0; width: 100%; height: 100%"></iframe>
                 </div>
             <?php else: ?>
