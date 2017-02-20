@@ -6,6 +6,7 @@
 	p {
 		margin-top: 5px;
 	}
+
 	.single-torso__content {
 		h2 {
 			padding: 0;
@@ -14,6 +15,21 @@
 			padding-top: .75em;
 			margin-bottom: 0;
 			line-height: rem-calc(32px);
+		}
+	}
+
+	.hero {
+		position: relative;
+		padding-bottom: 51.25%; /* 16:9 */
+		padding-top: 25px;
+		height: 0;
+
+		iframe {
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
 		}
 	}
 }

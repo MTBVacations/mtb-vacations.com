@@ -39,6 +39,10 @@
             $addClass = ' main-head--short';
         }
 
+        if(get_field('youtube_video_id') != '') {
+            $addClass = ' main-head--tips-gear';
+        }
+
         // if(is_single() || is_archive() || is_home()){
         //     $addClass = ' main-head--short';
         // }
@@ -125,7 +129,7 @@
             ?>
 
             <?php if(is_single() && get_field('youtube_video_id') != ''): ?>
-                <div class="hero" style="position: relative; padding-bottom: 51.25%; padding-top: 25px; height: 0;">
+                <div class="hero">
                     <iframe src="http://www.youtube.com/embed/<?php echo get_field('youtube_video_id'); ?>?rel=0&hd=1&modestbranding=1&showinfo=0" frameborder="0" allowfullscreen style="position: absolute; top: 0; left: 0; width: 100%; height: 100%"></iframe>
                 </div>
             <?php else: ?>
