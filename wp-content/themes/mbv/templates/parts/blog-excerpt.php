@@ -1,7 +1,11 @@
 <article class="single-torso__post">
 
-	<?php $postImg = wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ), 'large' );
-	$postImg = $postImg[0]; ?>
+	<?php if(get_field('youtube_video_id') != ''): ?>
+		<?php $postImg = "https://img.youtube.com/vi/" . get_field('youtube_video_id') . "/0.jpg"; ?>
+	<?php else:  ?>
+		<?php $postImg = wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ), 'large' );
+		$postImg = $postImg[0]; ?>
+	<?php endif; ?>
 	<div class="single-torso__image" style="background-image:url('<?php echo $postImg; ?>');"></div>
 
 	<div class="single-torso__wrapper">
