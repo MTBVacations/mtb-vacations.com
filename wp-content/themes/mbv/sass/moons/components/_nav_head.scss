@@ -27,6 +27,15 @@ body { // so it's full height
 }
 .main-head{
     position: relative;
+
+    &--tips-gear {
+        height: auto;
+
+        @include bp($max: 700px){
+            background: #000;
+            padding-top: 5.25rem;
+        }
+    }
 }
 .main-head__wrap {
   position: fixed;
@@ -59,7 +68,7 @@ body { // so it's full height
     width: 247px;
     height: 32px;
     z-index: 22;
-    @include bp(700px){
+    @include bp(1200px){
         left: 1em;
     }
 }
@@ -214,7 +223,7 @@ body { // so it's full height
     background: #215d6e;
     line-height: 10em;
     background: transparent;
-    @include bp($max: 700px){
+    @include bp($max: 1200px){
         right: 1em;
     }
     span {

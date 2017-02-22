@@ -39,6 +39,10 @@
             $addClass = ' main-head--short';
         }
 
+        if(is_single() && get_field('youtube_video_id') != '') {
+            $addClass = ' main-head--tips-gear';
+        }
+
         // if(is_single() || is_archive() || is_home()){
         //     $addClass = ' main-head--short';
         // }
@@ -108,39 +112,50 @@
                     $img    = get_field('hero_image', $pageId); 
                     $img    = $img['url']; 
                 } elseif(is_single()){
-                    $img = wp_get_attachment_image_src( get_post_thumbnail_id(), 'large' );
-                    $img = $img[0];
+                    if(get_field('youtube_video_id') != '') {
+                        $img = "";
+                    } else {
+                        $img = wp_get_attachment_image_src( get_post_thumbnail_id(), 'large' );
+                        $img = $img[0];
+                    }
                 } else {
                     $pageId = $id;
                     $img    = get_field('hero_image', $pageId); 
                     $img    = $img['url']; 
                 }
             ?>
-            <div class="hero">
-                <?php 
-                    $txtColor = ' title--'.get_field('large_text_color', $pageId);
-                ?>
-                <div class="hero__image" style="background-image:url('<?php echo $img; ?>');">
-                    <div class="hero-content__wrapper">
-                        <div class="hero-content">
-                            <div class="content__sub-title"><?php the_field('small_text', $pageId); ?></div>
-                            <div class="content__title<?php echo $txtColor; ?>">
-                                <?php the_field('large_text', $pageId); ?>
-                            </div>
-                            <?php if(get_field('link_text')): ?>
-                                <?php 
-                                    $link = get_field('links_to'); 
-                                    $linkId = $link->ID;
-                                    $link = get_permalink($linkId); 
-                                ?>
-                                <div class="content__link">
-                                    <a class="link--background" href="<?php echo $link; ?>"><?php the_field('link_text', $pageId); ?></a>
+            <?php 
+                $txtColor = ' title--'.get_field('large_text_color', $pageId);
+            ?>
+
+            <?php if(is_single() && get_field('youtube_video_id') != ''): ?>
+                <div class="hero hero--youtube">
+                    <iframe src="http://www.youtube.com/embed/<?php echo get_field('youtube_video_id'); ?>?rel=0&hd=1&modestbranding=1&showinfo=0" frameborder="0" allowfullscreen style="position: absolute; top: 0; left: 0; width: 100%; height: 100%"></iframe>
+                </div>
+            <?php else: ?>
+                <div class="hero">
+                    <div class="hero__image" style="background-image:url('<?php echo $img; ?>');">
+                        <div class="hero-content__wrapper">
+                            <div class="hero-content">
+                                <div class="content__sub-title"><?php the_field('small_text', $pageId); ?></div>
+                                <div class="content__title<?php echo $txtColor; ?>">
+                                    <?php the_field('large_text', $pageId); ?>
                                 </div>
-                            <?php endif; ?>
+                                <?php if(get_field('link_text')): ?>
+                                    <?php 
+                                        $link = get_field('links_to'); 
+                                        $linkId = $link->ID;
+                                        $link = get_permalink($linkId); 
+                                    ?>
+                                    <div class="content__link">
+                                        <a class="link--background" href="<?php echo $link; ?>"><?php the_field('link_text', $pageId); ?></a>
+                                    </div>
+                                <?php endif; ?>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            <?php endif; ?>
         <?php endif; ?>
         <?php // Include All the Things ?>
         <?php //echo do_shortcode('[pagelist id="9" fixed="right-bottom"]'); ?>
