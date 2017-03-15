@@ -43,7 +43,9 @@
 		content: "";
 		display: inline-block;
 		vertical-align: middle;
-		height: 100%;
+		@include bp($min:$solarsystem){
+			height: 100%;
+		}
 	}
 	h3 {
 		color: $txt-color-3;

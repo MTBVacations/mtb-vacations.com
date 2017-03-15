@@ -64,9 +64,9 @@ body { // so it's full height
 .logo{
     position: absolute;
     left: 10em;
-    top: 1.7em;
-    width: 247px;
-    height: 32px;
+    top: .9em;
+    width: 200px;
+    height: 64px;
     z-index: 22;
     @include bp(1200px){
         left: 1em;

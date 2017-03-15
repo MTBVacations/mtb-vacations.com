@@ -25,11 +25,15 @@
 	}
 	.main-foot__logo {
 		display: block;
-		width: 247px;
-		height: 32px;
 		background: url('images/general-png/logo.png') no-repeat;
+		background-size: cover;
+		margin-bottom: 1em;
+		height: 72px;
+		width: 225px;
 		@include bp($solarsystem){
 			margin: 0 auto 1em auto;
+			height: 64px;
+			width: 200px;
 		}
 	}
 	.main-foot__destinations {
