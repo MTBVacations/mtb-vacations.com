@@ -17,13 +17,18 @@ get_header(); ?>
 <?php if ( have_posts() ) while ( have_posts() ) : the_post(); ?>
 
     <section class="main-torso page-torso">
-            <h1 class="hide"><?php the_title(); ?></h1>
-            <?php if(get_field('content')) : ?>
-                <?php while(has_sub_field('content')): ?>
-                    <?php echo get_template_part('templates/parts/page', get_row_layout()); ?>
-                <?php endwhile; ?>
-            <?php endif; ?>
-        </section>
+    	<?php if(is_page('2')): ?>
+    		<div class="banner-ad">
+    			<a href="http://www.sacredrides.com/" target="_blank"><img src="<?php bloginfo('template_url'); ?>/images/ads/sacred-rides.png" alt=""></a>
+    		</div>
+    	<?php endif; ?>
+        <h1 class="hide"><?php the_title(); ?></h1>
+        <?php if(get_field('content')) : ?>
+            <?php while(has_sub_field('content')): ?>
+                <?php echo get_template_part('templates/parts/page', get_row_layout()); ?>
+            <?php endwhile; ?>
+        <?php endif; ?>
+    </section>
 
 <?php endwhile; ?>
 
