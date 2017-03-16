@@ -41,3 +41,27 @@
 		z-index: -1;
 	}
 }
+
+.show-desktop {
+	display: none;
+
+	@include bp($min:970px){
+		display: block;
+	}
+}
+
+.show-tablet {
+	display: none;
+
+	@include bp($min:700px, $max:969px){
+		display: block;
+	}
+}
+
+.show-mobile {
+	display: none;
+
+	@include bp($max:699px){
+		display: block;
+	}
+}

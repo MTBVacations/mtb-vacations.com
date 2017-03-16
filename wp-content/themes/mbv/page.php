@@ -19,7 +19,9 @@ get_header(); ?>
     <section class="main-torso page-torso">
     	<?php if(is_page('2')): ?>
     		<div class="banner-ad">
-    			<a href="http://www.sacredrides.com/" target="_blank"><img src="<?php bloginfo('template_url'); ?>/images/ads/sacred-rides.png" alt=""></a>
+    			<a href="https://nm220.isrefer.com/go/sacredrides/mtbvacations" target="_blank" class="show-desktop"><img src="http://www.sacredrides.com/sites/default/files/u188401/tripofalifetime.970x90.jpg" border="0"></a>
+    			<a href="https://nm220.isrefer.com/go/sacredrides/mtbvacations" target="_blank" class="show-tablet"><img src="http://www.sacredrides.com/sites/default/files/u188401/TripofaLifetime.728x90.jpg" border="0"></a>
+    			<a href="https://nm220.isrefer.com/go/sacredrides/mtbvacations" target="_blank" class="show-mobile"><img src="http://www.sacredrides.com/sites/default/files/u188401/tripofalifetime.300x250.jpg" border="0"></a>
     		</div>
     	<?php endif; ?>
         <h1 class="hide"><?php the_title(); ?></h1>
