@@ -1,0 +1,10 @@
+.banner-ad {
+	background: #00151d;
+	line-height: 0;
+	padding: 1em 0 0;
+	text-align: center;
+
+	@include bp($min:$solarsystem){
+		padding: 1em 0;
+	}
+}

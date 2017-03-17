@@ -25,7 +25,6 @@ body {
 .page-home {
 	.wrap-all-the-things,
 	.main-head {
-		height: 100%;
 		display: block;
 
 		@include bp($solarsystem){
@@ -35,6 +34,12 @@ body {
 		@include bp($max:600px){
 			height: 500px;
 		}
+	}
+	.wrap-all-the-things {
+		height: 100%;
+	}
+	.main-head {
+		height: 84.5%;
 	}
 	.main-torso,
 	.main-foot {

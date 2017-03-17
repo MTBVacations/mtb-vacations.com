@@ -42,10 +42,6 @@
         if(is_single() && get_field('youtube_video_id') != '') {
             $addClass = ' main-head--tips-gear';
         }
-
-        // if(is_single() || is_archive() || is_home()){
-        //     $addClass = ' main-head--short';
-        // }
     ?>
     <header class="main-head<?php echo $addClass; ?>">
       <div class="main-head__wrap">
