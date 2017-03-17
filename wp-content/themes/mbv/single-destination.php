@@ -12,43 +12,57 @@ get_header('destination'); ?>
 <?php if ( have_posts() ) while ( have_posts() ) : the_post(); ?>
     <section class="main-torso">
         <!-- <div class="single-torso__inside"> -->
-            <div class="destination__details">
-                <div class="details__inner">
-                    <h2><?php the_title(); ?></h2>
-                    <div class="destination__desc">
-                        <?php the_field('destination_description'); ?>
-                    </div>
-
-                    <?php if(have_rows('destination_facts')): ?>
-                        <div class="destination__facts">
-                            <?php while(have_rows('destination_facts')): the_row(); ?>
-                               
-                                <div class="destination__fact">
-                                    <?php  
-                                        $iconImage = get_sub_field('icon');
-                                        // $iconImage = $iconImage['url'];
-                                        $file_parts = pathinfo($iconImage);
-                                        $file_ext = $file_parts['extension'];
-                                    ?>
-                                    <div class="fact__icon">
-                                        <?php if($file_ext == 'svg'): ?>
-                                            <img class="js-ajax-replace" src="<?php echo $iconImage; ?>"/>
-                                        <?php else: ?>
-                                            <img src="<?php echo $iconImage; ?>" alt="" />
-                                        <?php endif; ?>
-                                    </div>
-                                    <div class="fact__text"><?php the_sub_field('fact'); ?></div>
-                                </div>
-                            <?php endwhile; ?>
-                        </div>
-                    <?php endif; ?>
+        <div class="destination__details">
+        <?php if(have_rows('image_slider')): ?>
+            <div class="destination__slider">
+                <div class="flexslider">
+                    <ul class="slides">
+                        <?php while(have_rows('image_slider')) : the_row(); ?>
+                            <?php 
+                                $img = get_sub_field('image'); 
+                                $img = $img['url'];
+                            ?>
+                            <li class="hero__image"><img src="<?php echo $img; ?>" alt=""></li>
+                        <?php endwhile; ?>
+                    </ul>
                 </div>
             </div>
+        <?php endif; ?>
+            <div class="details__inner">
+                <h2><?php the_title(); ?></h2>
+                <div class="destination__desc">
+                    <?php the_field('destination_description'); ?>
+                </div>
+            </div>
+        </div>
+        <!-- <?php if(have_rows('destination_facts')): ?>
+            <div class="destination__facts">
+                <?php while(have_rows('destination_facts')): the_row(); ?>
+                   
+                    <div class="destination__fact">
+                        <?php  
+                            $iconImage = get_sub_field('icon');
+                            // $iconImage = $iconImage['url'];
+                            $file_parts = pathinfo($iconImage);
+                            $file_ext = $file_parts['extension'];
+                        ?>
+                        <div class="fact__icon">
+                            <?php if($file_ext == 'svg'): ?>
+                                <img class="js-ajax-replace" src="<?php echo $iconImage; ?>"/>
+                            <?php else: ?>
+                                <img src="<?php echo $iconImage; ?>" alt="" />
+                            <?php endif; ?>
+                        </div>
+                        <div class="fact__text"><?php the_sub_field('fact'); ?></div>
+                    </div>
+                <?php endwhile; ?>
+            </div>
+        <?php endif; ?> -->
             <article class="single-torso__content">
                 <h1 class="hide"><?php the_title(); ?></h1>
 
                 <?php $tabImg = get_field('tab_background'); $tabImg = $tabImg['url']; ?>
-                <section class="page__group destination__content js-background" data-image="background-image:url('<?php echo $tabImg; ?>');">
+                <section class="page__group destination__content">
                     <div class="content__inside">
                         <div class="tabs">
                             <nav role="navigation" class="transformer-tabs--block">
