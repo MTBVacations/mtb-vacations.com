@@ -22,35 +22,8 @@ body {
     box-sizing: border-box;
 }
 
-.page-home {
-	.wrap-all-the-things,
-	.main-head {
-		display: block;
-
-		@include bp($solarsystem){
-			height: 800px;
-		}
-
-		@include bp($max:600px){
-			height: 500px;
-		}
-	}
-	
-	.wrap-all-the-things {
-		height: 100%;
-	}
-
-	.main-head {
-		height: 84.5%;
-	}
-
-	.main-torso,
-	.main-foot {
-		display: block;
-		height: auto;
-		float: left;
-		width: 100%;
-	}
+.home .main-head {
+	height: 84.5%;
 }
 
 .wrap-all-the-things {
