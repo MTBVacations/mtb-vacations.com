@@ -35,7 +35,7 @@ get_header('destination'); ?>
                 </div>
             </div>
         </div>
-        <!-- <?php if(have_rows('destination_facts')): ?>
+        <?php if(have_rows('destination_facts')): ?>
             <div class="destination__facts">
                 <?php while(have_rows('destination_facts')): the_row(); ?>
                    
@@ -57,7 +57,7 @@ get_header('destination'); ?>
                     </div>
                 <?php endwhile; ?>
             </div>
-        <?php endif; ?> -->
+        <?php endif; ?>
             <article class="single-torso__content">
                 <h1 class="hide"><?php the_title(); ?></h1>
 

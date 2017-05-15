@@ -67,7 +67,7 @@
 }
 
 .destination__facts {
-	// background-color: #111111;
+	background-color: #fff;
 	color: #4187c4;
 	display: flex;
 	justify-content: center;
@@ -83,9 +83,10 @@
 		&:after {
 			content: "";
 			position: absolute;
-			top: 53%; 
+			// top: 25%; 
+			top: 0;
 			right: 0;
-			height: 45%;
+			height: 100%;
 			border-right: 1px solid #4187c4;
 		}
 		.fact__icon {
@@ -94,22 +95,28 @@
 				max-height: 35px;
 				fill:#4187c4;
 			}
-			margin: 1em 0 2em 0;
+			// margin: 1em 0 2em 0;
 		}
 		.fact__text {
 			padding: 5px;
 			display: block;
+			margin: 0 auto;
+			width: 80%;
 		}
-		&:first-of-type {
-			&:before {
-				content: "";
-				position: absolute;
-				top: 53%; 
-				left: 0;
-				height: 45%;
-				border-left: 1px solid #4187c4;
-			}
+
+		&:last-of-type:after {
+			border: none;
 		}
+		// &:first-of-type {
+		// 	&:before {
+		// 		content: "";
+		// 		position: absolute;
+		// 		top: 53%; 
+		// 		left: 0;
+		// 		height: 45%;
+		// 		border-left: 1px solid #4187c4;
+		// 	}
+		// }
 
 		@include bp($max:875px){
 			width: 20%;
