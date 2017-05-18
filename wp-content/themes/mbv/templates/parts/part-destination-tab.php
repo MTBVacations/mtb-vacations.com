@@ -102,8 +102,14 @@
                                 			</div>
                                 		<?php elseif(get_sub_field('featured_image') == 'vimeo'): ?>
                                 			<?php 
-												$images = unserialize(file_get_contents("http://vimeo.com/api/v2/video/" . get_sub_field('vimeo_video_id') . ".php"));
-												$img = $images[0]['thumbnail_large'];
+                                				$url = "http://vimeo.com/api/v2/video/" . get_sub_field('vimeo_video_id') . ".php";
+                                				$ch = curl_init();
+											    curl_setopt($ch, CURLOPT_URL, $url);
+											    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+											    $output = curl_exec($ch);
+											    curl_close($ch);
+											    $img = unserialize($output);
+												$img = $img[0]['thumbnail_large'];
 											?>
 											<div class="location__video">
 												<a href="#lightbox-<?php echo get_sub_field('vimeo_video_id'); ?>" class="open-lightbox"><img src="<?php echo $img; ?>"></a>
