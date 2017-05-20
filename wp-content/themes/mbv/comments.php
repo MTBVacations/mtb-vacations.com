@@ -23,8 +23,8 @@ if (post_password_required())
             <?php
                 printf(
                     _n(
-                        'One Response to %2$s',
-                        '%1$s Responses to %2$s',
+                        'One Comment',
+                        '%1$s Comments',
                         get_comments_number(),
                         'twentyten'
                     ),
@@ -35,7 +35,7 @@ if (post_password_required())
         </h2>
 
         <ol>
-            <?php wp_list_comments('type=comment&callback=zemplate_comment'); ?>
+            <?php wp_list_comments('type=comment&callback=zemplate_comment&reverse_top_level=true'); ?>
         </ol>
 
         <?php if (get_comment_pages_count() > 1 && get_option('page_comments')) : // are there comments to navigate through ?>

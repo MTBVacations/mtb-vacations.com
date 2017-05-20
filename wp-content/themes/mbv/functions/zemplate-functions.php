@@ -96,6 +96,7 @@ add_shortcode("wpnavmenu", "wp_nav_menu_shortcode");
 
 function excerpt_read_more_link($output) {
     global $post;
+    // return $output . '&hellip;';
     return $output . ' <a class="link--read-more" href="'. get_permalink() . '">' . __('read more &gt;') . '</a>';
 }
 add_filter('get_the_excerpt', 'excerpt_read_more_link');
@@ -136,19 +137,15 @@ function zemplate_comment($comment, $args, $depth) {
 
     echo '<div class="comment__meta">';
     echo '<div class="comment__author vcard">';
-    if ($args['avatar_size'] != 0):
-        echo get_avatar($comment, $args['avatar_size']);
         echo get_comment_author_link();
     echo '</div>';
-    endif;
 
     if ($comment->comment_approved == '0'):
         echo '<em class="comment-awaiting-moderation"> Your comment is awaiting moderation. </em>';
     endif;
 
     echo '<div class="comment__date commentmetadata">';
-        echo get_comment_date();
-        echo get_comment_time();
+        echo get_comment_date('F d, Y – H:i a');
         echo edit_comment_link(__('(Edit)'),'  ','');
     echo '</div>';
     echo '</div>';

@@ -61,7 +61,8 @@ a {
 			border: 3px solid $color-1;
 		}
 	}
-	&.link--read-more {
+	&.link--read-more,
+	&.comment-reply-link {
 		display: block;
 		color: $color-1;
 		font: {

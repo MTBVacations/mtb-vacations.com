@@ -1,6 +1,13 @@
 /*------------------------------------*\
     ::Tips & Gear
 \*------------------------------------*/
+.blog .main-head {
+	height: 400px;
+
+	@include bp($planetary){
+		height: 300px;
+	}
+}
 
 .single-post {
 	p {
@@ -52,4 +59,49 @@
 .post__comments {
 	border-top: 1px solid $color-1;
 	margin-top: 2em;
+	padding-top: 2rem;
+
+	ol {
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	ol > li {
+		border-bottom: 1px solid $color-1;
+		padding: 1rem 0;
+	}
+	
+	.comment__author {
+		display: inline-block;
+		font-weight: bold;
+		padding-right: 1rem;
+	}
+
+	.comment__date {
+		display: inline-block;
+	}
+
+	.comment-respond {
+		margin-top: 2rem;
+	}
+
+	.comment-reply-link {
+		padding-top: .5rem;
+	}
+
+	.children {
+		list-style: none;
+		padding: 1rem 2rem;
+
+		li {
+			border-top: 1px dotted $color-1;
+			padding-top: 1.5rem;
+			margin-top: .5rem;
+		}
+	}
+
+	#cancel-comment-reply-link {
+		text-decoration: underline;
+	}
 }
