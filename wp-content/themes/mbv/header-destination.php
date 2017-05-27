@@ -50,20 +50,5 @@
             ?>
         </div> <!-- //__inner -->
       </div>
-        <?php if(have_rows('image_slider')): ?>
-            <div class="hero hero__destination">
-                <div class="flexslider">
-                    <ul class="slides">
-                        <?php while(have_rows('image_slider')) : the_row(); ?>
-                            <?php 
-                                $img = get_sub_field('image'); 
-                                $img = $img['url'];
-                            ?>
-                            <li class="hero__image" style="background-image:url('<?php echo $img; ?>');"></li>
-                        <?php endwhile; ?>
-                    </ul>
-                </div>
-            </div>
-        <?php endif; ?>
         <?php //echo do_shortcode('[pagelist id="9" fixed="right-bottom"]'); ?>
     </header> <!-- //main-head -->

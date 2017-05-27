@@ -32,7 +32,7 @@
 
 
 <div class="wrap-all-the-things adf">
-    <header class="main-head">
+    <header class="main-head main-head--short">
         <div class="main-head__wrap">
             <a href="<?php echo site_url('/'); ?>" class="logo">
                 <img src="<?php bloginfo('template_url'); ?>/images/general-png/logo.png" alt="Home page link: MBV logo">

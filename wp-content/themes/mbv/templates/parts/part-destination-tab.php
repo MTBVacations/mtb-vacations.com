@@ -22,8 +22,23 @@
 		?>
 
 		<div class="featured__location">
-			<?php $img = $featured['image']; $img = $img['url']; ?>
-			<div class="location__item location__image" style="background-image:url('<?php echo $img; ?>');"></div>
+			<?php if($featured['featured_image'] == 'youtube'): ?>
+				<div class="location__item location__video">
+					<?php $img = "https://img.youtube.com/vi/" . $featured['youtube_video_id'] . "/0.jpg"; ?>
+					<a href="#lightbox-<?php echo $featured['youtube_video_id']; ?>" class="open-lightbox"><img src="<?php echo $img; ?>"></a>
+				</div>
+				<div class="lightbox" id="lightbox-<?php echo $featured['youtube_video_id']; ?>">
+					<div class="lightbox__content">
+	    				<div class="youtube__container">
+	    					<iframe src="http://www.youtube.com/embed/<?php echo $featured['youtube_video_id']; ?>?rel=0&hd=1&modestbranding=1&showinfo=0" frameborder="0" allowfullscreen style="position: absolute; top: 0; left: 0; width: 100%; height: 100%"></iframe>
+	    				</div>
+					</div>
+				</div>
+			<?php elseif ($featured['featured_image'] == 'vimeo'): ?>
+			<?php else: ?>
+				<?php $img = $featured['image']; $img = $img['url']; ?>
+				<div class="location__item location__image js-background js-image-height" data-image="background-image:url('<?php echo $img; ?>');"></div>
+			<?php endif; ?>
 			<div class="location__item location__content">
 				<h3 class="heading--light"><?php echo $featured['title']; ?></h3>
 
@@ -73,8 +88,43 @@
 							<?php if($slideCnt > 1): ?>
 		                        <li class="slider__item">
 		                            <div class="slider__content background--white">
-		                            	<?php $img = get_sub_field('image'); $image = $img['sizes']['medium']; ?>
-		                            	<div class="location__image js-background js-image-height" data-image="background-image:url('<?php echo $image; ?>');"></div>
+			                            <?php if(get_sub_field('featured_image') == 'youtube'): ?>
+											<div class="location__video">
+												<?php $img = "https://img.youtube.com/vi/" . get_sub_field('youtube_video_id') . "/0.jpg"; ?>
+												<a href="#lightbox-<?php echo get_sub_field('youtube_video_id'); ?>" class="open-lightbox"><img src="<?php echo $img; ?>"></a>
+											</div>
+                                			<div class="lightbox" id="lightbox-<?php echo get_sub_field('youtube_video_id'); ?>">
+                                				<div class="lightbox__content">
+	                                				<div class="youtube__container">
+	                                					<iframe src="http://www.youtube.com/embed/<?php echo get_sub_field('youtube_video_id'); ?>?rel=0&hd=1&modestbranding=1&showinfo=0" frameborder="0" allowfullscreen style="position: absolute; top: 0; left: 0; width: 100%; height: 100%"></iframe>
+	                                				</div>
+                                				</div>
+                                			</div>
+                                		<?php elseif(get_sub_field('featured_image') == 'vimeo'): ?>
+                                			<?php 
+                                				$url = "http://vimeo.com/api/v2/video/" . get_sub_field('vimeo_video_id') . ".php";
+                                				$ch = curl_init();
+											    curl_setopt($ch, CURLOPT_URL, $url);
+											    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+											    $output = curl_exec($ch);
+											    curl_close($ch);
+											    $img = unserialize($output);
+												$img = $img[0]['thumbnail_large'];
+											?>
+											<div class="location__video">
+												<a href="#lightbox-<?php echo get_sub_field('vimeo_video_id'); ?>" class="open-lightbox"><img src="<?php echo $img; ?>"></a>
+											</div>
+                                			<div class="lightbox" id="lightbox-<?php echo get_sub_field('vimeo_video_id'); ?>">
+                                				<div class="lightbox__content">
+	                                				<div class="youtube__container">
+	                                				<iframe src="https://player.vimeo.com/video/<?php echo get_sub_field('vimeo_video_id'); ?>" width="640" height="360" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+	                                				</div>
+                                				</div>
+                                			</div>
+										<?php else: ?>
+			                            	<?php $img = get_sub_field('image'); $image = $img['sizes']['medium']; ?>
+			                            	<div class="location__image js-background js-image-height" data-image="background-image:url('<?php echo $image; ?>');"></div>
+										<?php endif; ?>
 		                            	<div class="location__content">
 		                                	<h3 class="heading--light"><?php the_sub_field('title'); ?></h3>
 

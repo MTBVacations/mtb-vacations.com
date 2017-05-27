@@ -4,7 +4,7 @@
 .featured__location {
 	background: #ffffff;
 	display: flex;
-	justify-content: space-around;
+	justify-content: space-between;
 	padding: .25em;
 	float: left;
 	width: 100%;
@@ -13,19 +13,32 @@
 		width: 50%;
 	}
 	.location__image {
-		background-size: cover;
+		background-size: contain;
 		background-repeat: no-repeat;
-		background-position: center;
+		background-position: top center;
 		float: left;
-		min-height: 200px;
+		min-height: auto;
+		@include bp($planetary){
+			min-height: 200px;
+		}
+	}
+	.location__video {
+		position: relative;
+		width: auto;
+		img {
+			height: 100%;
+			@include bp($planetary){
+				height: auto;
+			}
+		}
 	}
 	.location__content {
-		padding: 2em;
+		padding: 1em 1.5rem;
 		float: left;
 	}
 	.location__review {
-		width: 220px;
 		padding-bottom: 1em;
+		width: 220px;
 	}
 
 	@include bp($planetary){
@@ -42,17 +55,18 @@
 .location__list {
 	float: left;
 	.location__image {
-		background-size: cover;
-		height: 200px;
+		background-size: contain;
+		background-position: top center;
 		background-repeat: no-repeat;
-		@include bp($max:650px){
+		height: 260px;
+		@include bp($planetary){
 			height: 300px;
 		}
 	}
 	.location__content {
 		position: relative;
-		min-height: 440px;
-		padding: 1em 1.5em;
+		min-height: 430px;
+		padding: 1em 1.5rem;
 		.location__review {
 			position: absolute;
 			bottom: 1em; left: 1.5em; right: 1.5em;
@@ -77,7 +91,6 @@
 }
 
 .location__error {
-	background: rgba(#ffffff, .5);
 	padding: .5em;
 }
 
@@ -102,5 +115,20 @@
 			color: $color-1;
 			text-decoration: underline;
 		}
+	}
+}
+
+.location__video {
+	position: relative;
+	a:after {
+		content: url('images/general-png/youtube.png');
+		position: absolute;
+		font-size: 3rem;
+		top: 50%;
+		left: 50%;
+		height: 50px;
+		width: 75px;
+		margin-top: -25px;
+		margin-left: -37px;
 	}
 }
