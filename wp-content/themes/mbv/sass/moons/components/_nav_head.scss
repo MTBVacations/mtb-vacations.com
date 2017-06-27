@@ -45,6 +45,9 @@ body { // so it's full height
   height: 90px;
   transition: background 600ms;
   z-index: 11;
+  @include bp(700px){
+    height: 65px;
+  }
     &--scroll {
         background: rgba(#1a1e23, .8);
     }
@@ -61,6 +64,41 @@ body { // so it's full height
     }
   }
 }
+.yeti-logo {
+    border-left: 1px solid #fff;
+    position: fixed;
+    left: 26em;
+    top: 1rem;
+    z-index: 22;
+
+    span {
+        color: #fff;
+        font-size: .625rem;
+        padding-left: 1.5rem;
+    }
+    a {
+        color: #fff;
+        display: block;
+        width: 150px;
+        padding: .25rem 1rem .25rem 1.5rem;
+    }
+
+    @include bp(700px){
+        left: 10.5em;
+        top: .75em;
+        span {
+            padding-left: .5rem;
+        }
+        a {
+            padding: 0 0 0 .5rem;
+            width: 80px;
+        }
+    }
+
+    @include bp($min:700px, $max:1200px){
+        left: 16.5em;
+    }
+}
 .logo{
     position: absolute;
     left: 10em;
@@ -68,6 +106,11 @@ body { // so it's full height
     width: 200px;
     height: 64px;
     z-index: 22;
+
+    @include bp(700px){
+        width: 125px;
+        height: 30px;
+    }
     @include bp(1200px){
         left: 1em;
     }
@@ -119,7 +162,7 @@ body { // so it's full height
             }
             @include bp($max: 700px){
                 width: 100%;
-                padding: 0 3em;
+                padding: 0 1em;
             }
         }
         a {
@@ -151,9 +194,6 @@ body { // so it's full height
                     right: 0;
                     bottom: 0;
                     border-bottom: 1px solid #fff;
-                }
-                @include bp(700px){
-                    width: 80%;
                 }
             }
             &:hover,
@@ -216,14 +256,18 @@ body { // so it's full height
     display: block;
     position: absolute;
     z-index: 50;
-    top: 1em;
+    top: 1rem;
     right: 10em;
     width: 4.4em;
     height: 4.4em;
     background: #215d6e;
     line-height: 10em;
     background: transparent;
-    @include bp($max: 1200px){
+    @include bp($max: 700px){
+        top: 0;
+        right: 1em;
+    }
+    @include bp($min: 700px, $max: 1200px){
         right: 1em;
     }
     span {

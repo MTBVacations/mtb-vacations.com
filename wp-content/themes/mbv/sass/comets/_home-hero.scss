@@ -1,0 +1,26 @@
+.home {
+	.hero {
+		.hero-content {
+			text-align: center;
+		}
+		.content__sub-title {
+			color: $color-2-light;
+		}
+		.content__title {
+			color: #fff;
+		}
+		.content__link {
+			background: rgba(#fff, .8);
+			color: $color-2-light;
+			font-size: 1.375rem;
+			font-style: italic;
+			font-weight: bold;
+			padding-top: 1rem;
+			padding-bottom: 1rem;
+
+			@include bp(700px){
+		        font-size: 1rem;
+		    }
+		}
+	}
+}

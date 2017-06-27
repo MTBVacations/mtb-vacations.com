@@ -6,6 +6,10 @@
 	.main-head {
 		background-color: #111111;
 		height: 90px;
+
+		@include bp(700px){
+	        height: 65px;
+	    }
 	}
 
 	strong {

@@ -57,9 +57,15 @@
     ?>
     <header class="main-head<?php echo $addClass; ?>">
       <div class="main-head__wrap">
-          <a href="<?php echo site_url('/'); ?>" class="logo">
-              <img src="<?php bloginfo('template_url'); ?>/images/general-png/logo.png" alt="Home page link: MBV logo">
-          </a>
+          <div class="main-head__logos">
+              <a href="<?php echo site_url('/'); ?>" class="logo">
+                  <img src="<?php bloginfo('template_url'); ?>/images/general-png/logo.png" alt="Home page link: MBV logo">
+              </a>
+              <div class="yeti-logo">
+                  <span>Powered by</span>
+                  <a href="http://www.yeticycles.com/" target="_blank"><img src="<?php bloginfo('template_url'); ?>/images/general-png/yeti.png" alt="Yeti Bikes link: Yeti Bikes logo"></a>
+              </div>
+          </div>
           <div class="main-head__nav">
               <span id="nav-toggle" class="nav-toggle"><span><em>Menu</em></span></span>
               <?php
@@ -74,39 +80,30 @@
           </div> <!-- //__inner -->
         </div>
         <?php if(is_page('2')): if(have_rows('hero_slides')): ?>
-            <div class="hero home__slider">
-                <div class="flexslider">
-                    <ul class="slides">
-                        <?php while(have_rows('hero_slides')) : the_row(); ?>
-                            <?php 
-                                $txtColor = get_sub_field('large_text_color');
-                                $txtColor = 'txt--'.$txtColor;
-                                $img = get_sub_field('image'); 
-                                $img = $img['url'];
-                            ?>
-                            <li class="hero__image" style="background-image:url('<?php echo $img; ?>');">
-                                <div class="hero-content__wrapper">
-                                    <div class="hero-content">
-                                        <div class="content__sub-title"><?php the_sub_field('small_text'); ?></div>
-                                        <div class="content__title <?php echo $txtColor; ?>">
-                                            <?php the_sub_field('large_text'); ?>
-                                        </div>
-                                        <?php if(get_sub_field('link_text')): ?>
-                                            <?php 
-                                                $link = get_sub_field('links_to'); 
-                                                $linkId = $link->ID;
-                                                $link = get_permalink($linkId); 
-                                            ?>
-                                            <div class="content__link">
-                                                <a class="link--background" href="<?php echo $link; ?>"><?php the_sub_field('link_text'); ?></a>
-                                            </div>
-                                        <?php endif; ?>
-                                    </div>
+            <div class="hero">
+                <?php while(have_rows('hero_slides')) : the_row(); ?>
+                    <?php 
+                        $txtColor = get_sub_field('large_text_color');
+                        $txtColor = 'txt--'.$txtColor;
+                        $img = get_sub_field('image'); 
+                        $img = $img['url'];
+                    ?>
+                    <div class="hero__image" style="background-image:url('<?php echo $img; ?>');">
+                        <div class="hero-content__wrapper">
+                            <div class="hero-content">
+                                <div class="content__sub-title"><?php the_sub_field('small_text'); ?></div>
+                                <div class="content__title">
+                                    <?php the_sub_field('large_text'); ?>
                                 </div>
-                            </li>
-                        <?php endwhile; ?>
-                    </ul>
-                </div>
+                                <?php if(get_sub_field('link_text')): ?>
+                                    <div class="content__link">
+                                        <?php the_sub_field('link_text'); ?>
+                                    </div>
+                                <?php endif; ?>
+                            </div>
+                        </div>
+                    </div>
+                <?php endwhile; ?>
             </div>
         <?php endif; else: ?>
             <?php $id = get_the_ID();

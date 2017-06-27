@@ -34,21 +34,27 @@
 <div class="wrap-all-the-things page__destination">
     <header class="main-head">
         <div class="main-head__wrap">
-            <a href="<?php echo site_url('/'); ?>" class="logo">
-                <img src="<?php bloginfo('template_url'); ?>/images/general-png/logo.png" alt="Home page link: MBV logo">
-            </a>
-        <div class="main-head__nav">
-            <span id="nav-toggle" class="nav-toggle"><span><em>Menu</em></span></span>
-            <?php
-                $attr = array(
-                    'theme_location'  => 'head-menu',
-                    'container'       => 'nav',
-                    'container_class' => 'head-nav',
-                    'menu_class'      => 'menu'
-                );
-                wp_nav_menu($attr);
-            ?>
-        </div> <!-- //__inner -->
-      </div>
+            <div class="main-head__logos">
+                <a href="<?php echo site_url('/'); ?>" class="logo">
+                    <img src="<?php bloginfo('template_url'); ?>/images/general-png/logo.png" alt="Home page link: MBV logo">
+                </a>
+                <div class="yeti-logo">
+                  <span>Powered by</span>
+                  <a href="http://www.yeticycles.com/" target="_blank"><img src="<?php bloginfo('template_url'); ?>/images/general-png/yeti.png" alt="Yeti Bikes link: Yeti Bikes logo"></a>
+              </div>
+            </div>
+            <div class="main-head__nav">
+                <span id="nav-toggle" class="nav-toggle"><span><em>Menu</em></span></span>
+                <?php
+                    $attr = array(
+                        'theme_location'  => 'head-menu',
+                        'container'       => 'nav',
+                        'container_class' => 'head-nav',
+                        'menu_class'      => 'menu'
+                    );
+                    wp_nav_menu($attr);
+                ?>
+            </div> 
+      </div> <!-- //__inner -->
         <?php //echo do_shortcode('[pagelist id="9" fixed="right-bottom"]'); ?>
     </header> <!-- //main-head -->

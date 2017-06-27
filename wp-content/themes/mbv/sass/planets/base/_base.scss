@@ -24,6 +24,10 @@ body {
 
 .home .main-head {
 	height: 84.5%;
+
+	@include bp(700px){
+        height: 350px;
+    }
 }
 
 .wrap-all-the-things {

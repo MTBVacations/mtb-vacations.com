@@ -65,10 +65,6 @@
 					color: #fff;
 				}
 			}
-			.content__link {
-				text-align: center;
-				padding-top: 10%;
-			}
 
 			@include bp($max:850px){
 				.content__sub-title {
@@ -92,5 +88,10 @@
 				}
 			}
 		}
+	}
+
+	.content__link {
+		text-align: center;
+		padding-top: 10%;
 	}
 }
