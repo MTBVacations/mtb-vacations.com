@@ -27,6 +27,8 @@
     <?php get_template_part('templates/parts/header', 'tag-manager'); ?>
     <?php get_template_part('templates/parts/header', 'doubleclick'); ?>
 
+    <meta name="google-site-verification" content="l2JMjT5BFWDwFFYD7uQn7UmeyDBKxz4ro7OJVjv6gyw" />
+
 </head>
 
 <body <?php body_class('page-'.$post->post_name); ?>>
