@@ -24,24 +24,19 @@
 
     <?php wp_head(); //mandatory ?>
     
-    <?php get_template_part('templates/parts/header', 'analytics'); ?>
+    <?php get_template_part('templates/parts/header', 'tag-manager'); ?>
     <?php get_template_part('templates/parts/header', 'doubleclick'); ?>
 
-<script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-
-  ga('create', 'UA-73066983-1', 'auto');
-  ga('send', 'pageview');
-
-</script>
+    <meta name="google-site-verification" content="l2JMjT5BFWDwFFYD7uQn7UmeyDBKxz4ro7OJVjv6gyw" />
 
 </head>
 
 <body <?php body_class('page-'.$post->post_name); ?>>
 
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-T6JWM69"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
 
 <div class="wrap-all-the-things">
     <?php
