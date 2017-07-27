@@ -56,10 +56,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
               <a href="<?php echo site_url('/'); ?>" class="logo">
                   <img src="<?php bloginfo('template_url'); ?>/images/general-png/logo.png" alt="Home page link: MBV logo">
               </a>
-              <div class="yeti-logo">
-                  <span>Powered by</span>
-                  <a href="http://www.yeticycles.com/" target="_blank"><img src="<?php bloginfo('template_url'); ?>/images/general-png/yeti.png" alt="Yeti Bikes link: Yeti Bikes logo"></a>
-              </div>
           </div>
           <div class="main-head__nav">
               <span id="nav-toggle" class="nav-toggle"><span><em>Menu</em></span></span>
@@ -86,13 +82,27 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                     <div class="hero__image" style="background-image:url('<?php echo $img; ?>');">
                         <div class="hero-content__wrapper">
                             <div class="hero-content">
-                                <div class="content__sub-title"><?php the_sub_field('small_text'); ?></div>
-                                <div class="content__title">
-                                    <?php the_sub_field('large_text'); ?>
-                                </div>
+                                <?php if(get_sub_field('small_text')): ?>
+                                    <div class="content__sub-title"><?php the_sub_field('small_text'); ?></div>
+                                <?php endif; ?>
+                                <?php if(get_sub_field('large_text')): ?>
+                                    <div class="content__title">
+                                        <?php the_sub_field('large_text'); ?>
+                                    </div>
+                                <?php endif; ?>
+                                <?php if(get_sub_field('content_block')): ?>
+                                    <div class="content__text">
+                                        <?php the_sub_field('content_block'); ?>
+                                    </div>
+                                <?php endif; ?>
                                 <?php if(get_sub_field('link_text')): ?>
+                                    <?php 
+                                        $link = get_sub_field('links_to'); 
+                                        $linkId = $link->ID;
+                                        $link = get_permalink($linkId); 
+                                    ?>
                                     <div class="content__link">
-                                        <?php the_sub_field('link_text'); ?>
+                                        <a class="link--background" href="<?php echo $link; ?>"><?php the_sub_field('link_text'); ?></a>
                                     </div>
                                 <?php endif; ?>
                             </div>
