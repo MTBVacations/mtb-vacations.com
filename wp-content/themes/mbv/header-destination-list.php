@@ -24,12 +24,18 @@
 
     <?php wp_head(); //mandatory ?>
     
-    <?php get_template_part('templates/parts/header', 'analytics'); ?>
+    <?php get_template_part('templates/parts/header', 'tag-manager'); ?>
     <?php get_template_part('templates/parts/header', 'doubleclick'); ?>
+
+    <meta name="google-site-verification" content="l2JMjT5BFWDwFFYD7uQn7UmeyDBKxz4ro7OJVjv6gyw" />
 </head>
 
 <body <?php body_class('page-'.$post->post_name); ?>>
 
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-T6JWM69"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
 
 <div class="wrap-all-the-things adf">
     <header class="main-head main-head--short">
@@ -37,7 +43,7 @@
             <a href="<?php echo site_url('/'); ?>" class="logo">
                 <img src="<?php bloginfo('template_url'); ?>/images/general-png/logo.png" alt="Home page link: MBV logo">
             </a>
-          <div class="main-head__nav">
+        <div class="main-head__nav">
             <span id="nav-toggle" class="nav-toggle"><span><em>Menu</em></span></span>
             <?php
                 $attr = array(
