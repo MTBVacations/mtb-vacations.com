@@ -83,15 +83,15 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                         <div class="hero-content__wrapper">
                             <div class="hero-content">
                                 <?php if(get_sub_field('small_text')): ?>
-                                    <div class="content__sub-title"><?php the_sub_field('small_text'); ?></div>
+                                    <div class="content__sub-title <?php echo $txtColor; ?>"><?php the_sub_field('small_text'); ?></div>
                                 <?php endif; ?>
                                 <?php if(get_sub_field('large_text')): ?>
-                                    <div class="content__title">
+                                    <div class="content__title <?php echo $txtColor; ?>">
                                         <?php the_sub_field('large_text'); ?>
                                     </div>
                                 <?php endif; ?>
                                 <?php if(get_sub_field('content_block')): ?>
-                                    <div class="content__text">
+                                    <div class="content__text <?php echo $txtColor; ?>">
                                         <?php the_sub_field('content_block'); ?>
                                     </div>
                                 <?php endif; ?>
@@ -122,6 +122,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                     $img    = get_field('hero_image', $pageId); 
                     $img    = $img['url']; 
                 } elseif(is_single()){
+                    $pageId = $id;
                     if(get_field('youtube_video_id') != '') {
                         $img = "";
                     } else {
