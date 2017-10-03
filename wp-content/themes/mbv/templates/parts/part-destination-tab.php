@@ -1,4 +1,4 @@
-<div class="tab-content__inside location loading-opacity">
+<div class="tab-content__inside location">
 
 	<?php if($title == 'tours--guides') {
 			$title = 'tours_guides';
@@ -82,111 +82,109 @@
 
 		<div class="location__list">
 			<?php if(have_rows($title)): ?>
-				<div class="flexslider-location slider">
-		            <ul class="slides">
-						<?php $slideCnt = 1; while(have_rows($title)): the_row(); ?>
-							<?php if($slideCnt > 1): ?>
-		                        <li class="slider__item">
-		                            <div class="slider__content background--white">
-			                            <?php if(get_sub_field('featured_image') == 'youtube'): ?>
-											<div class="location__video">
-												<?php $img = "https://img.youtube.com/vi/" . get_sub_field('youtube_video_id') . "/0.jpg"; ?>
-												<a href="#lightbox-<?php echo get_sub_field('youtube_video_id'); ?>" class="open-lightbox"><img src="<?php echo $img; ?>"></a>
-											</div>
-                                			<div class="lightbox" id="lightbox-<?php echo get_sub_field('youtube_video_id'); ?>">
-                                				<div class="lightbox__content">
-	                                				<div class="youtube__container">
-	                                					<iframe src="http://www.youtube.com/embed/<?php echo get_sub_field('youtube_video_id'); ?>?rel=0&hd=1&modestbranding=1&showinfo=0" frameborder="0" allowfullscreen style="position: absolute; top: 0; left: 0; width: 100%; height: 100%"></iframe>
-	                                				</div>
+				<div class="destination__cards">
+					<?php $slideCnt = 1; while(have_rows($title)): the_row(); ?>
+						<?php if($slideCnt > 1): ?>
+	                        <div class="destination__card">
+	                            <div class="card__content background--white">
+		                            <?php if(get_sub_field('featured_image') == 'youtube'): ?>
+										<div class="location__video">
+											<?php $img = "https://img.youtube.com/vi/" . get_sub_field('youtube_video_id') . "/0.jpg"; ?>
+											<a href="#lightbox-<?php echo get_sub_field('youtube_video_id'); ?>" class="open-lightbox"><img src="<?php echo $img; ?>"></a>
+										</div>
+                            			<div class="lightbox" id="lightbox-<?php echo get_sub_field('youtube_video_id'); ?>">
+                            				<div class="lightbox__content">
+                                				<div class="youtube__container">
+                                					<iframe src="http://www.youtube.com/embed/<?php echo get_sub_field('youtube_video_id'); ?>?rel=0&hd=1&modestbranding=1&showinfo=0" frameborder="0" allowfullscreen style="position: absolute; top: 0; left: 0; width: 100%; height: 100%"></iframe>
                                 				</div>
-                                			</div>
-                                		<?php elseif(get_sub_field('featured_image') == 'vimeo'): ?>
-                                			<?php 
-                                				$url = "http://vimeo.com/api/v2/video/" . get_sub_field('vimeo_video_id') . ".php";
-                                				$ch = curl_init();
-											    curl_setopt($ch, CURLOPT_URL, $url);
-											    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-											    $output = curl_exec($ch);
-											    curl_close($ch);
-											    $img = unserialize($output);
-												$img = $img[0]['thumbnail_large'];
-											?>
-											<div class="location__video">
-												<a href="#lightbox-<?php echo get_sub_field('vimeo_video_id'); ?>" class="open-lightbox"><img src="<?php echo $img; ?>"></a>
-											</div>
-                                			<div class="lightbox" id="lightbox-<?php echo get_sub_field('vimeo_video_id'); ?>">
-                                				<div class="lightbox__content">
-	                                				<div class="youtube__container">
-	                                				<iframe src="https://player.vimeo.com/video/<?php echo get_sub_field('vimeo_video_id'); ?>" width="640" height="360" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
-	                                				</div>
+                            				</div>
+                            			</div>
+                            		<?php elseif(get_sub_field('featured_image') == 'vimeo'): ?>
+                            			<?php 
+                            				$url = "http://vimeo.com/api/v2/video/" . get_sub_field('vimeo_video_id') . ".php";
+                            				$ch = curl_init();
+										    curl_setopt($ch, CURLOPT_URL, $url);
+										    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+										    $output = curl_exec($ch);
+										    curl_close($ch);
+										    $img = unserialize($output);
+											$img = $img[0]['thumbnail_large'];
+										?>
+										<div class="location__video">
+											<a href="#lightbox-<?php echo get_sub_field('vimeo_video_id'); ?>" class="open-lightbox"><img src="<?php echo $img; ?>"></a>
+										</div>
+                            			<div class="lightbox" id="lightbox-<?php echo get_sub_field('vimeo_video_id'); ?>">
+                            				<div class="lightbox__content">
+                                				<div class="youtube__container">
+                                				<iframe src="https://player.vimeo.com/video/<?php echo get_sub_field('vimeo_video_id'); ?>" width="640" height="360" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
                                 				</div>
-                                			</div>
-										<?php else: ?>
-			                            	<?php $img = get_sub_field('image'); $image = $img['sizes']['medium']; ?>
-			                            	<div class="location__image js-background js-image-height" data-image="background-image:url('<?php echo $image; ?>');"></div>
-										<?php endif; ?>
-		                            	<div class="location__content">
-		                                	<h3 class="heading--light"><?php the_sub_field('title'); ?></h3>
+                            				</div>
+                            			</div>
+									<?php else: ?>
+		                            	<?php $img = get_sub_field('image'); $image = $img['sizes']['medium']; ?>
+		                            	<div class="location__image js-background js-image-height" data-image="background-image:url('<?php echo $image; ?>');"></div>
+									<?php endif; ?>
+	                            	<div class="location__content">
+	                                	<h3 class="heading--light"><?php the_sub_field('title'); ?></h3>
 
-		                                	<?php $type = get_sub_field('type'); if($type): ?>
-		                                		<div class="location__type">
-		                                			<strong>Type:</strong>
-		                                			<span><?php echo $type ?></span>
-		                                		</div>
-		                                	<?php endif; ?>
-		                                	<?php $location = get_sub_field('location'); if($location): ?>
-		                                		<div class="location__location">
-		                                			<strong>Location:</strong>
-		                                			<span><?php echo $location ?></span>
-		                                		</div>
-		                                	<?php endif; ?>
-		                                	<?php $address = get_sub_field('address'); if($address): ?>
-		                                		<div class="location__address">
-		                                			<strong>Address:</strong>
-		                                			<span><?php echo $address ?></span>
-		                                		</div>
-		                                	<?php endif; ?>
-		                                	<?php $contact = get_sub_field('contact'); if($contact): ?>
-		                                		<div class="location__contact">
-		                                			<strong>Contact:</strong>
-		                                			<span><?php echo $contact ?></span>
-		                                		</div>
-		                                	<?php endif; ?>
-		                                	<?php $website = get_sub_field('website'); if($website): ?>
-		                                		<div class="location__website">
-		                                			<span><a target="_blank" href="<?php echo $website; ?>">Visit Website</a></span>
-		                                		</div>
-		                                	<?php endif; ?>
-		                                	<?php $desc = get_sub_field('description'); if($desc): ?>
-		                                		<?php  
-	                    				    		$shortDesc       = substr($desc, 0, 200);
-	                    				    		$lastSpace  = strrpos($shortDesc, ' ');
-	                    				    		$shortDesc       = substr($shortDesc, 0, $lastSpace);
-	                    				    		$shortDesc       .= '...';
-		                                		?>
-		                                		<div class="location__desc">
-		                                			<?php echo $shortDesc; ?>
-		                                			<?php $id = get_the_ID(); ?>
-		                                			<a href="#lightbox-<?php echo $title . '-' . $slideCnt; ?>" class="open-lightbox">Read More  &rsaquo;</a>
-		                                			<div class="lightbox" id="lightbox-<?php echo $title . '-' .  $slideCnt; ?>">
-		                                				<div class="lightbox__content">
-		                                					<h3 class="heading--light"><?php the_sub_field('title'); ?></h3>
-		                                					<?php the_sub_field('description'); ?>
-		                                				</div>
-		                                			</div>
+	                                	<?php $type = get_sub_field('type'); if($type): ?>
+	                                		<div class="location__type">
+	                                			<strong>Type:</strong>
+	                                			<span><?php echo $type ?></span>
+	                                		</div>
+	                                	<?php endif; ?>
+	                                	<?php $location = get_sub_field('location'); if($location): ?>
+	                                		<div class="location__location">
+	                                			<strong>Location:</strong>
+	                                			<span><?php echo $location ?></span>
+	                                		</div>
+	                                	<?php endif; ?>
+	                                	<?php $address = get_sub_field('address'); if($address): ?>
+	                                		<div class="location__address">
+	                                			<strong>Address:</strong>
+	                                			<span><?php echo $address ?></span>
+	                                		</div>
+	                                	<?php endif; ?>
+	                                	<?php $contact = get_sub_field('contact'); if($contact): ?>
+	                                		<div class="location__contact">
+	                                			<strong>Contact:</strong>
+	                                			<span><?php echo $contact ?></span>
+	                                		</div>
+	                                	<?php endif; ?>
+	                                	<?php $website = get_sub_field('website'); if($website): ?>
+	                                		<div class="location__website">
+	                                			<span><a target="_blank" href="<?php echo $website; ?>">Visit Website</a></span>
+	                                		</div>
+	                                	<?php endif; ?>
+	                                	<?php $desc = get_sub_field('description'); if($desc): ?>
+	                                		<?php  
+                    				    		$shortDesc       = substr($desc, 0, 200);
+                    				    		$lastSpace  = strrpos($shortDesc, ' ');
+                    				    		$shortDesc       = substr($shortDesc, 0, $lastSpace);
+                    				    		$shortDesc       .= '...';
+	                                		?>
+	                                		<div class="location__desc">
+	                                			<?php echo $shortDesc; ?>
+	                                			<?php $id = get_the_ID(); ?>
+	                                			<a href="#lightbox-<?php echo $title . '-' . $slideCnt; ?>" class="open-lightbox">Read More  &rsaquo;</a>
+	                                			<div class="lightbox" id="lightbox-<?php echo $title . '-' .  $slideCnt; ?>">
+	                                				<div class="lightbox__content">
+	                                					<h3 class="heading--light"><?php the_sub_field('title'); ?></h3>
+	                                					<?php the_sub_field('description'); ?>
+	                                				</div>
 	                                			</div>
-		                                	<?php endif; ?>
-		                                	<?php 
-		                                		$rating = get_sub_field('review');
-		                                		$img = '/images/general-png/stars-'.$rating.'.png';
-		                                	?>
-		                                	<div class="location__review"><img src="<?php bloginfo('template_url'); ?><?php echo $img; ?>" alt="Review <?php echo $rating; ?> star rating" /></div>
-		                                </div>
-		                            </div>
-		                        </li>
-							<?php endif; ?>
-						<?php $slideCnt++; endwhile; ?>
-		            </ul>
+                                			</div>
+	                                	<?php endif; ?>
+	                                	<?php 
+	                                		$rating = get_sub_field('review');
+	                                		$img = '/images/general-png/stars-'.$rating.'.png';
+	                                	?>
+	                                	<div class="location__review"><img src="<?php bloginfo('template_url'); ?><?php echo $img; ?>" alt="Review <?php echo $rating; ?> star rating" /></div>
+	                                </div>
+	                            </div>
+	                        </div>
+						<?php endif; ?>
+					<?php $slideCnt++; endwhile; ?>
 		        </div>
 			<?php endif; ?>
 		</div>

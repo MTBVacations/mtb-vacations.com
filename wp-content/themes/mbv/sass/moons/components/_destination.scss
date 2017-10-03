@@ -16,53 +16,26 @@
 		background: #ffffff;
 		display: flex;
 		flex-wrap: wrap;
-		text-align: center;
 		position: relative;
 		max-height: 100%;
 
-		.destination__slider,
 		.details__inner {
-			flex: 0 1 50%;
 			padding: 2rem 1rem;
 
 			@include bp($solarsystem){
-				flex: 0 1 100%;
 				padding: 0 0 1rem;
 			}
 		}
 	}
 
-	.flexslider {
-		height: auto;
-		margin: 0;
-	}
-
 	.destination__desc {
 		color: #898989;
 		line-height: 24px;
-		padding: 0 $pad 1em $pad;
+		padding: 0 0 1em;
 
 		@include bp($planetary){
 			width: 100%;
 		}
-	}
-
-	.destination__content {
-		background-size: cover;
-		background-position: center;
-		background-repeat: no-repeat;
-
-		@include bp($planetary) {
-			background-color: $color-2;
-		}
-	}
-
-	.destination-location {
-		min-height: 650px;
-	}
-
-	@include bp($solarsystem) {
-		height: auto;
 	}
 }
 
@@ -83,7 +56,6 @@
 		&:after {
 			content: "";
 			position: absolute;
-			// top: 25%; 
 			top: 0;
 			right: 0;
 			height: 100%;
@@ -95,7 +67,6 @@
 				max-height: 35px;
 				fill:#4187c4;
 			}
-			// margin: 1em 0 2em 0;
 		}
 		.fact__text {
 			padding: 5px;
@@ -107,16 +78,6 @@
 		&:last-of-type:after {
 			border: none;
 		}
-		// &:first-of-type {
-		// 	&:before {
-		// 		content: "";
-		// 		position: absolute;
-		// 		top: 53%; 
-		// 		left: 0;
-		// 		height: 45%;
-		// 		border-left: 1px solid #4187c4;
-		// 	}
-		// }
 
 		@include bp($max:875px){
 			width: 20%;

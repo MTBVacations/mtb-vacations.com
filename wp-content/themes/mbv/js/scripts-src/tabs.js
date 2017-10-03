@@ -1,95 +1,40 @@
-/*------------------------------------*\
-    ::Tabs
-\*------------------------------------*/
-var windowWidth     = $(window).width();
+// Hide all tab content
+var tabContent = document.querySelectorAll('.tab-content');
+var tabHeadings = document.querySelectorAll('.tabs__nav li');
+var accordionHeadings = document.querySelectorAll('.tab-heading');
 
-
-var blockTabs = {
-    init: function() {
-        this.bindUIfunctions();
-        this.pageLoadCorrectTab();
-    },
-    bindUIfunctions: function() {
-        // Delegation
-        $(document)
-            .on("click", ".transformer-tabs--block a[href^='#']:not('.active')", function(event) {
-                blockTabs.changeTab(this.hash);
-                event.preventDefault();
-            })
-            .on("click", ".transformer-tabs--block li.active > a", function(event) {
-                event.preventDefault();
-            });
-    },
-    changeTab: function(hash) {
-        var anchor = $("[href=" + hash + "]");
-        var div = $(hash);
-        // activate correct anchor (visually)
-        anchor.parent().addClass("active");
-        anchor.parent().siblings().removeClass("active");
-        // activate correct div (visually)
-        div.addClass("active").siblings().removeClass("active");
-
-        if(windowWidth > 1024){
-            var tabHeight = div.height() + 100;
-        } else {
-            var tabHeight = div.height() + 380;
-        }
-        $('.content__inside').css('height',tabHeight);
-
-    },
-    // If the page has a hash on load, go to that tab
-    pageLoadCorrectTab: function() {
-        this.changeTab(document.location.hash);
+/* if in tab mode */
+for (var t = 0, tLen = tabHeadings.length; t < tLen; t++) {
+  tabHeadings[t].addEventListener('click', function(e) {
+    for (var c = 0, len = tabContent.length; c < len; c++) {
+      tabContent[c].classList.remove('active')
     }
-};
 
-$(function(){
-    blockTabs.init();
-});
-
-/*------------------------------------*\
-    :: Hides all but the active tab
-    visibly so links can be clicked.
-\*------------------------------------*/
-var tabContent      = $('.content__inside');
-var blockNav        = $('.transformer-tabs--block ul li');
-var activeTab       = $('.tab-content.active');
-
-setTimeout(function(){
-    // Set initial visibility and height
-    if(windowWidth > 1024){
-        var activeHeight    = activeTab.height() + 100;
-    } else {
-        var activeHeight    = activeTab.height() + 380;
+    for (var h = 0, len = tabHeadings.length; h < len; h++) {
+      tabHeadings[h].classList.remove('active')
     }
-    tabContent.animate({'height': activeHeight},100);
-}, 1000);
 
-setTimeout(function(){
-    $('.tab-content__inside').removeClass('loading-opacity');
-},1200);
+    var activeTab = e.currentTarget.getAttribute('data-index');
 
-activeTab.css('visibility', 'visible');
-
-// On click of navigation, swap visibility
-blockNav.click(function(){
-    tabContent.one('webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend',
-    function(e) {
-        $('.tab-content.active').css('visibility', 'visible');
-        $('.tab-content:not(.active)').css('visibility','hidden');
-        $("html, body").animate({ scrollTop: $('.transformer-tabs--block').offset().top }, 600);
-    });
-});
-
-/*------------------------------------*\
-    :: clicks first tab so that gap is not 
-    at bottom of tab
-\*------------------------------------*/
-
-if($('.single-destination').length <= 0) {
-    $(window).load(function(){
-        $('.active').trigger("click");
-        $('html, body').stop();
-    });
+    document.getElementById(activeTab).classList.add('active');
+    e.currentTarget.classList.add('active');
+  });
 }
 
+for (var a = 0, aLen = accordionHeadings.length; a < aLen; a++) {
+  accordionHeadings[a].addEventListener('click', function(e) {
+    for (var co = 0, len = tabContent.length; co < len; co++) {
+      tabContent[co].classList.remove('active')
+    }
+
+    for (var ah = 0, len = accordionHeadings.length; ah < len; ah++) {
+      accordionHeadings[ah].classList.remove('active')
+    }
+
+    var activeAccordion = e.currentTarget.getAttribute('data-index');
+    console.log(activeAccordion);
+
+    document.getElementById(activeAccordion).classList.add('active');
+    e.currentTarget.classList.add('active');
+  });
+}

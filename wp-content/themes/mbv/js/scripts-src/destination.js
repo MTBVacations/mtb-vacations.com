@@ -28,8 +28,8 @@ $(function(){
 	});
 
 	// Set tab content size for flexslider width
-	var tabContentSize = $('.tab-content__inside').width();
-	$('.flexslider-location').css('width',tabContentSize);
+	// var tabContentSize = $('.tab-content__inside').width();
+	// $('.flexslider-location').css('width',tabContentSize);
 
 	var $locationImage = $('.js-background');
 	if(window.innerWidth > 650){
