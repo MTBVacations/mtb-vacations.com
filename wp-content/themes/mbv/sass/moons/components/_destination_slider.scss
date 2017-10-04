@@ -1,34 +1,28 @@
 /*------------------------------------*\
     ::Destination Slider
 \*------------------------------------*/
-.hero__destination{
-    .flexslider{
-        background-color: black;
-    }
-}
-.slider {
+.destination__cards{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
     margin-top: 1em;
     margin-bottom: 1em;
     position: relative;
-
-    .flex-direction-nav {
-        .flex-prev {
-            left: -20px !important;
-        }
-        .flex-next {
-            right: -20px !important;
-        }
-    }
 }
 
-.slider__item {
-    .slider__content {
-        padding: 5px;
-        margin-left: 1em;
+.destination__card {
+    flex: 0 1 33.3%;
+
+    @include bp($solarsystem){
+        flex: 0 1 50%;
     }
-    &:first-of-type {
-        .slider__content {
-            margin-left: 0;
-        }
+
+    @include bp($planetary){
+        flex: 0 1 100%;
+    }
+
+    .card__content {
+        padding: 5px;
+        margin: .5rem;
     }
 }

@@ -9,11 +9,7 @@
 	text-align: left;
 	width: 95%;
 	margin: 0 auto;
-	opacity: 1;
-	transition: opacity 400ms;
-	&.loading-opacity {
-		opacity: 0;
-	}
+
 	@include bp($planetary){
 		width: 93%;
 	}
@@ -23,27 +19,7 @@
 }
 .content__inside{
 	position: relative;
-	min-height: 400px;
-	transition: height 400ms;
-
-	@include bp($max: 947px) {
-	    min-height: 700px;
-	}
-	@include bp($max: 550px) {
-	    min-height: 930px;
-	}
-	.tabs{
-		> div{
-			display: block;
-			position: absolute;
-			top: 82px;
-			width: 100%;
-
-			@include bp($solarsystem){
-				top: 348px;
-			}
-		}
-	}
+	
 	.social-feed{
 		clear: both;
 		overflow: hidden;
