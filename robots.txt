@@ -1,4 +1,8 @@
 User-agent: *
-Disallow: /wp-content/uploads/
 Disallow: /wp-includes/
 Disallow: /wp-admin/
+Disallow: /tips-and-gear/yeti-sb5-5c-bike-check-nate-hills/
+Disallow: /2015/*
+Disallow: /2016/*
+Disallow: /2017/*
+Disallow: /all-the-things/*
