@@ -26,10 +26,10 @@ $(function(){
   };
   var navOverlay = function(){
     window.onscroll = function() {
-      if(document.body.scrollTop !== 0) {
+      if(window.scrollY !== 0) {
         $('.main-head__wrap').addClass('main-head__wrap--scroll');
         $('.head-nav').addClass('head-nav--scroll');
-      } else if(document.body.scrollTop === 0) {
+      } else if(window.scrollY === 0) {
         $('.main-head__wrap').removeClass('main-head__wrap--scroll');
         $('.head-nav').removeClass('head-nav--scroll');
       }
