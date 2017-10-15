@@ -29,7 +29,6 @@ $(function(){
     }
 
     var activeAccordion = e.currentTarget.getAttribute('data-index');
-    console.log(activeAccordion);
 
     document.getElementById(activeAccordion).classList.add('active');
     e.currentTarget.classList.add('active');
@@ -37,10 +36,10 @@ $(function(){
 
   /* if in tab mode */
   for (var t = 0, tLen = tabHeadings.length; t < tLen; t++) {
-    tabHeadings[t].addEventListener('click', handleClick(e));
+    tabHeadings[t].addEventListener('click', handleClick.bind(this));
   }
 
   for (var a = 0, aLen = accordionHeadings.length; a < aLen; a++) {
-    accordionHeadings[a].addEventListener('click', handleAccordion(e));
+    accordionHeadings[a].addEventListener('click', handleAccordion.bind(this));
   }
 });
