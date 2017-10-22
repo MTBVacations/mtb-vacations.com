@@ -1,17 +1,17 @@
 <?php
 /*
- * @package WordPress
- * @subpackage Zemplate
- * @since Zemplate 1.0
- *
- * Theme-specific functions and definitions
- *
- * Use this file to set up any theme-specific functions you'd like to use
- * in the current theme.
- */
+* @package WordPress
+* @subpackage Zemplate
+* @since Zemplate 1.0
+*
+* Theme-specific functions and definitions
+*
+* Use this file to set up any theme-specific functions you'd like to use
+* in the current theme.
+*/
 
 /*------------------------------------*\
-    ::Button Shortcode
+::Button Shortcode
 \*------------------------------------*/
 //Usage: [button link='http://example.com' name='My Button' target='New Tab']
 function btn_shortcode($attr) {
@@ -30,8 +30,29 @@ function btn_shortcode($attr) {
 }
 add_shortcode('button', 'btn_shortcode');
 
+function cleanup_shortcode_fix($content) {
+    $array = array (
+        '<p>[' => '[',
+        ']</p>' => ']',
+        ']<br />' => ']',
+        ']<br>' => ']'
+    );
+    $content = strtr($content, $array);
+    return $content;
+}
+add_filter('the_content', 'cleanup_shortcode_fix');
+
 /*------------------------------------*\
-    :: Rename Posts to Tips & Gear
+::Column Shortcode
+\*------------------------------------*/
+//Usage: [two-column]content[/two-column]
+function column_shortcode($atts, $content = null) {
+    return '<div class="two-col">' . wpautop(do_shortcode($content)) . '</div>';
+}
+add_shortcode('two-column', 'column_shortcode');
+
+/*------------------------------------*\
+:: Rename Posts to Tips & Gear
 \*------------------------------------*/
 function revcon_change_post_label() {
     global $menu;
@@ -59,12 +80,12 @@ function revcon_change_post_object() {
     $labels->menu_name = 'Tips & Gear';
     $labels->name_admin_bar = 'Tips & Gear';
 }
- 
+
 add_action( 'admin_menu', 'revcon_change_post_label' );
 add_action( 'init', 'revcon_change_post_object' );
 
 /*-----------------------------------------------*\
-    :: Custom Post type for destination
+:: Custom Post type for destination
 \*-----------------------------------------------*/
 function destination_register() {
     $labels = array(
@@ -79,7 +100,7 @@ function destination_register() {
         'not_found' =>  __('Nothing found'),
         'not_found_in_trash' => __('Nothing found in Trash')
     );
- 
+
     $args = array(
         'labels' => $labels,
         'rewrite' => array( 'slug' => 'destinations', 'with_front' => true ),
@@ -94,7 +115,7 @@ function destination_register() {
         'supports' => array('title','editor','thumbnail','comments'),
         'menu_icon'=> 'dashicons-admin-site',
         'show_in_nav_menus' => true,
-      ); 
+    );
     register_post_type( 'destination' , $args );
     flush_rewrite_rules('false');
 }
@@ -102,7 +123,7 @@ add_action( 'init', 'destination_register' );
 
 
 /*-----------------------------------------------*\
-    :: Add SVG File type for upload
+:: Add SVG File type for upload
 \*-----------------------------------------------*/
 add_filter('upload_mimes', 'custom_upload_mimes');
 
@@ -112,7 +133,7 @@ function custom_upload_mimes ( $existing_mimes=array() ) {
 
     $existing_mimes['svg'] = 'mime/type';
 
-        // call the modified list of extensions
+    // call the modified list of extensions
 
     return $existing_mimes;
 
@@ -120,15 +141,15 @@ function custom_upload_mimes ( $existing_mimes=array() ) {
 
 
 /*------------------------------------*\
-    ::Show Sub Page Nav for All the Things
+::Show Sub Page Nav for All the Things
 
-    Basic usage:         [pagelist id="9"]
-    Fixed usage:         [pagelist id="9" fixed="x-y"]
+Basic usage:         [pagelist id="9"]
+Fixed usage:         [pagelist id="9" fixed="x-y"]
 
-    Fixed examples:
-    right top:     [pagelist id="9" fixed="right-top"]
-    bottom left:   [pagelist id="9" fixed="left-bottom"]
-    note: x comes before y always
+Fixed examples:
+right top:     [pagelist id="9" fixed="right-top"]
+bottom left:   [pagelist id="9" fixed="left-bottom"]
+note: x comes before y always
 //
 \*------------------------------------*/
 function page_list_shortcode($attr) {
@@ -136,79 +157,79 @@ function page_list_shortcode($attr) {
         'id' => '9',
         'fixed' => ''
     ), $attr));
-  $children = wp_list_pages('title_li=&child_of='.$id.'&echo=0&depth=1');
-  if($children) {
-    $r = rand();
-    if($fixed != ''){
-        $fixed_arr = explode('-', $fixed);
-        $fixed = '#things-list-'.$r.' {
-                        position: fixed;
-                        '.$fixed_arr[0].': 0;
-                        '.$fixed_arr[1].': 0;
-                        opacity: .4;
-                        transition: opacity 300ms;
-                    }
-                    #things-list-'.$r.':hover ul:before {
-                        content: "";
-                        position: absolute;
-                        background-color: black;
-                        top: -50px;
-                        bottom: -50px;
-                        right: -50px;
-                        left: -50px;
-                        '.$fixed_arr[0].': 0;
-                        '.$fixed_arr[1].': 0;
-                        z-index: -1;
-                        opacity: 0;
-                    }
-                    #things-list-'.$r.':hover {
-                        opacity: 1;
-                    }
-                    #things-list-'.$r.' li:hover ul {
-                        '.$fixed_arr[1].': 20px;
-                    }';
-    }
-    $str =  '<ul id="things-list-'.$r.'">
-                <style scoped>
-                    #things-list-'.$r.' {
-                        position: relative;
-                        z-index: 9999;
-                        font-size: 12px;
-                    }
-                    #things-list-'.$r.', #things-list-'.$r.' ul {
-                        margin: 0;
-                        padding: 0;
-                        list-style: none;
-                        width: 150px;
-                        background: teal;
-                        box-shadow: 0 0 2px white, 0 0 2px black;
-                    }
-                    #things-list-'.$r.' a {
-                        display: block;
-                        min-height: 20px;
-                        width: 100%;
-                        padding: 5px;
-                        color: mediumaquamarine;
-                        text-decoration: none;
-                        transition: color 300ms;
-                    }
-                    #things-list-'.$r.' a:hover {
-                        color: white;
-                    }
-                    #things-list-'.$r.' li ul {
-                        display: none;
-                        position: absolute;
-                    }
-                    #things-list-'.$r.' li:hover ul {
-                        display: block;
-                    }
-                    '.$fixed.'
-                </style>
-                <li>
-                    <a href="'.get_permalink($id).'">All the Things</a>
-                    <ul>'.$children.'</ul>
-                </li>
-            </ul>';
+    $children = wp_list_pages('title_li=&child_of='.$id.'&echo=0&depth=1');
+    if($children) {
+        $r = rand();
+        if($fixed != ''){
+            $fixed_arr = explode('-', $fixed);
+            $fixed = '#things-list-'.$r.' {
+                position: fixed;
+                '.$fixed_arr[0].': 0;
+                '.$fixed_arr[1].': 0;
+                opacity: .4;
+                transition: opacity 300ms;
+            }
+            #things-list-'.$r.':hover ul:before {
+                content: "";
+                position: absolute;
+                background-color: black;
+                top: -50px;
+                bottom: -50px;
+                right: -50px;
+                left: -50px;
+                '.$fixed_arr[0].': 0;
+                '.$fixed_arr[1].': 0;
+                z-index: -1;
+                opacity: 0;
+            }
+            #things-list-'.$r.':hover {
+                opacity: 1;
+            }
+            #things-list-'.$r.' li:hover ul {
+                '.$fixed_arr[1].': 20px;
+            }';
+        }
+        $str =  '<ul id="things-list-'.$r.'">
+        <style scoped>
+        #things-list-'.$r.' {
+            position: relative;
+            z-index: 9999;
+            font-size: 12px;
+        }
+        #things-list-'.$r.', #things-list-'.$r.' ul {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+            width: 150px;
+            background: teal;
+            box-shadow: 0 0 2px white, 0 0 2px black;
+        }
+        #things-list-'.$r.' a {
+            display: block;
+            min-height: 20px;
+            width: 100%;
+            padding: 5px;
+            color: mediumaquamarine;
+            text-decoration: none;
+            transition: color 300ms;
+        }
+        #things-list-'.$r.' a:hover {
+            color: white;
+        }
+        #things-list-'.$r.' li ul {
+            display: none;
+            position: absolute;
+        }
+        #things-list-'.$r.' li:hover ul {
+            display: block;
+        }
+        '.$fixed.'
+        </style>
+        <li>
+        <a href="'.get_permalink($id).'">All the Things</a>
+        <ul>'.$children.'</ul>
+        </li>
+        </ul>';
         return $str;
     }
 }

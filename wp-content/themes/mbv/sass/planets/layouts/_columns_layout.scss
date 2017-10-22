@@ -5,6 +5,33 @@
         :: Three or Less
 \*------------------------------------*/
 
+.two-col {
+	@include bp($min: $solarsystem){
+		column-count: 2;
+		gap: 1em;
+		column-gap: 3em;
+		padding-bottom: 1em;
+
+		> p {
+			margin-top: 0;
+		}
+	}
+
+
+	.wp-caption.alignnone,
+	> img {
+		@include bp($min: $solarsystem){
+			margin: 0 auto;
+			padding: 0;
+			&:last-child {
+				@include bp($max:900px){
+					margin-bottom: 1em;
+				}
+			}
+		}
+	}
+}
+
 /*------------------------------------*\
     :: Global
 \*------------------------------------*/
