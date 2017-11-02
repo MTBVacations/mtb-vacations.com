@@ -58,7 +58,7 @@ get_header('destination-list'); ?>
     </article>
     <article class="page__group destination-list">
         <div class="column__inside destination__wrapper">
-            <?php  $query = new WP_Query('post_type=destination&orderby=title&order=asc'); if($query->have_posts()): ?>
+            <?php  $query = new WP_Query('post_type=destination&orderby=title&order=asc&limit=20'); if($query->have_posts()): ?>
                 <?php
                     while ($query->have_posts()) : $query->the_post();
                         get_template_part('templates/parts/blog', 'excerpt_destination');
