@@ -4,13 +4,6 @@ namespace W3TC;
 /**
  * Purge using AmazonSNS object
  */
-
-require_once W3TC_LIB_DIR . '/SNS/services/MessageValidator/Message.php';
-require_once W3TC_LIB_DIR . '/SNS/services/MessageValidator/MessageValidator.php';
-
-/**
- * class Sns
- */
 class Enterprise_SnsServer extends Enterprise_SnsBase {
 
 	/**
@@ -18,24 +11,24 @@ class Enterprise_SnsServer extends Enterprise_SnsBase {
 	 *
 	 * @throws Exception
 	 */
-	function process_message() {
+	function process_message( $message ) {
 		$this->_log( 'Received message' );
 
 		try {
-			$message = \Message::fromRawPostData();
-			$validator = new \MessageValidator();
+			$message = new \Aws\Sns\Message( $message );
+			$validator = new \Aws\Sns\MessageValidator();
 			$error = '';
 			if ( $validator->isValid( $message ) ) {
 				$topic_arn = $this->_config->get_string( 'cluster.messagebus.sns.topic_arn' );
 
-				if ( empty( $topic_arn ) || $topic_arn != $message->get( 'TopicArn' ) )
-					throw new \Exception ( 'Not my Topic. Request came from ' .
-						$message->get( 'TopicArn' ) );
+				if ( empty( $topic_arn ) || $topic_arn != $message['TopicArn'] )
+					throw new \Exception( 'Not my Topic. Request came from ' .
+						$message['TopicArn'] );
 
-				if ( $message->get( 'Type' ) == 'SubscriptionConfirmation' )
+				if ( $message['Type'] == 'SubscriptionConfirmation' )
 					$this->_subscription_confirmation( $message );
-				elseif ( $message->get( 'Type' ) == 'Notification' )
-					$this->_notification( $message->get( 'Message' ) );
+				elseif ( $message['Type'] == 'Notification' )
+					$this->_notification( $message['Message'] );
 			} else {
 				$this->_log( 'Error processing message it was not valid.' );
 			}
@@ -53,10 +46,14 @@ class Enterprise_SnsServer extends Enterprise_SnsBase {
 	 */
 	private function _subscription_confirmation( $message ) {
 		$this->_log( 'Issuing confirm_subscription' );
-		$response = $this->_get_api()->confirm_subscription(
-			$topic_arn, $message->get( 'Token' ) );
+		$topic_arn = $this->_config->get_string( 'cluster.messagebus.sns.topic_arn' );
+
+		$response = $this->_get_api()->confirmSubscription( array(
+			'Token' => $message['Token'],
+			'TopicArn' => $topic_arn
+		) );
 		$this->_log( 'Subscription confirmed: ' .
-			( $response->isOK() ? 'OK' : 'Error' ) );
+			( $response['@metadata']['statusCode'] == 200 ? 'OK' : 'Error' ) );
 	}
 
 	/**
@@ -112,25 +109,34 @@ class Enterprise_SnsServer extends Enterprise_SnsBase {
 			$executor->minifycache_flush();
 		elseif ( $action == 'browsercache_flush' )
 			$executor->browsercache_flush();
+		elseif ( $action == 'cdn_purge_all' )
+			$executor->cdn_purge_all(
+				isset( $m['extras'] ) ? $m['extras'] : null );
 		elseif ( $action == 'cdn_purge_files' )
 			$executor->cdn_purge_files( $m['purgefiles'] );
 		elseif ( $action == 'pgcache_cleanup' )
 			$pgcache_admin->cleanup_local();
 		elseif ( $action == 'opcache_flush' )
 			$executor->opcache_flush();
-		elseif ( $action == 'opcache_flush_file' )
-			$executor->opcache_flush_file( $m['filename'] );
 		elseif ( $action == 'flush_all' )
 			$executor->flush_all(
 				isset( $m['extras'] ) ? $m['extras'] : null );
+		elseif ( $action == 'flush_group' )
+			$executor->flush_group(
+				isset( $m['group'] ) ? $m['group'] : null,
+				isset( $m['extras'] ) ? $m['extras'] : null );
 		elseif ( $action == 'flush_post' )
 			$executor->flush_post( $m['post_id'] );
+		elseif ( $action == 'flush_posts' )
+			$executor->flush_posts();
 		elseif ( $action == 'flush_url' )
 			$executor->flush_url( $m['url'] );
 		elseif ( $action == 'prime_post' )
 			$executor->prime_post( $m['post_id'] );
 		else
 			throw new \Exception( 'Unknown action ' . $action );
+
+		$executor->execute_delayed_operations();
 
 		$this->_log( 'succeeded' );
 	}

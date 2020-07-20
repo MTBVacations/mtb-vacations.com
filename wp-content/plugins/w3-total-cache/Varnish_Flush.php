@@ -78,11 +78,11 @@ class Varnish_Flush {
 	}
 
 	/*
-     * Sends purge request. Cannt use default wp HTTP implementation
-     * if we send request to different host than specified in $url
-     *
-     * @param $url string
-     */
+	 * Sends purge request. Cannt use default wp HTTP implementation
+	 * if we send request to different host than specified in $url
+	 *
+	 * @param $url string
+	 */
 	function _request( $varnish_server, $url ) {
 		$parse_url = @parse_url( $url );
 
@@ -95,12 +95,8 @@ class Varnish_Flush {
 		$query = ( isset( $parse_url['query'] ) ? $parse_url['query'] : '' );
 		$request_uri = $path . ( $query != '' ? '?' . $query : '' );
 
-		if ( strpos( $varnish_server, ':' ) )
-			list( $varnish_host, $varnish_port ) = explode( ':', $varnish_server );
-		else {
-			$varnish_host = $varnish_server;
-			$varnish_port = 80;
-		}
+		list( $varnish_host, $varnish_port ) =
+			Util_Content::endpoint_to_host_port( $varnish_server, 80 );
 
 		// if url host is the same as varnish server - we can use regular
 		// wordpress http infrastructure, otherwise custom request should be
@@ -191,13 +187,11 @@ class Varnish_Flush {
 
 	private function do_flush() {
 		if ( !is_network_admin() ) {
-			$queued_urls[ get_home_url() . '/.*' ] = '*';
+			$full_urls = array( get_home_url() . '/.*' );
+			$full_urls = Util_PageUrls::complement_with_mirror_urls(
+				$full_urls );
 
-			// add mirror urls
-			$queued_urls = Util_PageUrls::complement_with_mirror_urls(
-				$queued_urls );
-
-			foreach ( $queued_urls as $url => $nothing )
+			foreach ( $full_urls as $url )
 				$this->_purge( $url );
 		} else {
 			// todo: remove. doesnt work for all caches.
@@ -207,14 +201,14 @@ class Varnish_Flush {
 
 			// If WPMU Domain Mapping plugin is installed and active
 			if ( defined( 'SUNRISE_LOADED' ) && SUNRISE_LOADED && isset( $wpdb->dmtable ) && !empty( $wpdb->dmtable ) ) {
-				$blogs = $wpdb->get_results( "SELECT {$wpdb->blogs}.domain, {$wpdb->blogs}.path, {$wpdb->dmtable}.domain AS mapped_domain
-                                    FROM {$wpdb->dmtable}
-                                    RIGHT JOIN {$wpdb->blogs} ON {$wpdb->dmtable}.blog_id = {$wpdb->blogs}.blog_id
-                                    WHERE site_id = {$wpdb->siteid}
-                                    AND spam = 0
-                                    AND deleted = 0
-                                    AND archived = '0'
-                                   " );
+				$blogs = $wpdb->get_results( "
+					SELECT {$wpdb->blogs}.domain, {$wpdb->blogs}.path, {$wpdb->dmtable}.domain AS mapped_domain
+					FROM {$wpdb->dmtable}
+					RIGHT JOIN {$wpdb->blogs} ON {$wpdb->dmtable}.blog_id = {$wpdb->blogs}.blog_id
+					WHERE site_id = {$wpdb->siteid}
+					AND spam = 0
+					AND deleted = 0
+					AND archived = '0'" );
 				foreach ( $blogs as $blog ) {
 					if ( !isset( $blog->mapped_domain ) )
 						$url = $protocall . $blog->domain . ( strlen( $blog->path )>1? '/' . trim( $blog->path, '/' ) : '' ) . '/.*';
@@ -228,13 +222,12 @@ class Varnish_Flush {
 					$this->_purge( get_home_url().'/.*' );
 				} else {
 					$blogs = $wpdb->get_results( "
-                                        SELECT domain, path
-                                        FROM {$wpdb->blogs}
-                                        WHERE site_id = '{$wpdb->siteid}'
-                                        AND spam = 0
-                                        AND deleted = 0
-                                        AND archived = '0'
-                                    " );
+						SELECT domain, path
+						FROM {$wpdb->blogs}
+						WHERE site_id = '{$wpdb->siteid}'
+						AND spam = 0
+						AND deleted = 0
+						AND archived = '0'" );
 
 					foreach ( $blogs as $blog ) {
 						$url = $protocall . $blog->domain . ( strlen( $blog->path )>1? '/' . trim( $blog->path, '/' ) : '' ) . '/.*';
@@ -380,16 +373,19 @@ class Varnish_Flush {
 				$full_urls[] = Util_Environment::home_domain_root_url() . '/' . trim( $sitemap_regex, "^$" );
 			}
 
+			// add mirror urls
+			$full_urls = Util_PageUrls::complement_with_mirror_urls(
+				$full_urls );
+
+			$full_urls = apply_filters( 'varnish_flush_post_queued_urls',
+				$full_urls );
+
 			/**
 			 * Queue flush
 			 */
 			if ( count( $full_urls ) ) {
 				foreach ( $full_urls as $url )
 					$this->queued_urls[$url] = '*';
-
-				// add mirror urls
-				$this->queued_urls = Util_PageUrls::complement_with_mirror_urls(
-					$this->queued_urls );
 			}
 
 			return true;

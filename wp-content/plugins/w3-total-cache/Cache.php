@@ -49,9 +49,13 @@ class Cache {
 			case 'memcached':
 				if ( class_exists( '\Memcached' ) ) {
 					$instances[$instance_key] = new Cache_Memcached( $config );
-				} else if ( class_exists( '\Memcache' ) ) {
-						$instances[$instance_key] = new Cache_Memcache( $config );
-					}
+				} elseif ( class_exists( '\Memcache' ) ) {
+					$instances[$instance_key] = new Cache_Memcache( $config );
+				}
+				break;
+
+			case 'nginx_memcached':
+				$instances[$instance_key] = new Cache_Nginx_Memcached( $config );
 				break;
 
 			case 'redis':
@@ -99,6 +103,10 @@ class Cache {
 
 			break;
 
+		case 'nginx_memcached':
+			$engine_name = 'nginx + memcached';
+			break;
+
 		case 'apc':
 			$engine_name = 'apc';
 			break;
@@ -138,6 +146,10 @@ class Cache {
 			$engine_name = 'amazon simple storage service (s3)';
 			break;
 
+		case 's3_compatible':
+			$engine_name = 's3 compatible';
+			break;
+
 		case 'cf':
 			$engine_name = 'amazon cloudfront';
 			break;
@@ -162,26 +174,6 @@ class Cache {
 			$engine_name = 'microsoft azure storage';
 			break;
 
-		case 'mirror':
-			$engine_name = 'mirror';
-			break;
-
-		case 'netdna':
-			$engine_name = 'netdna';
-			break;
-
-		case 'maxcdn':
-			$engine_name = 'maxcdn';
-			break;
-
-		case 'cotendo':
-			$engine_name = 'cotendo';
-			break;
-
-		case 'akamai':
-			$engine_name = 'akamai';
-			break;
-
 		case 'edgecast':
 			$engine_name = 'media template procdn / edgecast';
 			break;
@@ -190,8 +182,16 @@ class Cache {
 			$engine_name = 'at&amp;t';
 			break;
 
+		case 'rackspace_cdn':
+			$engine_name = 'rackspace';
+			break;
+
+		case 'stackpath2':
+			$engine_name = 'stackpath';
+			break;
+
 		default:
-			$engine_name = 'n/a';
+			$engine_name = $engine;
 			break;
 		}
 

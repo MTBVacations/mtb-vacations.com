@@ -2434,10 +2434,8 @@ class soap_transport_http extends nusoap_base {
 		$hostURL .= $this->path;
 		$this->setCurlOption(CURLOPT_URL, $hostURL);
 		// follow location headers (re-directs)
-		if (ini_get('safe_mode') || ini_get('open_basedir')) {
-			$this->debug('safe_mode or open_basedir set, so do not set CURLOPT_FOLLOWLOCATION');
-			$this->debug('safe_mode = ');
-			$this->appendDebug($this->varDump(ini_get('safe_mode')));
+		if (ini_get('open_basedir')) {
+			$this->debug('open_basedir set, so do not set CURLOPT_FOLLOWLOCATION');
 			$this->debug('open_basedir = ');
 			$this->appendDebug($this->varDump(ini_get('open_basedir')));
 		} else {
@@ -3632,16 +3630,12 @@ class nusoap_server extends nusoap_base {
 		parent::nusoap_base();
 		// turn on debugging?
 		global $debug;
-		global $HTTP_SERVER_VARS;
 
 		if (isset($_SERVER)) {
 			$this->debug("_SERVER is defined:");
 			$this->appendDebug($this->varDump($_SERVER));
-		} elseif (isset($HTTP_SERVER_VARS)) {
-			$this->debug("HTTP_SERVER_VARS is defined:");
-			$this->appendDebug($this->varDump($HTTP_SERVER_VARS));
 		} else {
-			$this->debug("Neither _SERVER nor HTTP_SERVER_VARS is defined.");
+			$this->debug("_SERVER not defined.");
 		}
 
 		if (isset($debug)) {
@@ -3652,14 +3646,6 @@ class nusoap_server extends nusoap_base {
 			foreach ($qs as $v) {
 				if (substr($v, 0, 6) == 'debug=') {
 					$this->debug("In nusoap_server, set debug_flag=" . substr($v, 6) . " based on query string #1");
-					$this->debug_flag = substr($v, 6);
-				}
-			}
-		} elseif (isset($HTTP_SERVER_VARS['QUERY_STRING'])) {
-			$qs = explode('&', $HTTP_SERVER_VARS['QUERY_STRING']);
-			foreach ($qs as $v) {
-				if (substr($v, 0, 6) == 'debug=') {
-					$this->debug("In nusoap_server, set debug_flag=" . substr($v, 6) . " based on query string #2");
 					$this->debug_flag = substr($v, 6);
 				}
 			}
@@ -3692,20 +3678,15 @@ class nusoap_server extends nusoap_base {
 	* @access   public
 	*/
 	function service($data){
-		global $HTTP_SERVER_VARS;
 
 		if (isset($_SERVER['REQUEST_METHOD'])) {
 			$rm = $_SERVER['REQUEST_METHOD'];
-		} elseif (isset($HTTP_SERVER_VARS['REQUEST_METHOD'])) {
-			$rm = $HTTP_SERVER_VARS['REQUEST_METHOD'];
 		} else {
 			$rm = '';
 		}
 
 		if (isset($_SERVER['QUERY_STRING'])) {
 			$qs = $_SERVER['QUERY_STRING'];
-		} elseif (isset($HTTP_SERVER_VARS['QUERY_STRING'])) {
-			$qs = $HTTP_SERVER_VARS['QUERY_STRING'];
 		} else {
 			$qs = '';
 		}
@@ -3776,7 +3757,6 @@ class nusoap_server extends nusoap_base {
 	* @access   private
 	*/
 	function parse_http_headers() {
-		global $HTTP_SERVER_VARS;
 
 		$this->request = '';
 		$this->SOAPAction = '';
@@ -3839,40 +3819,6 @@ class nusoap_server extends nusoap_base {
 				$this->request .= "$k: $v\r\n";
 				$this->debug("$k: $v");
 			}
-		} elseif (is_array($HTTP_SERVER_VARS)) {
-			$this->debug("In parse_http_headers, use HTTP_SERVER_VARS");
-			foreach ($HTTP_SERVER_VARS as $k => $v) {
-				if (substr($k, 0, 5) == 'HTTP_') {
-					$k = str_replace(' ', '-', strtolower(str_replace('_', ' ', substr($k, 5)))); 	                                         $k = strtolower(substr($k, 5));
-				} else {
-					$k = str_replace(' ', '-', strtolower(str_replace('_', ' ', $k))); 	                                         $k = strtolower($k);
-				}
-				if ($k == 'soapaction') {
-					// get SOAPAction header
-					$k = 'SOAPAction';
-					$v = str_replace('"', '', $v);
-					$v = str_replace('\\', '', $v);
-					$this->SOAPAction = $v;
-				} else if ($k == 'content-type') {
-					// get the character encoding of the incoming request
-					if (strpos($v, '=')) {
-						$enc = substr(strstr($v, '='), 1);
-						$enc = str_replace('"', '', $enc);
-						$enc = str_replace('\\', '', $enc);
-						if (preg_match('/^(ISO-8859-1|US-ASCII|UTF-8)$/i',$enc)) {
-							$this->xml_encoding = strtoupper($enc);
-						} else {
-							$this->xml_encoding = 'US-ASCII';
-						}
-					} else {
-						// should be US-ASCII for HTTP 1.0 or ISO-8859-1 for HTTP 1.1
-						$this->xml_encoding = 'ISO-8859-1';
-					}
-				}
-				$this->headers[$k] = $v;
-				$this->request .= "$k: $v\r\n";
-				$this->debug("$k: $v");
-			}
 		} else {
 			$this->debug("In parse_http_headers, HTTP headers not accessible");
 			$this->setError("HTTP headers not accessible");
@@ -3908,7 +3854,20 @@ class nusoap_server extends nusoap_base {
 		// uncompress if necessary
 		if (isset($this->headers['content-encoding']) && $this->headers['content-encoding'] != '') {
 			$this->debug('got content encoding: ' . $this->headers['content-encoding']);
-			if ($this->headers['content-encoding'] == 'deflate' || $this->headers['content-encoding'] == 'gzip') {
+			if ($this->headers['content-encoding'] == 'br') {
+				// if decoding works, use it. else assume data wasn't brotli compressed
+				if (function_exists('brotli_uncompress')) {
+					if ($this->headers['content-encoding'] == 'deflate' && $debrdata = @brotli_uncompress($data)) {
+						$data = $debrdata;
+					} else {
+						$this->fault('SOAP-ENV:Client', 'Errors occurred when trying to decode the data');
+						return;
+					}
+				} else {
+					$this->fault('SOAP-ENV:Client', 'This Server does not support compressed data');
+					return;
+				}
+			} elseif ($this->headers['content-encoding'] == 'deflate' || $this->headers['content-encoding'] == 'gzip') {
 		    	// if decoding works, use it. else assume data wasn't gzencoded
 				if (function_exists('gzuncompress')) {
 					if ($this->headers['content-encoding'] == 'deflate' && $degzdata = @gzuncompress($data)) {
@@ -4236,7 +4195,19 @@ class nusoap_server extends nusoap_base {
 		// NOTE: there is no way to know whether the Web server will also compress
 		// this data.
 		if (strlen($payload) > 1024 && isset($this->headers) && isset($this->headers['accept-encoding'])) {	
-			if (strstr($this->headers['accept-encoding'], 'gzip')) {
+			if (strstr($this->headers['accept-encoding'], 'br')) {
+				if (function_exists('brotli_compress')) {
+					if (isset($this->debug_flag) && $this->debug_flag) {
+						$payload .= "<!-- Content being brotli compressed -->";
+					}
+					$this->outgoing_headers[] = "Content-Encoding: br";
+					$payload = brotli_compress($payload);
+				} else {
+					if (isset($this->debug_flag) && $this->debug_flag) {
+						$payload .= "<!-- Content will not be brotli compressed: no brotli_compress -->";
+					}
+				}
+			} elseif (strstr($this->headers['accept-encoding'], 'gzip')) {
 				if (function_exists('gzencode')) {
 					if (isset($this->debug_flag) && $this->debug_flag) {
 						$payload .= "<!-- Content being gzipped -->";
@@ -4416,7 +4387,6 @@ class nusoap_server extends nusoap_base {
 	* @access   public
 	*/
 	function register($name,$in=array(),$out=array(),$namespace=false,$soapaction=false,$style=false,$use=false,$documentation='',$encodingStyle=''){
-		global $HTTP_SERVER_VARS;
 
 		if($this->externalWSDLURL){
 			die('You cannot bind to an external WSDL file, and register methods outside of it! Please choose either WSDL or no WSDL.');
@@ -4436,13 +4406,9 @@ class nusoap_server extends nusoap_base {
 			if (isset($_SERVER)) {
 				$SERVER_NAME = $_SERVER['SERVER_NAME'];
 				$SCRIPT_NAME = isset($_SERVER['PHP_SELF']) ? $_SERVER['PHP_SELF'] : $_SERVER['SCRIPT_NAME'];
-				$HTTPS = isset($_SERVER['HTTPS']) ? $_SERVER['HTTPS'] : (isset($HTTP_SERVER_VARS['HTTPS']) ? $HTTP_SERVER_VARS['HTTPS'] : 'off');
-			} elseif (isset($HTTP_SERVER_VARS)) {
-				$SERVER_NAME = $HTTP_SERVER_VARS['SERVER_NAME'];
-				$SCRIPT_NAME = isset($HTTP_SERVER_VARS['PHP_SELF']) ? $HTTP_SERVER_VARS['PHP_SELF'] : $HTTP_SERVER_VARS['SCRIPT_NAME'];
-				$HTTPS = isset($HTTP_SERVER_VARS['HTTPS']) ? $HTTP_SERVER_VARS['HTTPS'] : 'off';
+				$HTTPS = isset($_SERVER['HTTPS']) ? $_SERVER['HTTPS'] : 'off';
 			} else {
-				$this->setError("Neither _SERVER nor HTTP_SERVER_VARS is available");
+				$this->setError("_SERVER not available");
 			}
         	if ($HTTPS == '1' || $HTTPS == 'on') {
         		$SCHEME = 'https';
@@ -4505,20 +4471,13 @@ class nusoap_server extends nusoap_base {
     */
     function configureWSDL($serviceName,$namespace = false,$endpoint = false,$style='rpc', $transport = 'http://schemas.xmlsoap.org/soap/http', $schemaTargetNamespace = false)
     {
-    	global $HTTP_SERVER_VARS;
-
 		if (isset($_SERVER)) {
 			$SERVER_NAME = $_SERVER['SERVER_NAME'];
 			$SERVER_PORT = $_SERVER['SERVER_PORT'];
 			$SCRIPT_NAME = isset($_SERVER['PHP_SELF']) ? $_SERVER['PHP_SELF'] : $_SERVER['SCRIPT_NAME'];
-			$HTTPS = isset($_SERVER['HTTPS']) ? $_SERVER['HTTPS'] : (isset($HTTP_SERVER_VARS['HTTPS']) ? $HTTP_SERVER_VARS['HTTPS'] : 'off');
-		} elseif (isset($HTTP_SERVER_VARS)) {
-			$SERVER_NAME = $HTTP_SERVER_VARS['SERVER_NAME'];
-			$SERVER_PORT = $HTTP_SERVER_VARS['SERVER_PORT'];
-			$SCRIPT_NAME = isset($HTTP_SERVER_VARS['PHP_SELF']) ? $HTTP_SERVER_VARS['PHP_SELF'] : $HTTP_SERVER_VARS['SCRIPT_NAME'];
-			$HTTPS = isset($HTTP_SERVER_VARS['HTTPS']) ? $HTTP_SERVER_VARS['HTTPS'] : 'off';
+			$HTTPS = isset($_SERVER['HTTPS']) ? $_SERVER['HTTPS'] : 'off';
 		} else {
-			$this->setError("Neither _SERVER nor HTTP_SERVER_VARS is available");
+			$this->setError("_SERVER not available");
 		}
 		// If server name has port number attached then strip it (else port number gets duplicated in WSDL output) (occurred using lighttpd and FastCGI)
 		$colon = strpos($SERVER_NAME,":");
@@ -5336,14 +5295,11 @@ class wsdl extends nusoap_base {
     * @access private
     */
     function webDescription(){
-    	global $HTTP_SERVER_VARS;
 
 		if (isset($_SERVER)) {
 			$PHP_SELF = $_SERVER['PHP_SELF'];
-		} elseif (isset($HTTP_SERVER_VARS)) {
-			$PHP_SELF = $HTTP_SERVER_VARS['PHP_SELF'];
 		} else {
-			$this->setError("Neither _SERVER nor HTTP_SERVER_VARS is available");
+			$this->setError("_SERVER not available");
 		}
 
 		$b = '
@@ -8145,4 +8101,3 @@ if (!extension_loaded('soap')) {
 	class soapclient extends nusoap_client {
 	}
 }
-?>

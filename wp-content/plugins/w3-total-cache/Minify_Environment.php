@@ -40,7 +40,7 @@ class Minify_Environment {
 		}
 
 		// if no errors so far - check if rewrite actually works
-		if ( count( $exs->exceptions() ) <= 0 || true ) {
+		if ( count( $exs->exceptions() ) <= 0 ) {
 			try {
 				if ( $config->get_boolean( 'minify.enabled' ) &&
 					$config->get_boolean( 'minify.rewrite' ) &&
@@ -224,11 +224,11 @@ class Minify_Environment {
 				( Util_Environment::is_nginx() ? 'nginx configuration file' : '.htaccess file' ) .
 				' contains rules to rewrite url ' .
 				$url . '. If handled by ' .
-				'plugin, it returns "OK" message.<br/>';
+				'plugin, it returns "Minify OK" message.<br/>';
 			$tech_message .= 'The plugin made a request to ' .
 				$url . ' but received: <br />' .
 				$result . '<br />';
-			$tech_message .= 'instead of "OK" response. <br />';
+			$tech_message .= 'instead of "Minify OK" response. <br />';
 
 			$error = '<strong>W3 Total Cache error:</strong>It appears Minify ' .
 				'<acronym title="Uniform Resource Locator">URL</acronym> ' .
@@ -273,10 +273,15 @@ class Minify_Environment {
 
 			if ( $is_ok )
 				$result = 'ok';
-			else
-				$result = is_wp_error( $response ) ?
-					$response->get_error_message() :
-					implode( ' ', $response['response'] );
+			else {
+				if ( is_wp_error( $response ) )
+					$result = $response->get_error_message();
+				else {
+					$result = '<pre>' .
+						print_r( $response['response'], true ) .
+						'</pre>';
+				}
+			}
 
 			set_site_transient( $key, $result, 30 );
 		}
@@ -366,11 +371,15 @@ class Minify_Environment {
 	 * @return string
 	 */
 	function rules_core_generate_apache( $config ) {
-		$cache_dir = Util_Rule::filename_to_uri( W3TC_CACHE_MINIFY_DIR );
+		$cache_uri = Util_Environment::url_to_uri(
+			Util_Environment::filename_to_url( W3TC_CACHE_MINIFY_DIR ) ) . '/';
 		$site_uri = rtrim( network_site_url( '', 'relative' ), '/' ) . '/';
 
 		$engine = $config->get_string( 'minify.engine' );
 		$browsercache = $config->get_boolean( 'browsercache.enabled' );
+		$brotli = ( $browsercache &&
+			$config->get_boolean( 'browsercache.cssjs.brotli' ) &&
+			!defined( 'W3TC_PAGECACHE_OUTPUT_COMPRESSION_OFF' ) );
 		$compression = ( $browsercache &&
 			$config->get_boolean( 'browsercache.cssjs.compression' ) &&
 			!defined( 'W3TC_PAGECACHE_OUTPUT_COMPRESSION_OFF' ) );
@@ -379,16 +388,24 @@ class Minify_Environment {
 		$rules .= W3TC_MARKER_BEGIN_MINIFY_CORE . "\n";
 		$rules .= "<IfModule mod_rewrite.c>\n";
 		$rules .= "    RewriteEngine On\n";
-		$rules .= "    RewriteBase " . $cache_dir . "/\n";
+		$rules .= "    RewriteBase " . $cache_uri . "\n";
 
 		if ( $engine == 'file' ) {
+			if ( $brotli ) {
+				$rules .= "    RewriteCond %{HTTP:Accept-Encoding} br\n";
+				$rules .= "    RewriteRule .* - [E=APPEND_EXT:_br]\n";
+				$rules .= "    RewriteCond %{REQUEST_FILENAME}%{ENV:APPEND_EXT} -" . ( $config->get_boolean( 'minify.file.nfs' ) ? 'F' : 'f' ) . "\n";
+				$rules .= "    RewriteRule (.*) $1%{ENV:APPEND_EXT} [L]\n";
+			}
 			if ( $compression ) {
 				$rules .= "    RewriteCond %{HTTP:Accept-Encoding} gzip\n";
-				$rules .= "    RewriteRule .* - [E=APPEND_EXT:.gzip]\n";
+				$rules .= "    RewriteRule .* - [E=APPEND_EXT:_gzip]\n";
+				$rules .= "    RewriteCond %{REQUEST_FILENAME}%{ENV:APPEND_EXT} -" . ( $config->get_boolean( 'minify.file.nfs' ) ? 'F' : 'f' ) . "\n";
+				$rules .= "    RewriteRule (.*) $1%{ENV:APPEND_EXT} [L]\n";
 			}
-
-			$rules .= "    RewriteCond %{REQUEST_FILENAME}%{ENV:APPEND_EXT} -" . ( $config->get_boolean( 'minify.file.nfs' ) ? 'F' : 'f' ) . "\n";
-			$rules .= "    RewriteRule (.*) $1%{ENV:APPEND_EXT} [L]\n";
+			if ( !$brotli && !$compression ) {
+				$rules .= "    RewriteCond %{REQUEST_FILENAME} !-f\n";
+			}
 		}
 		$rules .= "    RewriteRule ^(.+\\.(css|js))$ ${site_uri}index.php [L]\n";
 
@@ -405,18 +422,19 @@ class Minify_Environment {
 	 * @return string
 	 */
 	function rules_core_generate_nginx( $config ) {
-		$cache_dir = Util_Rule::filename_to_uri( W3TC_CACHE_MINIFY_DIR );
+		$cache_uri = Util_Environment::url_to_uri(
+			Util_Environment::filename_to_url( W3TC_CACHE_MINIFY_DIR ) ) . '/';
 		$first_regex_var = '$1';
 
 		// for subdir - need to count subdir in url
 		if ( Util_Environment::is_wpmu() && !Util_Environment::is_wpmu_subdomain() ) {
 			// take into accont case when whole subdir wpmu is installed in subdir
 			$home_uri = network_home_url( '', 'relative' );
-			if ( substr( $cache_dir, 0, strlen( $home_uri ) ) == $home_uri )
-				$cache_dir = $home_uri . '([a-z0-9]+/)?' .
-					substr( $cache_dir, strlen( $home_uri ) );
+			if ( substr( $cache_uri, 0, strlen( $home_uri ) ) == $home_uri )
+				$cache_uri = $home_uri . '([a-z0-9]+/)?' .
+					substr( $cache_uri, strlen( $home_uri ) );
 			else
-				$cache_dir = '(/[a-z0-9]+)?' . $cache_dir;
+				$cache_uri = '(/[a-z0-9]+)?' . $cache_uri;
 
 			$first_regex_var = '$2';
 		}
@@ -425,6 +443,9 @@ class Minify_Environment {
 
 		$engine = $config->get_string( 'minify.engine' );
 		$browsercache = $config->get_boolean( 'browsercache.enabled' );
+		$brotli = ( $browsercache &&
+			$config->get_boolean( 'browsercache.cssjs.brotli' ) &&
+			!defined( 'W3TC_PAGECACHE_OUTPUT_COMPRESSION_OFF' ) );
 		$compression = ( $browsercache &&
 			$config->get_boolean( 'browsercache.cssjs.compression' ) &&
 			!defined( 'W3TC_PAGECACHE_OUTPUT_COMPRESSION_OFF' ) );
@@ -435,9 +456,15 @@ class Minify_Environment {
 		if ( $engine == 'file' ) {
 			$rules .= "set \$w3tc_enc \"\";\n";
 
+			if ( $brotli ) {
+				$rules .= "if (\$http_accept_encoding ~ br) {\n";
+				$rules .= "    set \$w3tc_enc _br;\n";
+				$rules .= "}\n";
+			}
+
 			if ( $compression ) {
 				$rules .= "if (\$http_accept_encoding ~ gzip) {\n";
-				$rules .= "    set \$w3tc_enc .gzip;\n";
+				$rules .= "    set \$w3tc_enc _gzip;\n";
 				$rules .= "}\n";
 			}
 
@@ -445,7 +472,7 @@ class Minify_Environment {
 			$rules .= "    rewrite (.*) $1\$w3tc_enc break;\n";
 			$rules .= "}\n";
 		}
-		$rules .= "rewrite ^$cache_dir/ ${minify_uri}index.php last;\n";
+		$rules .= "rewrite ^$cache_uri ${minify_uri}index.php last;\n";
 		$rules .= W3TC_MARKER_END_MINIFY_CORE . "\n";
 
 		return $rules;
@@ -527,6 +554,7 @@ class Minify_Environment {
 	 */
 	private function rules_cache_generate_apache( $config ) {
 		$browsercache = $config->get_boolean( 'browsercache.enabled' );
+		$brotli = ( $browsercache && $config->get_boolean( 'browsercache.cssjs.brotli' ) );
 		$compression = ( $browsercache && $config->get_boolean( 'browsercache.cssjs.compression' ) );
 		$expires = ( $browsercache && $config->get_boolean( 'browsercache.cssjs.expires' ) );
 		$lifetime = ( $browsercache ? $config->get_integer( 'browsercache.cssjs.lifetime' ) : 0 );
@@ -537,6 +565,7 @@ class Minify_Environment {
 
 		$rules = '';
 		$rules .= W3TC_MARKER_BEGIN_MINIFY_CACHE . "\n";
+		// workaround for .gzip
 		if ( $compatibility ) {
 			$rules .= "Options -MultiViews\n";
 		}
@@ -545,19 +574,32 @@ class Minify_Environment {
 			$rules .= "FileETag MTime Size\n";
 		}
 
-		if ( $compression ) {
+		if ( $brotli ) {
 			$rules .= "<IfModule mod_mime.c>\n";
-			$rules .= "    AddEncoding gzip .gzip\n";
-			$rules .= "    <Files *.css.gzip>\n";
-			$rules .= "        ForceType text/css\n";
-			$rules .= "    </Files>\n";
-			$rules .= "    <Files *.js.gzip>\n";
-			$rules .= "        ForceType application/x-javascript\n";
-			$rules .= "    </Files>\n";
+			$rules .= "    AddType text/css .css_br\n";
+			$rules .= "    AddEncoding br .css_br\n";
+			$rules .= "    AddType application/x-javascript .js_br\n";
+			$rules .= "    AddEncoding br .js_br\n";
 			$rules .= "</IfModule>\n";
 			$rules .= "<IfModule mod_deflate.c>\n";
 			$rules .= "    <IfModule mod_setenvif.c>\n";
-			$rules .= "        SetEnvIfNoCase Request_URI \\.gzip$ no-gzip\n";
+			$rules .= "        SetEnvIfNoCase Request_URI \\.css_br$ no-brotli\n";
+			$rules .= "        SetEnvIfNoCase Request_URI \\.js_br$ no-brotli\n";
+			$rules .= "    </IfModule>\n";
+			$rules .= "</IfModule>\n";
+		}
+
+		if ( $compression ) {
+			$rules .= "<IfModule mod_mime.c>\n";
+			$rules .= "    AddType text/css .css_gzip\n";
+			$rules .= "    AddEncoding gzip .css_gzip\n";
+			$rules .= "    AddType application/x-javascript .js_gzip\n";
+			$rules .= "    AddEncoding gzip .js_gzip\n";
+			$rules .= "</IfModule>\n";
+			$rules .= "<IfModule mod_deflate.c>\n";
+			$rules .= "    <IfModule mod_setenvif.c>\n";
+			$rules .= "        SetEnvIfNoCase Request_URI \\.css_gzip$ no-gzip\n";
+			$rules .= "        SetEnvIfNoCase Request_URI \\.js_gzip$ no-gzip\n";
 			$rules .= "    </IfModule>\n";
 			$rules .= "</IfModule>\n";
 		}
@@ -570,7 +612,7 @@ class Minify_Environment {
 			$rules .= "</IfModule>\n";
 		}
 
-		if ( $w3tc || $compression || $cache_control ) {
+		if ( $w3tc || $brotli || $compression || $cache_control ) {
 			$rules .= "<IfModule mod_headers.c>\n";
 
 			if ( $w3tc ) {
@@ -578,7 +620,7 @@ class Minify_Environment {
 					Util_Environment::w3tc_header() . "\"\n";
 			}
 
-			if ( $compression ) {
+			if ( $brotli || $compression ) {
 				$rules .= "    Header set Vary \"Accept-Encoding\"\n";
 			}
 
@@ -643,96 +685,55 @@ class Minify_Environment {
 	 * @return string
 	 */
 	private function rules_cache_generate_nginx( $config ) {
-		$cache_dir = Util_Rule::filename_to_uri( W3TC_CACHE_MINIFY_DIR );
+		$cache_uri = Util_Environment::url_to_uri(
+			Util_Environment::filename_to_url( W3TC_CACHE_MINIFY_DIR ) ) . '/';
 
 		$browsercache = $config->get_boolean( 'browsercache.enabled' );
-		$compression = ( $browsercache && $config->get_boolean( 'browsercache.cssjs.compression' ) );
-		$expires = ( $browsercache && $config->get_boolean( 'browsercache.cssjs.expires' ) );
-		$lifetime = ( $browsercache ? $config->get_integer( 'browsercache.cssjs.lifetime' ) : 0 );
-		$cache_control = ( $browsercache && $config->get_boolean( 'browsercache.cssjs.cache.control' ) );
-		$w3tc = ( $browsercache && $config->get_integer( 'browsercache.cssjs.w3tc' ) );
+		$brotli = ( $browsercache && $config->get_boolean( 'browsercache.cssjs.brotli' ) );
+		$gzip = ( $browsercache && $config->get_boolean( 'browsercache.cssjs.compression' ) );
 
 		$rules = '';
 		$rules .= W3TC_MARKER_BEGIN_MINIFY_CACHE . "\n";
 
-		$common_rules = '';
+		$common_rules_a = Dispatcher::nginx_rules_for_browsercache_section(
+			$config, 'cssjs', true );
+		$common_rules_a[] = 'add_header Vary "Accept-Encoding";';
 
-		if ( $expires ) {
-			$common_rules .= "    expires modified " . $lifetime . "s;\n";
+		$common_rules = '    ' . implode( "\n    ", $common_rules_a ) . "\n";
+
+		if ( $brotli ) {
+			$rules .= "location ~ " . $cache_uri . ".*js_br$ {\n";
+			$rules .= "    brotli off;\n";
+			$rules .= "    types {}\n";
+			$rules .= "    default_type application/x-javascript;\n";
+			$rules .= "    add_header Content-Encoding br;\n";
+			$rules .= $common_rules;
+			$rules .= "}\n";
+
+			$rules .= "location ~ " . $cache_uri . ".*css_br$ {\n";
+			$rules .= "    brotli off;\n";
+			$rules .= "    types {}\n";
+			$rules .= "    default_type text/css;\n";
+			$rules .= "    add_header Content-Encoding br;\n";
+			$rules .= $common_rules;
+			$rules .= "}\n";
 		}
 
-		if ( $w3tc ) {
-			$common_rules .= "    add_header X-Powered-By \"" .
-				Util_Environment::w3tc_header() . "\";\n";
-		}
-
-		if ( $compression ) {
-			$common_rules .= "    add_header Vary \"Accept-Encoding\";\n";
-		}
-
-		if ( $cache_control ) {
-			$cache_policy = $config->get_string( 'browsercache.cssjs.cache.policy' );
-
-			switch ( $cache_policy ) {
-			case 'cache':
-				$common_rules .= "    add_header Pragma \"public\";\n";
-				$common_rules .= "    add_header Cache-Control \"public\";\n";
-				break;
-
-			case 'cache_public_maxage':
-				$common_rules .= "    add_header Pragma \"public\";\n";
-				$common_rules .= "    add_header Cache-Control \"max-age=" . $lifetime . ", public\";\n";
-				break;
-
-			case 'cache_validation':
-				$common_rules .= "    add_header Pragma \"public\";\n";
-				$common_rules .= "    add_header Cache-Control \"public, must-revalidate, proxy-revalidate\";\n";
-				break;
-
-			case 'cache_noproxy':
-				$common_rules .= "    add_header Pragma \"public\";\n";
-				$common_rules .= "    add_header Cache-Control \"private, must-revalidate\";\n";
-				break;
-
-			case 'cache_maxage':
-				$common_rules .= "    add_header Pragma \"public\";\n";
-				$common_rules .= "    add_header Cache-Control \"max-age=" . $lifetime . ", public, must-revalidate, proxy-revalidate\";\n";
-				break;
-
-			case 'no_cache':
-				$common_rules .= "    add_header Pragma \"no-cache\";\n";
-				$common_rules .= "    add_header Cache-Control \"max-age=0, private, no-store, no-cache, must-revalidate\";\n";
-				break;
-			}
-		}
-
-		$rules .= "location ~ " . $cache_dir . ".*\\.js$ {\n";
-		$rules .= "    types {}\n";
-		$rules .= "    default_type application/x-javascript;\n";
-		$rules .= $common_rules;
-		$rules .= "}\n";
-
-		$rules .= "location ~ " . $cache_dir . ".*\\.css$ {\n";
-		$rules .= "    types {}\n";
-		$rules .= "    default_type text/css;\n";
-		$rules .= $common_rules;
-		$rules .= "}\n";
-
-		if ( $compression ) {
-			$rules .= "location ~ " . $cache_dir . ".*js\\.gzip$ {\n";
+		if ( $gzip ) {
+			$rules .= "location ~ " . $cache_uri . ".*js_gzip$ {\n";
 			$rules .= "    gzip off;\n";
 			$rules .= "    types {}\n";
 			$rules .= "    default_type application/x-javascript;\n";
-			$rules .= $common_rules;
 			$rules .= "    add_header Content-Encoding gzip;\n";
+			$rules .= $common_rules;
 			$rules .= "}\n";
 
-			$rules .= "location ~ " . $cache_dir . ".*css\\.gzip$ {\n";
+			$rules .= "location ~ " . $cache_uri . ".*css_gzip$ {\n";
 			$rules .= "    gzip off;\n";
 			$rules .= "    types {}\n";
 			$rules .= "    default_type text/css;\n";
-			$rules .= $common_rules;
 			$rules .= "    add_header Content-Encoding gzip;\n";
+			$rules .= $common_rules;
 			$rules .= "}\n";
 		}
 

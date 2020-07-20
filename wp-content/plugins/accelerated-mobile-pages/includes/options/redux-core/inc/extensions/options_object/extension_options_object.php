@@ -1,5 +1,5 @@
 <?php
-
+namespace ReduxCore\ReduxFramework;
     /**
      * Redux Framework is free software: you can redistribute it and/or modify
      * it under the terms of the GNU General Public License as published by
@@ -23,7 +23,7 @@
     }
 
 // Don't duplicate me!
-    if ( ! class_exists( 'ReduxFramework_Extension_options_object' ) ) {
+    if ( ! class_exists( 'ReduxCore\\ReduxFramework\\ReduxFramework_Extension_options_object' ) ) {
 
 
         /**
@@ -77,9 +77,9 @@
             }
 
             public function add_section() {
-                $this->parent->sections[] = array(
+                /*$this->parent->sections[] = array(
                     'id' => 'options-object',
-                    'title' => __( 'Options Object', 'redux-framework' ),
+                    'title' => __( 'Options Object', 'accelerated-mobile-pages' ),
                     'heading' => '',
                     'icon' => 'el el-info-circle',
                     'customizer' => false,
@@ -90,7 +90,7 @@
                             'title' => '',
                         )
                     ),
-                );
+                );*/
             }
 
             // Forces the use of the embeded field path vs what the core typically would use

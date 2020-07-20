@@ -22,43 +22,18 @@ const admin_dist = './admin/dist';
 /* Core ALM Tasks */
 
 
-
-// JS [Lint JS]
-gulp.task('lint', () => {
-	return gulp.src(['./core/src/js/'+ appname +'.js'])
-	.pipe(jshint())
-	.pipe(jshint.reporter('default'))
-	.pipe(notify({ message: 'Lint Complete' }));
-});
-
-
-// JS [Concatenate JS]
-gulp.task('scripts', () => {
-	return gulp.src([
-		'./core/src/js/modules/*.js',
-		'./core/src/js/'+ appname +'.js',
-		'./core/src/js/libs/*.js',
-	])
-	.pipe(babel())
-	.pipe(concat(appname +'.js'))
-	.pipe(gulp.dest( dist +'/js/'))
-	.pipe(rename({ suffix: '.min' }))
-	.pipe(uglify())
-	.pipe(gulp.dest( dist +'/js/'))
-	.pipe(notify({ message: 'Scripts Complete' }));
-});
-
-
 // Sass [Core Compile]
 gulp.task('sass', () => {
-    gulp.src('./core/src/scss/'+ appname +'.scss')
-      .pipe(sass())
-      .pipe(prefix({browsers: ['last 2 versions', 'ie >= 9', 'and_chr >= 2.3']}))
-      .pipe(gulp.dest( dist +'/css/'))
-		.pipe(cleanCSS())
-		.pipe(rename({ suffix: '.min' }))
-		.pipe(gulp.dest( dist +'/css/'))
-      .pipe(notify({ message: 'Sass Complete' }));
+	setTimeout(function(){
+	    gulp.src('./core/src/scss/*.scss')
+	      .pipe(sass())
+	      .pipe(prefix({browsers: ['last 2 versions', 'ie >= 9', 'and_chr >= 2.3']}))
+	      .pipe(gulp.dest( dist +'/css/'))
+			.pipe(cleanCSS())
+			.pipe(rename({ suffix: '.min' }))
+			.pipe(gulp.dest( dist +'/css/'))
+	      .pipe(notify({ message: 'Sass Complete' }));
+   }, 250);
 });
 
 
@@ -80,6 +55,7 @@ gulp.task('admin_lint', () => {
 gulp.task('admin_scripts', () => {
 	return gulp.src([
 		'./admin/src/js/libs/*.js',
+		'./admin/src/js/modules/*.js',
 		'./admin/src/js/admin.js',
 	])
 	.pipe(babel())
@@ -91,11 +67,13 @@ gulp.task('admin_scripts', () => {
 
 // Sass [Admin Compile]
 gulp.task('admin_sass', () => {
-    gulp.src('./admin/src/scss/admin.scss')
-      .pipe(sass())
-      .pipe(prefix({browsers: ['last 2 versions', 'ie >= 9', 'and_chr >= 2.3']}))
-      .pipe(gulp.dest( admin_dist +'/css/'))
-      .pipe(notify({ message: 'Admin Sass Complete' }));
+	setTimeout(function(){
+	   gulp.src('./admin/src/scss/admin.scss')
+	      .pipe(sass())
+	      .pipe(prefix({browsers: ['last 2 versions', 'ie >= 9', 'and_chr >= 2.3']}))
+	      .pipe(gulp.dest( admin_dist +'/css/'))
+	      .pipe(notify({ message: 'Admin Sass Complete' }));
+   }, 250);
 });
 
 
@@ -105,7 +83,6 @@ gulp.task('admin_sass', () => {
 
 // Watch
 gulp.task('watch', function() {
-    gulp.watch('core/src/js/**/*.js', ['lint', 'scripts']);
     gulp.watch('core/src/scss/**/*.scss', ['sass']);    
     gulp.watch('admin/src/js/**/*.js', ['admin_lint', 'admin_scripts']);
     gulp.watch('admin/src/scss/**/*.scss', ['admin_sass']);
@@ -113,4 +90,4 @@ gulp.task('watch', function() {
 
 
 // Default - watches all sass and .js changes
-gulp.task('default', ['sass', 'admin_sass', 'lint', 'admin_lint', 'scripts', 'admin_scripts', 'watch']);
+gulp.task('default', ['sass', 'admin_sass', 'admin_lint', 'admin_scripts', 'watch']);

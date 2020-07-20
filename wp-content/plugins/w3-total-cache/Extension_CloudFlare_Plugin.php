@@ -103,7 +103,7 @@ class Extension_CloudFlare_Plugin {
 				$api->purge();
 			} catch ( \Exception $ex ) {
 				$action_made['error'] =
-					'Failed to purge CloudFlare cache: ' . $ex->getMessage();
+					'CloudFlare cache: ' . $ex->getMessage();
 			}
 
 			$this->flush_operation_requested = false;
@@ -190,7 +190,7 @@ class Extension_CloudFlare_Plugin {
 					break;
 				}
 			}
-		} else {
+		} elseif ( !empty( $_SERVER["REMOTE_ADDR"] ) ) {
 			$ip6_ranges = $this->_config->get_array( array(
 					'cloudflare', 'ips.ip6' ) );
 			$ip6 = $this->get_ipv6_full( $_SERVER["REMOTE_ADDR"] );
@@ -317,11 +317,16 @@ class Extension_CloudFlare_Plugin {
 	 */
 	private function get_ipv6_full( $ip ) {
 		$pieces = explode( "/", $ip, 2 );
+		if ( count( $pieces ) < 2 )
+			return 0;
+
 		$left_piece = $pieces[0];
-		$right_piece = $pieces[1];
 
 		// Extract out the main IP pieces
 		$ip_pieces = explode( "::", $left_piece, 2 );
+		if ( count( $ip_pieces ) < 2 )
+			return 0;
+
 		$main_ip_piece = $ip_pieces[0];
 		$last_ip_piece = $ip_pieces[1];
 
@@ -332,7 +337,6 @@ class Extension_CloudFlare_Plugin {
 		}
 
 		// Check to see if the last IP block (part after ::) is set
-		$last_piece = "";
 		$size = count( $main_ip_pieces );
 		if ( trim( $last_ip_piece ) != "" ) {
 			$last_piece = str_pad( $last_ip_piece, 4, "0", STR_PAD_LEFT );
@@ -367,7 +371,6 @@ class Extension_CloudFlare_Plugin {
 	private function ipv6_in_range( $ip, $range_ip ) {
 		$pieces = explode( "/", $range_ip, 2 );
 		$left_piece = $pieces[0];
-		$right_piece = $pieces[1];
 
 		// Extract out the main IP pieces
 		$ip_pieces = explode( "::", $left_piece, 2 );

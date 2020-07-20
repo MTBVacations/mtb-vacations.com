@@ -1,5 +1,8 @@
 <?php
-
+namespace ReduxCore\ReduxFramework;
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
 // Array of Elusive Icons
 // Contributed by @WhatJustHappened
 // Last updated: 14 Sept. 2013
@@ -309,4 +312,4 @@
         return $elusiveIcons;
     }
 
-    add_filter( 'redux/font-icons', 'get_font_icons' );
+    add_filter( 'redux/font-icons', 'ReduxCore\\ReduxFramework\\get_font_icons' );

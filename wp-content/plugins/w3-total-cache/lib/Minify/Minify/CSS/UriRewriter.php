@@ -209,7 +209,7 @@ class Minify_CSS_UriRewriter {
      */
     private static function rewriteRelative($uri, $realCurrentDir, $realDocRoot, $symlinks = array())
     {
-        if ('/' === $uri[0]) { // root-relative
+        if ('/' === substr($uri, 0, 1)) { // root-relative
             return $uri;
         }
 
@@ -376,14 +376,16 @@ class Minify_CSS_UriRewriter {
                 : substr($m[1], 1, strlen($m[1]) - 2);
         }
         // analyze URI
-        if ('/' !== $uri[0]                  // root-relative
-            && false === strpos($uri, '//')  // protocol (non-data)
-            && 0 !== strpos($uri, 'data:')   // data protocol
+        if ( !empty($uri)
+            && '/' !== substr($uri, 0, 1) // Root-relative (/).
+            && false === strpos( $uri, '//' )  // Protocol/non-data (//).
+            && 'data:' !== substr( $uri, 0, 5 ) // Data protocol.
+            && '%' !== substr( $uri, 0, 1 ) // URL-encoded entity.
+            && '#' !== substr( $uri, 0, 1 ) // URL fragment.
         ) {
             // URI is file-relative: rewrite depending on options
             if (self::$_prependPath === null) {
                 $uri = self::rewriteRelative($uri, self::$_currentDir, self::$_docRoot, self::$_symlinks);
-
                 if (self::$_prependAbsolutePath) {
                     $prependAbsolutePath = self::$_prependAbsolutePath;
                 } elseif (self::$_prependAbsolutePathCallback) {
@@ -399,7 +401,7 @@ class Minify_CSS_UriRewriter {
                 if (!\W3TC\Util_Environment::is_url(self::$_prependPath)) {
 					$uri = self::$_prependPath . $uri;
 
-                    if ($uri[0] === '/') {
+                    if (substr($uri, 0, 1) === '/') {
                         $root = '';
                         $rootRelative = $uri;
                         $uri = $root . self::removeDots($rootRelative);
@@ -412,7 +414,7 @@ class Minify_CSS_UriRewriter {
                     $parse_url = @parse_url(self::$_prependPath);
 
                     if ($parse_url && isset($parse_url['host'])) {
-                        $scheme = $parse_url['scheme'];
+                        $scheme = array_key_exists('scheme', $parse_url) ? $parse_url['scheme'] : '';
                         $host = $parse_url['host'];
                         $port = (isset($parse_url['port']) && $parse_url['port'] != 80 ? ':' . (int) $parse_url['port'] : '');
                         $path = (!empty($parse_url['path']) ? $parse_url['path'] : '/');
@@ -433,11 +435,10 @@ class Minify_CSS_UriRewriter {
 
                 if (preg_match('~\.([a-z-_]+)(\?.*)?$~', $uri, $matches)) {
                     $extension = $matches[1];
-                    $query = (isset($matches[2]) ? $matches[2] : '');
 
                     if ($extension && in_array($extension, self::$_browserCacheExtensions)) {
                         $uri = \W3TC\Util_Environment::remove_query($uri);
-                        $uri .= ($query ? '&' : '?') . self::$_browserCacheId;
+                        $uri .= ( strpos( $uri, '?' ) !== false ? '&' : '?' ) . self::$_browserCacheId;
                     }
                 }
             }

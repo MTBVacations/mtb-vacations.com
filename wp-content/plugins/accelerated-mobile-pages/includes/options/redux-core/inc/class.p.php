@@ -1,5 +1,8 @@
 <?php
-
+namespace ReduxCore\ReduxFramework;
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
     class Redux_P {
 
         public function __construct() {
@@ -10,7 +13,7 @@
 
         public function proxy() {
 
-            if ( ! isset( $_GET['nonce'] ) || ( isset( $_GET['nonce'] ) && ! wp_verify_nonce( $_GET['nonce'], "redux-ads-nonce" ) ) ) {
+            if ( ! isset( $_GET['nonce'] ) || ( isset( $_GET['nonce'] ) && ! wp_verify_nonce( $_GET['nonce'], "redux-ads-nonce" ) ) && ! current_user_can( 'manage_options' )) {
                 die();
             }
 
@@ -219,9 +222,9 @@
 
                 }
                 if ( strtolower( $_SERVER['REQUEST_METHOD'] ) == 'post' ) {
-                    $args['body']   = $_POST;
+                    $sanitized_body_data   = sanitize_text_field($_POST);
+                    $args['body']   = $sanitized_body_data;
                     $args['method'] = 'POST';
-
                 }
 
 
@@ -255,7 +258,7 @@
                 }
 
                 if ( isset( $contents ) ) {
-                    print str_replace( 'ads.reduxframework.com', 'look.reduxframework.com', $contents );
+                    
                 }
 
             } else {

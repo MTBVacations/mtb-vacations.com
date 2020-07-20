@@ -1,4 +1,8 @@
 <?php
+namespace ReduxCore\ReduxFramework;
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
     /**
      * The template for the main panel container.
      * Override this template by specifying the path where it is stored (templates_path) in your Redux config.
@@ -12,7 +16,7 @@
     $expanded = ( $this->parent->args['open_expanded'] ) ? ' fully-expanded' : '' . ( ! empty( $this->parent->args['class'] ) ? ' ' . esc_attr( $this->parent->args['class'] ) : '' );
     $nonce    = wp_create_nonce( "redux_ajax_nonce" . $this->parent->args['opt_name'] );
 ?>
-<div class="redux-container<?php echo esc_attr( $expanded ); ?>">
+<div class="redux-container ampforwp-redux-container<?php echo esc_attr( $expanded ); ?>">
     <?php $action = ( $this->parent->args['database'] == "network" && $this->parent->args['network_admin'] && is_network_admin() ? './edit.php?action=redux_' . $this->parent->args['opt_name'] : './options.php' ) ?>
     <form method="post" 
           action="<?php echo esc_attr($action); ?>" 

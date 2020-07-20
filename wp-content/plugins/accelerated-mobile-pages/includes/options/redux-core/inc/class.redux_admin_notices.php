@@ -1,5 +1,5 @@
 <?php
-
+    namespace ReduxCore\ReduxFramework;
     /**
      * Redux Framework Admin Notice Class
      * Makes instantiating a Redux object an absolute piece of cake.
@@ -16,7 +16,7 @@
     }
 
     // Don't duplicate me!
-    if ( ! class_exists( 'Redux_Admin_Notices' ) ) {
+    if ( ! class_exists( 'ReduxCore\\ReduxFramework\\Redux_Admin_Notices' ) ) {
 
         /**
          * Redux API Class
@@ -30,7 +30,7 @@
 
             public static function load() {
                 add_action( 'wp_ajax_redux_hide_admin_notice', array(
-                    'Redux_Admin_Notices',
+                    'ReduxCore\\ReduxFramework\\Redux_Admin_Notices',
                     'dismissAdminNoticeAJAX'
                 ) );
             }
@@ -153,9 +153,12 @@
                         // Get the notice id
                         $id  = esc_attr( $_GET['id'] );
                         $val = esc_attr( $_GET['dismiss'] );
-
+                        if ( ! wp_verify_nonce( $_POST['nonce'], $id . $userid . 'nonce' ) ) {
+                            die( 0 );
+                        } else {
                         // Add the dismiss request to the user meta.
                         update_user_meta( $userid, 'ignore_' . $id, $val );
+                        }
                     }
                 }
             }
@@ -171,7 +174,7 @@
                 global $current_user;
 
                 // Get the notice id
-                $id = explode( '&', $_POST['id'] );
+                $id = explode( '&', intval($_POST['id']) );
                 $id = $id[0];
                 // Get the user id
                 $userid = $current_user->ID;
