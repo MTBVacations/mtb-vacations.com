@@ -1,159 +1,242 @@
 <?php
 /**
  * Plugin Name: AMP
- * Description: Add AMP support to your WordPress site.
- * Plugin URI: https://github.com/automattic/amp-wp
- * Author: Automattic
- * Author URI: https://automattic.com
- * Version: 0.4.2
+ * Description: Enable AMP on your WordPress site, the WordPress way.
+ * Plugin URI: https://amp-wp.org
+ * Author: AMP Project Contributors
+ * Author URI: https://github.com/ampproject/amp-wp/graphs/contributors
+ * Version: 1.5.5
  * Text Domain: amp
  * Domain Path: /languages/
  * License: GPLv2 or later
+ * Requires at least: 4.9
+ * Requires PHP: 5.6
+ *
+ * @package AMP
  */
 
 define( 'AMP__FILE__', __FILE__ );
 define( 'AMP__DIR__', dirname( __FILE__ ) );
-define( 'AMP__VERSION', '0.4.2' );
+define( 'AMP__VERSION', '1.5.5' );
 
-require_once( AMP__DIR__ . '/back-compat/back-compat.php' );
-require_once( AMP__DIR__ . '/includes/amp-helper-functions.php' );
-require_once( AMP__DIR__ . '/includes/admin/functions.php' );
-require_once( AMP__DIR__ . '/includes/settings/class-amp-customizer-settings.php' );
-require_once( AMP__DIR__ . '/includes/settings/class-amp-customizer-design-settings.php' );
+/**
+ * Errors encountered while loading the plugin.
+ *
+ * This has to be a global for the sake of PHP 5.2.
+ *
+ * @var WP_Error $_amp_load_errors
+ */
+global $_amp_load_errors;
 
-register_activation_hook( __FILE__, 'amp_activate' );
-function amp_activate() {
-	if ( ! did_action( 'amp_init' ) ) {
-		amp_init();
-	}
-	flush_rewrite_rules();
+$_amp_load_errors = new WP_Error();
+
+if ( version_compare( phpversion(), '5.6', '<' ) ) {
+	$_amp_load_errors->add(
+		'insufficient_php_version',
+		sprintf(
+			/* translators: %s: required PHP version */
+			__( 'The AMP plugin requires PHP %s. Please contact your host to update your PHP version.', 'amp' ),
+			'5.6+'
+		)
+	);
 }
 
-register_deactivation_hook( __FILE__, 'amp_deactivate' );
-function amp_deactivate() {
-	// We need to manually remove the amp endpoint
-	global $wp_rewrite;
-	foreach ( $wp_rewrite->endpoints as $index => $endpoint ) {
-		if ( AMP_QUERY_VAR === $endpoint[1] ) {
-			unset( $wp_rewrite->endpoints[ $index ] );
-			break;
-		}
-	}
-
-	flush_rewrite_rules();
-}
-
-add_action( 'init', 'amp_init' );
-function amp_init() {
-	if ( false === apply_filters( 'amp_is_enabled', true ) ) {
-		return;
-	}
-
-	define( 'AMP_QUERY_VAR', apply_filters( 'amp_query_var', 'amp' ) );
-
-	do_action( 'amp_init' );
-
-	load_plugin_textdomain( 'amp', false, plugin_basename( AMP__DIR__ ) . '/languages' );
-
-	add_rewrite_endpoint( AMP_QUERY_VAR, EP_PERMALINK );
-	add_post_type_support( 'post', AMP_QUERY_VAR );
-
-	add_filter( 'request', 'amp_force_query_var_value' );
-	add_action( 'wp', 'amp_maybe_add_actions' );
-
-	if ( class_exists( 'Jetpack' ) && ! ( defined( 'IS_WPCOM' ) && IS_WPCOM ) ) {
-		require_once( AMP__DIR__ . '/jetpack-helper.php' );
-	}
-}
-
-// Make sure the `amp` query var has an explicit value.
-// Avoids issues when filtering the deprecated `query_string` hook.
-function amp_force_query_var_value( $query_vars ) {
-	if ( isset( $query_vars[ AMP_QUERY_VAR ] ) && '' === $query_vars[ AMP_QUERY_VAR ] ) {
-		$query_vars[ AMP_QUERY_VAR ] = 1;
-	}
-	return $query_vars;
-}
-
-function amp_maybe_add_actions() {
-	if ( ! is_singular() || is_feed() ) {
-		return;
-	}
-
-	$is_amp_endpoint = is_amp_endpoint();
-
-	// Cannot use `get_queried_object` before canonical redirect; see https://core.trac.wordpress.org/ticket/35344
-	global $wp_query;
-	$post = $wp_query->post;
-
-	$supports = post_supports_amp( $post );
-
-	if ( ! $supports ) {
-		if ( $is_amp_endpoint ) {
-			wp_safe_redirect( get_permalink( $post->ID ) );
-			exit;
-		}
-		return;
-	}
-
-	if ( $is_amp_endpoint ) {
-		amp_prepare_render();
+// See composer.json for this list.
+$_amp_required_extensions = array(
+	// Required by FasterImage.
+	'curl'   => array(
+		'functions' => array(
+			'curl_close',
+			'curl_errno',
+			'curl_error',
+			'curl_exec',
+			'curl_getinfo',
+			'curl_init',
+			'curl_setopt',
+		),
+	),
+	'dom'    => array(
+		'classes' => array(
+			'DOMAttr',
+			'DOMComment',
+			'DOMDocument',
+			'DOMElement',
+			'DOMNode',
+			'DOMNodeList',
+			'DOMXPath',
+		),
+	),
+	// Required by PHP-CSS-Parser.
+	'iconv'  => array(
+		'functions' => array( 'iconv' ),
+	),
+	'libxml' => array(
+		'functions' => array( 'libxml_use_internal_errors' ),
+	),
+	'spl'    => array(
+		'functions' => array( 'spl_autoload_register' ),
+	),
+);
+$_amp_missing_extensions = array();
+$_amp_missing_classes    = array();
+$_amp_missing_functions  = array();
+foreach ( $_amp_required_extensions as $_amp_required_extension => $_amp_required_constructs ) {
+	if ( ! extension_loaded( $_amp_required_extension ) ) {
+		$_amp_missing_extensions[] = "<code>$_amp_required_extension</code>";
 	} else {
-		amp_add_frontend_actions();
+		foreach ( $_amp_required_constructs as $_amp_construct_type => $_amp_constructs ) {
+			switch ( $_amp_construct_type ) {
+				case 'functions':
+					foreach ( $_amp_constructs as $_amp_construct ) {
+						if ( ! function_exists( $_amp_construct ) ) {
+							$_amp_missing_functions[] = "<code>$_amp_construct</code>";
+						}
+					}
+					break;
+				case 'classes':
+					foreach ( $_amp_constructs as $_amp_construct ) {
+						if ( ! class_exists( $_amp_construct ) ) {
+							$_amp_missing_classes[] = "<code>$_amp_construct</code>";
+						}
+					}
+					break;
+			}
+		}
+		unset( $_amp_construct_type, $_amp_constructs );
 	}
 }
-
-function amp_load_classes() {
-	require_once( AMP__DIR__ . '/includes/class-amp-post-template.php' ); // this loads everything else
+if ( count( $_amp_missing_extensions ) > 0 ) {
+	$_amp_load_errors->add(
+		'missing_extension',
+		sprintf(
+			/* translators: %s is list of missing extensions */
+			_n(
+				'The following PHP extension is missing: %s. Please contact your host to finish installation.',
+				'The following PHP extensions are missing: %s. Please contact your host to finish installation.',
+				count( $_amp_missing_extensions ),
+				'amp'
+			),
+			implode( ', ', $_amp_missing_extensions )
+		)
+	);
+}
+if ( count( $_amp_missing_classes ) > 0 ) {
+	$_amp_load_errors->add(
+		'missing_class',
+		sprintf(
+			/* translators: %s is list of missing extensions */
+			_n(
+				'The following PHP class is missing: %s. Please contact your host to finish installation.',
+				'The following PHP classes are missing: %s. Please contact your host to finish installation.',
+				count( $_amp_missing_classes ),
+				'amp'
+			),
+			implode( ', ', $_amp_missing_classes )
+		)
+	);
+}
+if ( count( $_amp_missing_functions ) > 0 ) {
+	$_amp_load_errors->add(
+		'missing_class',
+		sprintf(
+			/* translators: %s is list of missing extensions */
+			_n(
+				'The following PHP function is missing: %s. Please contact your host to finish installation.',
+				'The following PHP functions are missing: %s. Please contact your host to finish installation.',
+				count( $_amp_missing_functions ),
+				'amp'
+			),
+			implode( ', ', $_amp_missing_functions )
+		)
+	);
 }
 
-function amp_add_frontend_actions() {
-	require_once( AMP__DIR__ . '/includes/amp-frontend-actions.php' );
+unset( $_amp_required_extensions, $_amp_missing_extensions, $_amp_required_constructs, $_amp_missing_classes, $_amp_missing_functions, $_amp_required_extension, $_amp_construct_type, $_amp_construct, $_amp_constructs );
+
+/**
+ * Displays an admin notice about why the plugin is unable to load.
+ *
+ * @since 1.1.2
+ * @global WP_Error $_amp_load_errors
+ */
+function _amp_show_load_errors_admin_notice() {
+	global $_amp_load_errors;
+	?>
+	<div class="notice notice-error">
+		<p>
+			<strong><?php esc_html_e( 'AMP plugin unable to initialize.', 'amp' ); ?></strong>
+			<ul>
+			<?php foreach ( array_keys( $_amp_load_errors->errors ) as $error_code ) : ?>
+				<?php foreach ( $_amp_load_errors->get_error_messages( $error_code ) as $message ) : ?>
+					<li>
+						<?php echo wp_kses_post( $message ); ?>
+					</li>
+				<?php endforeach; ?>
+			<?php endforeach; ?>
+			</ul>
+		</p>
+	</div>
+	<?php
 }
 
-function amp_add_post_template_actions() {
-	require_once( AMP__DIR__ . '/includes/amp-post-template-actions.php' );
-	require_once( AMP__DIR__ . '/includes/amp-post-template-functions.php' );
-}
+// Abort if dependencies are not satisfied.
+if ( ! empty( $_amp_load_errors->errors ) ) {
+	add_action( 'admin_notices', '_amp_show_load_errors_admin_notice' );
 
-function amp_prepare_render() {
-	add_action( 'template_redirect', 'amp_render' );
-}
+	if ( ( defined( 'WP_CLI' ) && WP_CLI ) || 'true' === getenv( 'CI' ) || 'cli' === PHP_SAPI ) {
+		$messages = array( __( 'AMP plugin unable to initialize.', 'amp' ) );
+		foreach ( array_keys( $_amp_load_errors->errors ) as $error_code ) {
+			$messages = array_merge( $messages, $_amp_load_errors->get_error_messages( $error_code ) );
+		}
+		$message = implode( "\n * ", $messages );
+		$message = str_replace( array( '<code>', '</code>' ), '`', $message );
+		$message = html_entity_decode( $message, ENT_QUOTES, 'UTF-8' );
 
-function amp_render() {
-	amp_load_classes();
+		if ( ! class_exists( 'WP_CLI' ) ) {
+			echo "$message\n"; // phpcs:disable WordPress.Security.EscapeOutput.OutputNotEscaped
 
-	$post_id = get_queried_object_id();
-	do_action( 'pre_amp_render_post', $post_id );
+			exit( 1 );
+		}
 
-	amp_add_post_template_actions();
-	$template = new AMP_Post_Template( $post_id );
-	$template->load();
-	exit;
+		WP_CLI::warning( $message );
+	}
+
+	return;
 }
 
 /**
- * Bootstraps the AMP customizer.
+ * Print admin notice if plugin installed with incorrect slug (which impacts WordPress's auto-update system).
  *
- * If the AMP customizer is enabled, initially drop the core widgets and menus panels. If the current
- * preview page isn't flagged as an AMP template, the core panels will be re-added and the AMP panel
- * hidden.
- *
- * @internal This callback must be hooked before priority 10 on 'plugins_loaded' to properly unhook
- *           the core panels.
- *
- * @since 0.4
+ * @since 1.0
  */
-function _amp_bootstrap_customizer() {
-	/**
-	 * Filter whether to enable the AMP template customizer functionality.
-	 *
-	 * @param bool $enable Whether to enable the AMP customizer. Default true.
-	 */
-	$amp_customizer_enabled = apply_filters( 'amp_customizer_is_enabled', true );
-
-	if ( true === $amp_customizer_enabled ) {
-		amp_init_customizer();
-	}
+function _amp_incorrect_plugin_slug_admin_notice() {
+	$actual_slug = basename( AMP__DIR__ );
+	?>
+	<div class="notice notice-warning">
+		<p>
+			<?php
+			echo wp_kses_post(
+				sprintf(
+					/* translators: %1$s is the current directory name, and %2$s is the required directory name */
+					__( 'You appear to have installed the AMP plugin incorrectly. It is currently installed in the <code>%1$s</code> directory, but it needs to be placed in a directory named <code>%2$s</code>. Please rename the directory. This is important for WordPress plugin auto-updates.', 'amp' ),
+					$actual_slug,
+					'amp'
+				)
+			);
+			?>
+		</p>
+	</div>
+	<?php
 }
-add_action( 'plugins_loaded', '_amp_bootstrap_customizer', 9 );
+
+if ( 'amp' !== basename( AMP__DIR__ ) ) {
+	add_action( 'admin_notices', '_amp_incorrect_plugin_slug_admin_notice' );
+}
+
+require_once AMP__DIR__ . '/vendor/autoload.php';
+
+register_activation_hook( __FILE__, 'amp_activate' );
+
+register_deactivation_hook( __FILE__, 'amp_deactivate' );
+
+amp_bootstrap_plugin();

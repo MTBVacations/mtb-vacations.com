@@ -70,7 +70,9 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 		// HTTPS support
 		if (isset($url_parts['scheme']) && strtolower($url_parts['scheme']) === 'https') {
 			$remote_socket = 'ssl://' . $host;
-			$url_parts['port'] = 443;
+			if (!isset($url_parts['port'])) {
+				$url_parts['port'] = 443;
+			}
 
 			$context_options = array(
 				'verify_peer' => true,
@@ -97,6 +99,7 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 			}
 
 			if (isset($options['verifyname']) && $options['verifyname'] === false) {
+				$context_options['verify_peer_name'] = false;
 				$verifyname = false;
 			}
 
@@ -147,7 +150,7 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 		$options['hooks']->dispatch('fsockopen.remote_host_path', array(&$path, $url));
 
 		$request_body = '';
-		$out = sprintf("%s %s HTTP/%.1f\r\n", $options['type'], $path, $options['protocol_version']);
+		$out = sprintf("%s %s HTTP/%.1F\r\n", $options['type'], $path, $options['protocol_version']);
 
 		if ($options['type'] !== Requests::TRACE) {
 			if (is_array($data)) {
@@ -171,7 +174,7 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 		if (!isset($case_insensitive_headers['Host'])) {
 			$out .= sprintf('Host: %s', $url_parts['host']);
 
-			if ($url_parts['port'] !== 80) {
+			if (( 'http' === strtolower($url_parts['scheme']) && $url_parts['port'] !== 80 ) || ( 'https' === strtolower($url_parts['scheme']) && $url_parts['port'] !== 443 )) {
 				$out .= ':' . $url_parts['port'];
 			}
 			$out .= "\r\n";
@@ -189,7 +192,7 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 		$headers = Requests::flatten($headers);
 
 		if (!empty($headers)) {
-			$out .= implode($headers, "\r\n") . "\r\n";
+			$out .= implode("\r\n", $headers) . "\r\n";
 		}
 
 		$options['hooks']->dispatch('fsockopen.after_headers', array(&$out));

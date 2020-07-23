@@ -1,10 +1,10 @@
 === PB SEO Friendly Images ===
 Contributors: pascalbajorat
 Donate link: https://www.pascal-bajorat.com/spenden/
-Tags: seo, images, Post, admin, google, attachment, optimize, photo, picture, image, media, photos, pictures, alt, title
-Requires at least: 3.0
-Tested up to: 4.8.2
-Stable tag: 2.4.0
+Tags: seo, images, Post, admin, google, attachment, optimize, photo, picture, image, media, photos, pictures, alt, title, lazy, load
+Requires at least: 5.0
+Tested up to: 5.3.9
+Stable tag: 4.0.4
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -36,11 +36,61 @@ If you have any questions or problems, you can ask me: [Pascal Bajorat - Webdesi
 2.	Activate the plugin over "Plugins > Installed Plugins" in your WordPress Backend
 3.	Go to "Settings" and "SEO Friendly Images" to configure the plugin
 
+For Theme Developer:
+Want to add lazy load to images in your theme? You only need to do some small modifications. Add class "lazy" and modify the "src" like this:
+
+`<img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src="Echter SRC Pfad" class="pb-seo-lazy" />`
+
 == Screenshots ==
 
 1.	Plugin Settings
 
 == Changelog ==
+
+= 4.0.4 =
+* DISABLED: Banner in WP Dashboard
+* Bugfix & Optimization
+
+= 4.0.3 =
+* Bugfix & Optimization
+
+= 4.0.2 =
+* Bugfix & Optimization
+
+= 4.0.1 =
+* Bugfix
+
+= 4.0.0 =
+* Complete Rewrite of the plugin
+* Please make sure to backup your files before you run this update. If you have any problems you can switch to an older version, have a look at the download archive.
+
+= 3.1.0 =
+* serveral bugs are fixed and code was optimized
+* improved image and figure handling - Thanks to BasTaller (@bastaller)
+
+= 3.0.0 =
+* new interface for woocommerce settings
+* fixed compability with woocommerce
+
+= 2.6.1 =
+* fixed compability with woocommerce
+
+= 2.6.0 =
+* fixed some encoding problems
+* added settings for a better encoding handling
+* optimized translations
+
+= 2.5.0 =
+* fixed compability with feeds
+* fixed compability with ARForms
+* fixed compability with LiveComposer
+
+= 2.4.2 =
+* fixed compability with feeds
+
+= 2.4.1 =
+* Increased compability to other plugins and themes.
+* Improved compability especially for MasterSlider
 
 = 2.4.0 =
 * Increased compability to other plugins and themes.

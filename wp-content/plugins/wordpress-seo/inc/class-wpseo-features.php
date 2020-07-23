@@ -1,7 +1,8 @@
 <?php
 /**
- * @package    WPSEO
- * @subpackage Internal
+ * WPSEO plugin file.
+ *
+ * @package WPSEO\Internal
  */
 
 /**
@@ -15,7 +16,7 @@ class WPSEO_Features {
 	 * @return bool
 	 */
 	public function is_premium() {
-		return ( defined( 'WPSEO_Premium_File' ) );
+		return ( defined( 'WPSEO_PREMIUM_FILE' ) );
 	}
 
 	/**

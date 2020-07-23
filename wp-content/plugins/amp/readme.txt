@@ -1,165 +1,65 @@
 === AMP ===
-Contributors: batmoo, joen, automattic, potatomaster
-Tags: amp, mobile
-Requires at least: 4.4
-Tested up to: 4.8
-Stable tag: 0.4.2
+Contributors: google, xwp, automattic, westonruter, albertomedina, schlessera, swissspidy, pierlo, ryankienstra
+Tags: amp, mobile, optimization, accelerated mobile pages, framework, components, blocks, performance, ux, seo, official
+Requires at least: 4.9
+Tested up to: 5.4
+Stable tag: 1.5.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
+Requires PHP: 5.6
 
-Enable Accelerated Mobile Pages (AMP) on your WordPress site.
+Official AMP plugin, supported by the AMP team. Formerly Accelerated Mobile Pages, AMP enables great experiences across both mobile and desktop.
 
 == Description ==
 
-This plugin adds support for the [Accelerated Mobile Pages](https://www.ampproject.org) (AMP) Project, which is an an open source initiative that aims to provide mobile optimized content that can load instantly everywhere.
+The [AMP Project](http://amp.dev) is an open-source initiative aiming to make the web better for all. AMP enables web experiences that are consistently fast, beautiful and high-performing across distribution platforms. AMP formerly stood for “Accelerated Mobile Pages”, but now works completely across desktop and mobile. The official AMP plugin for WordPress supports fully integrated AMP publishing for WordPress sites, with robust capabilities and granular publisher controls.
 
-With the plugin active, all posts on your site will have dynamically generated AMP-compatible versions, accessible by appending `/amp/` to the end your post URLs. For example, if your post URL is `http://example.com/2016/01/01/amp-on/`, you can access the AMP version at `http://example.com/2016/01/01/amp-on/amp/`. If you do not have [pretty permalinks](https://codex.wordpress.org/Using_Permalinks#mod_rewrite:_.22Pretty_Permalinks.22) enabled, you can do the same thing by appending `?amp=1`, i.e. `http://example.com/2016/01/01/amp-on/?amp=1`
+Features and capabilities provided by the plugin include:
 
-Note #1: that Pages and archives are not currently supported. Pages support is being worked on.
+- **AMP-first Experiences**: enabling [full-site AMP experiences](https://amp.dev/about/websites) without sacrificing the flexibility of the platform or the fidelity of content.
+- **Core Theme Support**: enabling AMP compatibility for all core themes, from Twenty Ten all the way through Twenty Twenty.
+- **Compatibility Tool**: when automatic conversion of markup to AMP is not possible, debug AMP validation errors with detailed information including the invalid markup and the specific components responsible on site (e.g theme, plugin, embed); validation errors are shown contextually with their respective blocks in the editor.
+- **CSS Tree Shaking**: automatically remove the majority of unused CSS to bring the total under AMP's 75KB limit; when the total after tree shaking is still over this limit, prioritization is used so that the all-important theme stylesheet important is retained, leaving less important ones to be excluded (e.g. print styles).
+- **Server-side Rendering**: integrated PHP-port of the [AMP Optimizer](https://github.com/ampproject/amp-toolbox/tree/main/packages/optimizer) providing automated [server-side rendering](https://amp.dev/documentation/guides-and-tutorials/optimize-and-measure/server-side-rendering/) of AMP pages, drastically improving the [Last Contentful Paint](https://web.dev/lcp/) (LCP) metric.
 
-Note #2: this plugin only creates AMP content but does not automatically display it to your users when they visit from a mobile device. That is handled by AMP consumers such as Google Search. For more details, see the [AMP Project FAQ](https://www.ampproject.org/docs/support/faqs.html).
+Please note that the [Stories](https://amp.dev/about/stories) experience has been removed from the AMP plugin in favor of the feature being released as a standalone plugin. It will be available soon!
 
-Follow along with or contribute to the development of this plugin at https://github.com/Automattic/amp-wp
+The plugin can be configured to follow one of three different template modes: Standard, Transitional, and Reader. In Standard mode you use AMP as the framework for your site, and there need not be any separate AMP and non-AMP versions. When configured to operate in Reader and Transitional modes, a given page will have a canonical URL as well as a corresponding (paired) AMP URL. The AMP plugin is not serving as a mobile theme; it does not redirect mobile devices to the AMP version. Instead, the AMP version is served to mobile visitors when they find the content on platforms such as Twitter, Pinterest, Google Search, and others. Reader mode only supports serving AMP for singular posts, pages, and other post types, whereas Standard and Transitional mode support serving the entire site as AMP.
 
-== Installation ==
-
-1. Upload the folder to the `/wp-content/plugins/` directory
-1. Activate the plugin through the 'Plugins' menu in WordPress
-1. You may need to refresh your permalinks by going to `Settings > Permalinks` and tapping the `Save` button.
+With the official AMP plugin for WordPress, the WordPress ecosystem is provided with the capabilities and tools it needs to build world-class AMP experiences without deviating from its standard, flexible, and well-known content creation workflow.
 
 == Frequently Asked Questions ==
 
-= How do I customize the AMP output for my site? =
+Please see the [FAQs on amp-wp.org](https://amp-wp.org/documentation/frequently-asked-questions/). Don't see an answer to your question? Please [search the support forum](https://wordpress.org/support/plugin/amp/) to see if someone has asked your question. Otherwise, please [open a new support topic](https://wordpress.org/support/plugin/amp/#new-post).
 
-You can tweak a few things like colours from the AMP Customizer. From the Dashboard, go to `Appearance > AMP`.
+== Installation ==
 
-For deeper level customizations, please see the readme at https://github.com/Automattic/amp-wp/blob/master/readme.md
+1. Upload the folder to the `/wp-content/plugins/` directory.
+2. Activate the plugin through the 'Plugins' menu in WordPress.
+3. If you currently use older versions of the plugin in `Reader` mode, it is strongly encouraged to migrate to `Transitional` or `Standard` mode. Depending on your theme/plugins, some development work may be required.
 
-= What about ads and shortcodes and such? =
+== Getting Started ==
 
-Check out https://github.com/Automattic/amp-wp/blob/master/readme.md#handling-media
+To learn more about the plugin and start leveraging its capabilities to power your AMP content creation workflow check [the official AMP plugin product site](https://amp-wp.org).
 
-= What about analytics? =
+If you are a developer, we encourage you to [follow along](https://github.com/ampproject/amp-wp) or [contribute](https://github.com/ampproject/amp-wp/blob/develop/contributing.md) to the development of this plugin on GitHub.
 
-Many plugins are adding AMP support already. If you handling analytics yourself, please see https://github.com/Automattic/amp-wp/blob/master/readme.md#analytics
+== Screenshots ==
 
-= Google Webmaster Tools is reporting validation errors for my site. How do I fix them? =
-
-The best place to start is to open a new discussion in the [support forum](https://wordpress.org/support/plugin/amp) with details on what the specific validation error is.
-
-= Why aren't Pages supported yet =
-
-A wise green Yoda once said, "Patience you must have, my young padawan." We're working on it :)
+1. In the website experience, theme support enables you to reuse the active theme's templates and stylesheets; all WordPress features (menus, widgets, comments) are available in AMP.
+2. All core themes are supported, and many themes can be served as AMP with minimal changes, Otherwise, behavior is often as if JavaScript is turned off in the browser since scripts are removed.
+3. Reader mode templates are still available, but they differ from the active theme.
+4. Switch from Reader mode to Transitional or Standard mode in AMP settings screen.
+5. Standard mode: Using AMP as the framework for your site, not having to maintain an AMP and non-AMP version. Mobile and desktop users get same experience.
+6. Transitional mode: A path to making your site fully AMP-compatible, with tools to assist with debugging validation issues along the way.
+7. Make the entire site available in AMP or pick specific post types and templates; you can also opt-out on per-post basis.
+8. Plugin checks for AMP validity and will indicate when: no issues are found, new issues need review, or issues block AMP from being served.
+9. The editor will surface validation issues during content authoring. The specific blocks with validation errors are indicated.
+10. Each Validated URL shows the list of validation errors encountered, giving control over whether invalid markup is removed or kept. Keeping invalid markup disables AMP.
+11. Each validation error provides a stack trace to identify which code is responsible for the invalid markup, whether a theme, plugin, embed, content block, and so on.
+12. Styles added by themes and plugins are automatically concatenated, minified, and tree-shaken to try to keep the total under 75KB of inline CSS.
+13. A WP-CLI command is provided to check the URLs on a site for AMP validity. Results are available in the admin for inspection.
 
 == Changelog ==
 
-= 0.4.2 (2016-10-13) =
-
-- Fix: Prevent validation errors for `html` tag (h/t Maxime2 and everyone else that reported this error)
-- Fix: Handle variable name conflict that was causing content_max_width to be ignored (h/t mimancillas)
-- Fix: Prevent errors when nodes don't have attributes (h/t stephenmax)
-- Fix: Back-compat for 4.5 (add sanitize_hex_color function, h/t xotihcan)
-- Fix: Handle gif featured images (h/t protocolil)
-- Documentation updates (props troyxmccall)
-
-= 0.4.1 (2016-10-10) =
-
-- Fix: Don't fire the_content for featured image output
-- Fix: Don't show comment link when disabled and no comments on post (h/t neotrope)
-- Fix: strip `!important` from inline styles (h/t compointdesigner and enriccardonagmailcom)
-
-= 0.4 (2016-10-06) =
-
-- New template: spiffy, shiny, and has the fresh theme smell (props allancole and the Automattic Theme Team).
-- *Warning*: The template update has potential breaking changes. Please see https://wordpress.org/support/topic/v0-4-whats-new-and-possible-breaking-changes/
-- AMP Customizer: Pick your colours and make the template your own (props DrewAPicture and 10up)
-- Fix: support for inline styles (props coreymckrill).
-- Fix: no more fatal errors when tags not supported by post type (props david-binda)
-- Fix: no more unnecessary `<br>` tags.
-- Fix: sanitize children of removed nodes (like empty `<a>` tags) (props Maxime2).
-- Fix: no more broken YouTube URLs with multiple ?s.
-- Fix: properly handle tel and sms schemes (h/t soundstrategies).
-- Fix: remove amp endpoint on deactivate.
-- New filter: `amp_pre_get_permalink` if you want a completely custom AMP permalink.
-
-= 0.3.3 (Aug 18, 2016) =
-
-- Handle many more validation errors (props bcampeau and alleyinteractive).
-- New filter: `amp_post_template_dir` (props mustafauysal).
-- New template: Nav bar is now it's own template part (props jdevalk).
-- Better ratio for YouTube embeds.
-- Fix: better timezone handling (props rinatkhaziev).
-- Fix: better handling of non-int dimensions (like `100%`).
-- Fix: better handling of empty dimensions.
-- Fix: `autoplay` is a bool-like value.
-- Fix: breakage when using the `query_string` hook (h/t mkuplens).
-- Fix: don't break really large Twitter IDs.
-- Fix: don't break Instagram shortcodes when using URLs with querystrings.
-- Readme improvements (props nickjohnford, sotayamashita)
-
-= 0.3.2 (Mar 4, 2016) =
-
-* Jetpack Stats support.
-* Better version of Merriweather and use system fonts for sans-serif (props mattmiklic).
-* Move font to stylesheet so it can be more easily overridden (props mattmiklic).
-* Fix: Template loading issues on Windows. (Thanks to everyone who reported this, especially w33zy for pointing out the `validate_file` issue.)
-* Fix: don't run AMP on post comment feeds (props kraftbj).
-* Fix: un-break pagination when using a static home page with multiple pages.
-* Fix: force amp-iframe to use https to validate correctly (props mister-ben).
-* Fix: validation for `target` and `video`/`audio` attributes.
-* Fix: clipped images in galleries (thanks tobaco).
-
-= 0.3.1 (Feb 24, 2016) =
-
-* Allow custom query var (props vaurdan).
-* Fix AMP URLs for non-pretty permalinks (props rakuishi).
-* Fix for password-protected posts.
-* Fix dimension extraction for schema-less or relative image URLs.
-* Better fallback for images with no dimensions.
-* Validation fixes for `a` tags (props kraftbj).
-* Updated AMP boilerplate.
-* Allow `on` tags for elements (props Steven Evatt).
-* Prefixed class names.
-
-= 0.3 (Feb 18, 2016) =
-
-* Fetch dimensions for hotlinked images.
-* Add amp-facebook support.
-* Add some new actions and filters (e.g. `amp_init`).
-* Fix validation errors for [gallery] shortcodes.
-* Fix issues with path validation on Windows.
-* Fix issues with really squeezed layout.
-* Breaking change: `style.css` no longer contains the `<style> tag. If you have a custom stylesheet, you need to update it to remove the tag.
-* Breaking change: `single.php` no longer includes the AMP boilerplate styles. They are instead added via the `amp_post_template_head` hook. If you have a custom template, please remove the boilerplate styles.
-
-= 0.2 (Jan 28, 2016) =
-
-* Lots and lots and lots of compatibility and validation fixes
-* Lots and lots and lots of improvements for customization
-
-= 0.1 =
-* Initial version
-
-== Upgrade Notice ==
-
-= 0.4 =
-
-* Breaking change: The new template has changes to markup, class names, and styles that may not work with existing customizations. If you want to stay on the old template for now, you can use the following code snippet:
-
-```
-if ( function_exists( 'amp_backcompat_use_v03_templates' ) ) {
-    amp_backcompat_use_v03_templates();
-}
-```
-
-For more details, please see https://wordpress.org/support/topic/v0-4-whats-new-and-possible-breaking-changes/
-
-= 0.3.1 =
-
-* Breaking change: `AMP_QUERY_VAR` is now defined right before `amp_init`.
-* Breaking change: class names for elements in the default template were prefixed with `amp-wp-`. Any styles targeting these classes should be updated.
-
-= 0.3 =
-
-* Breaking change: `style.css` no longer contains the `<style> tag. If you have a custom stylesheet, you need to update it to remove the tag.
-* Breaking change: `single.php` no longer includes the AMP boilerplate styles. They are instead added via the `amp_post_template_head` hook. If you have a custom template, please remove the boilerplate styles.
+For the plugin’s changelog, please see [the Releases page on GitHub](https://github.com/ampproject/amp-wp/releases).
