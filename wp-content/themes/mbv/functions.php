@@ -48,3 +48,11 @@ function mtbv_style_hotfix() {
 </style>
 <?php
 }
+
+add_filter('template_include', 'custom_home_page_template');
+function custom_home_page_template($template) {
+    if (is_front_page() && is_page('532'))
+        return plugin_dir_path( __FILE__ ) . 'archive-destination.php';
+
+    return $template;
+}
